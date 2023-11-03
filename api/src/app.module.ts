@@ -11,6 +11,20 @@ import { throttlerConfig, databaseConfig } from '@config/index'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 
+// Import csrf protection files
+import { createModule } from 'create-nestjs-middleware-module'
+import * as session from 'express-session'
+import { CsrfModule } from '@tekuconcept/nestjs-csrf'
+
+// Sessiion module for the csrf protection
+const SessionModuleBase = createModule(() => {
+  return session({
+    secret: 'idk-if-this-is-ok-here',
+    resave: false,
+    saveUninitialized: true,
+  })
+})
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -18,6 +32,9 @@ import { AppService } from './app.service'
       cache: true,
       load: [throttlerConfig, databaseConfig],
     }),
+    // csrf protection
+    SessionModuleBase.forRoot({}),
+    CsrfModule,
     // Rate limit protection
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],

@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core'
 import { ValidationPipe } from '@nestjs/common'
 import { AppModule } from './app.module'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
+import { CsrfInterceptor } from '@tekuconcept/nestjs-csrf'
 import helmet from 'helmet'
 
 async function bootstrap() {
@@ -11,6 +12,9 @@ async function bootstrap() {
   // Setting up the app
   app.useGlobalPipes(new ValidationPipe())
   app.use(helmet())
+
+  // Setting up the csrf protection globally
+  app.useGlobalInterceptors(new CsrfInterceptor()) // Not sure if this will work...
 
   // Setting OpenAPI docs
   const swaggerConfig = new DocumentBuilder()
