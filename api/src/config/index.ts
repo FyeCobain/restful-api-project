@@ -1,3 +1,4 @@
 import throttlerConfig from './throttler.config'
+import databaseConfig from './database.config'
 
-export { throttlerConfig }
+export { throttlerConfig, databaseConfig }
