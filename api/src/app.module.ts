@@ -16,6 +16,9 @@ import { createModule } from 'create-nestjs-middleware-module'
 import * as session from 'express-session'
 import { CsrfModule } from '@tekuconcept/nestjs-csrf'
 
+// Validation with joi
+import * as Joi from 'joi'
+
 // Sessiion module for the csrf protection
 const SessionModuleBase = createModule(() => {
   return session({
@@ -31,6 +34,12 @@ const SessionModuleBase = createModule(() => {
       isGlobal: true,
       cache: true,
       load: [throttlerConfig, databaseConfig],
+      validationSchema: Joi.object({
+        LISTENING_PORT: Joi.number().required().valid(4000),
+        THROTTLE_TTL: Joi.number().required(),
+        THROTTLE_LIMIT: Joi.number().required().less(15),
+        MONGODB_URI: Joi.string().required(),
+      }),
     }),
     // csrf protection
     SessionModuleBase.forRoot({}),
