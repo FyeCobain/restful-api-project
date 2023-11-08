@@ -14,7 +14,12 @@ async function bootstrap() {
   app.use(helmet())
 
   // Setting up the csrf protection globally
-  app.useGlobalInterceptors(new CsrfInterceptor()) // Not sure if this will work...
+  app.useGlobalInterceptors(
+    // Not sure if this is the correct way, but seems to work...
+    new CsrfInterceptor({
+      methods: { create: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'] },
+    }),
+  )
 
   // Setting OpenAPI docs
   const swaggerConfig = new DocumentBuilder()
