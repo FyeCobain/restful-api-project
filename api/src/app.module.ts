@@ -13,8 +13,11 @@ import { AppService } from './app.service'
 
 // Import csrf protection files
 import { createModule } from 'create-nestjs-middleware-module'
-import * as session from 'express-session'
 import { CsrfModule } from '@tekuconcept/nestjs-csrf'
+import * as session from 'express-session'
+
+// Import feature modules
+import { UsersModule } from '@features/users/users.module'
 
 // Validation with joi
 import * as Joi from 'joi'
@@ -63,6 +66,8 @@ const SessionModuleBase = createModule(() => {
         uri: configService.get<string>('database.mongoDBConnectionString'),
       }),
     }),
+    // Features modules
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
