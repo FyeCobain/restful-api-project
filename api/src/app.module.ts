@@ -18,6 +18,7 @@ import * as session from 'express-session'
 
 // Import feature modules
 import { UsersModule } from '@features/users/users.module'
+import { AuthModule } from '@features/auth/auth.module'
 
 // Validation with joi
 import * as Joi from 'joi'
@@ -42,6 +43,8 @@ const SessionModuleBase = createModule(() => {
         THROTTLE_TTL: Joi.number().required(),
         THROTTLE_LIMIT: Joi.number().required().less(15),
         MONGODB_URI: Joi.string().required(),
+        JWT_ACCESS_SECRET: Joi.string().required().min(16),
+        JWT_REFRESH_SECRET: Joi.string().required().min(16),
       }),
     }),
     // csrf protection
@@ -68,6 +71,7 @@ const SessionModuleBase = createModule(() => {
     }),
     // Features modules
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -32,6 +32,12 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Added Auth module**
+* Secrets .env variables validated.
+* SignUp endpoint working.
+* Libraries added:
+[@nestjs/jwt](https://www.npmjs.com/package/@nestjs/jwt)
+
 **Added exception filters and statuses**
 * Added exception filters, helper classes.
 * Returning correct statuses.
@@ -56,7 +62,7 @@ $ yarn run test:cov
 
 
 **Added argon2, passport and joi libraries**
-* Libraries:
+* Libraries added:
 [argon2](https://www.npmjs.com/package/argon2)
 [passport](https://www.npmjs.com/package/passport)
 [passport-jwt](https://www.npmjs.com/package/passport-jwt)
@@ -64,7 +70,7 @@ $ yarn run test:cov
 [joi](https://www.npmjs.com/package/joi)
 
 **csrf protection added**
-* Libraries:
+* Libraries added:
 [express-session](https://www.npmjs.com/package/express-session)
 [create-nestjs-middleware-module](https://www.npmjs.com/package/create-nestjs-middleware-module)
 [@tekuconcept/nestjs-csrf](https://www.npmjs.com/package/@tekuconcept/nestjs-csrf)

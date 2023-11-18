@@ -23,6 +23,7 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/jwt": "^10.2.0",
     "@nestjs/mongoose": "^10.0.1",
     "@nestjs/passport": "^10.0.2",
     "@nestjs/platform-express": "^10.0.0",
@@ -86,8 +87,8 @@
       "^@config/(.*)$": "<rootDir>/../src/config/$1",
       "^@features/(.*)$": "<rootDir>/../src/features/$1",
       "^@common/(.*)$": "<rootDir>/../src/common/$1",
-      "^libs/(.*)$": "<rootDir>/../src/libs/$1",
-      "^helpers/(.*)$": "<rootDir>/../src/helpers/$1"
+      "^@libs/(.*)$": "<rootDir>/../src/libs/$1",
+      "^@helpers/(.*)$": "<rootDir>/../src/helpers/$1"
     }
   }
 }

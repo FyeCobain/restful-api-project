@@ -1,0 +1,94 @@
+// Common imports
+import { BadRequestException, Injectable } from '@nestjs/common'
+
+// JWT / Hashing imports
+import { JwtService } from '@nestjs/jwt'
+import { ConfigService } from '@nestjs/config'
+import * as argon2 from 'argon2'
+
+// Users imports
+import { UsersService } from '@features/users/users.service'
+import { CreateUserDto } from '@features/users/dto/create-user.dto'
+
+@Injectable()
+export class AuthService {
+  // Constructor
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+    private configService: ConfigService,
+  ) {}
+
+  // Hashes the given string
+  async hashData(data: string) {
+    return await argon2.hash(data)
+  }
+
+  // Signing up a new user
+  async signUp(createUserDto: CreateUserDto): Promise<any> {
+    // Checking if user already exists
+    if (await this.usersService.findByEmail(createUserDto.email))
+      throw new BadRequestException('User already exists!')
+
+    // Hashing new user's password and saving it into de DB
+    const createdUser = await this.usersService.create({
+      ...createUserDto,
+      password: await this.hashData(createUserDto.password),
+    })
+
+    // Getting user's tokens
+    const tokens = await this.getTokens(
+      createdUser.id,
+      createdUser.email,
+      createdUser.accountType,
+    )
+
+    // Saving the refresh token in the DB
+    await this.updateRefreshToken(createdUser.id, tokens.refreshToken)
+
+    // Returning JWT tokens
+    return tokens
+  }
+
+  // Creates an returns the user's tokens
+  async getTokens(userId: string, email: string, accountType: string) {
+    // Generating tokens
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(
+        {
+          sub: userId,
+          email,
+          role: accountType,
+        },
+        {
+          secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
+          expiresIn: '15m',
+        },
+      ),
+      this.jwtService.signAsync(
+        {
+          sub: userId,
+          email,
+          role: accountType,
+        },
+        {
+          secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+          expiresIn: '7d',
+        },
+      ),
+    ])
+
+    // Returning generated tokens
+    return {
+      accessToken,
+      refreshToken,
+    }
+  }
+
+  // Hash and update the refresh token in the DB
+  async updateRefreshToken(userId: string, refreshToken: string) {
+    await this.usersService.update(userId, {
+      refreshToken: await this.hashData(refreshToken),
+    })
+  }
+}
