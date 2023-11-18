@@ -22,7 +22,8 @@
       "@config/*": ["src/config/*"],
       "@features/*": ["src/features/*"],
       "@common/*": ["src/common/*"],
-      "@libs/*": ["src/libs/*"]
+      "@libs/*": ["src/libs/*"],
+      "@helpers/*": ["src/helpers/*"],
     }
   }
 }

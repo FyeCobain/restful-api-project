@@ -1,16 +1,32 @@
 // Import core libraries
 import { NestFactory } from '@nestjs/core'
-import { ValidationPipe } from '@nestjs/common'
+import { UnprocessableEntityException, ValidationPipe } from '@nestjs/common'
 import { AppModule } from './app.module'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { CsrfInterceptor } from '@tekuconcept/nestjs-csrf'
 import helmet from 'helmet'
+import { ValidationError } from 'class-validator'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true })
 
-  // Setting up the app
-  app.useGlobalPipes(new ValidationPipe())
+  // Setting up the validation with 422 status code
+  const validationException = new UnprocessableEntityException()
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (errors: ValidationError[]) => {
+        return new UnprocessableEntityException({
+          message: errors
+            .map((error: ValidationError) => Object.values(error.constraints))
+            .flat(),
+          error: validationException.message,
+          statusCode: validationException.getStatus(),
+        })
+      },
+    }),
+  )
+
+  // Using Helmet
   app.use(helmet())
 
   // Setting up the csrf protection globally

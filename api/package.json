@@ -86,7 +86,8 @@
       "^@config/(.*)$": "<rootDir>/../src/config/$1",
       "^@features/(.*)$": "<rootDir>/../src/features/$1",
       "^@common/(.*)$": "<rootDir>/../src/common/$1",
-      "^libs/(.*)$": "<rootDir>/../src/libs/$1"
+      "^libs/(.*)$": "<rootDir>/../src/libs/$1",
+      "^helpers/(.*)$": "<rootDir>/../src/helpers/$1"
     }
   }
 }

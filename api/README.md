@@ -32,6 +32,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Added exception filters and statuses**
+* Added exception filters, helper classes.
+* Returning correct statuses.
+
 **Nest.js commit descriptions added**
 * Commit description added to this README.md file.
 
