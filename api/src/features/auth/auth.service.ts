@@ -1,7 +1,8 @@
 // Common imports
 import {
-  BadRequestException,
   Injectable,
+  BadRequestException,
+  ForbiddenException,
   UnauthorizedException,
 } from '@nestjs/common'
 
@@ -111,10 +112,27 @@ export class AuthService {
     }
   }
 
-  // Hash and update the refresh token in the DB
+  // Hashes and updates the refresh token in the DB
   async updateRefreshToken(userId: string, refreshToken: string) {
     await this.usersService.update(userId, {
       refreshToken: await this.hashData(refreshToken),
     })
+  }
+
+  // Performs the tokens refreshing
+  async refreshTokens(userId: string, refreshToken: string) {
+    // Searching for the user in the DB and checking if its refresh token is not null
+    const user = await this.usersService.findOne(userId)
+    if (!user || !user.refreshToken) throw new ForbiddenException()
+    // Checking if the request's refresh token is the same as the DB hashed one
+    const refreshTokensMatches = await argon2.verify(
+      user.refreshToken,
+      refreshToken,
+    )
+    if (!refreshTokensMatches) throw new ForbiddenException()
+    // Refreshing tokens
+    const tokens = await this.getTokens(user.id, user.email, user.accountType)
+    await this.updateRefreshToken(user.id, tokens.refreshToken)
+    return tokens
   }
 }

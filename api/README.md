@@ -32,11 +32,15 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
-**Logout enpoint working**
-* Logout endpoint working properly. No libraries added.
+**Refresh endpoint working**
+* Refresh endpoint working properly.
 
-**SignIn enpoint added**
-* SignIn working. No libraries added.
+**Logout endpoint working**
+* Logout endpoint working properly.
+* JWT strategies and guards added.
+
+**SignIn endpoint added**
+* SignIn working properly. No libraries added.
 
 **Added Auth module**
 * Secrets .env variables validated.
@@ -46,7 +50,7 @@ $ yarn run test:cov
 
 **Added exception filters and statuses**
 * Added exception filters, helper classes.
-* Returning correct statuses.
+* Returning correct http statuses.
 
 **Nest.js commit descriptions added**
 * Commit description added to this README.md file.
@@ -65,7 +69,6 @@ $ yarn run test:cov
 
 **Added env vars validation**
 * .env file variables valitated using joi. No libraries added.
-
 
 **Added argon2, passport and joi libraries**
 * Libraries added:

@@ -2,12 +2,12 @@
 import {
   Controller,
   Post,
+  Get,
   Body,
+  Req,
   HttpCode,
   HttpStatus,
-  Get,
   UseGuards,
-  Req,
 } from '@nestjs/common'
 import { AuthService } from './auth.service'
 
@@ -43,11 +43,13 @@ export class AuthController {
     await this.authService.logOut(req.user['sub'])
   }
 
+  // Performs the tokens refreshing
   @UseGuards(RefreshTokenGuard)
   @Get('refresh')
-  refreshTokens(@Req() req: any) {
-    //const userId = req.user['sub']
-    //const refreshToken = req.user['refreshToken']
-    return { message: 'TO-DO' }
+  async refreshTokens(@Req() req: any) {
+    return await this.authService.refreshTokens(
+      req.user['sub'],
+      req.user['refreshToken'],
+    )
   }
 }
