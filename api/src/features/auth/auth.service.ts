@@ -6,9 +6,12 @@ import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
 import * as argon2 from 'argon2'
 
-// Users imports
+// Services imports
 import { UsersService } from '@features/users/users.service'
+
+// DTOs imports
 import { CreateUserDto } from '@features/users/dto/create-user.dto'
+import { AuthDto } from './dto/auth.dto'
 
 @Injectable()
 export class AuthService {
@@ -36,7 +39,7 @@ export class AuthService {
       password: await this.hashData(createUserDto.password),
     })
 
-    // Getting user's tokens
+    // Getting new tokens
     const tokens = await this.getTokens(
       createdUser.id,
       createdUser.email,
@@ -46,7 +49,21 @@ export class AuthService {
     // Saving the refresh token in the DB
     await this.updateRefreshToken(createdUser.id, tokens.refreshToken)
 
-    // Returning JWT tokens
+    // Returning the new tokens
+    return tokens
+  }
+
+  // Authenticates a user
+  async signIn(authDto: AuthDto) {
+    // Checking if user exists and if the password is correct
+    const user = await this.usersService.findByEmail(authDto.email)
+    if (!user) throw new BadRequestException('User does not exist')
+    if (!(await argon2.verify(user.password, authDto.password)))
+      throw new BadRequestException('Password is incorrect')
+    // Getting new tokens and updating the refresh token in the DB
+    const tokens = await this.getTokens(user.id, user.email, user.accountType)
+    await this.updateRefreshToken(user.id, tokens.refreshToken)
+    // Returning the new tokens
     return tokens
   }
 

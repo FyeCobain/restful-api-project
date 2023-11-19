@@ -32,6 +32,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**SignIn enpoint added**
+* SignIn working. No libraries added.
+
 **Added Auth module**
 * Secrets .env variables validated.
 * SignUp endpoint working.
