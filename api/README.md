@@ -32,6 +32,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Documentation improved**
+* Swagger documentation improved.
+
 **Refresh endpoint working**
 * Refresh endpoint working properly.
 
