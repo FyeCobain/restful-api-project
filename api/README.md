@@ -32,6 +32,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Logout enpoint working**
+* Logout endpoint working properly. No libraries added.
+
 **SignIn enpoint added**
 * SignIn working. No libraries added.
 

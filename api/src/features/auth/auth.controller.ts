@@ -1,6 +1,18 @@
 // Common / core imports
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common'
+import {
+  Controller,
+  Post,
+  Body,
+  HttpCode,
+  HttpStatus,
+  Get,
+  UseGuards,
+  Req,
+} from '@nestjs/common'
 import { AuthService } from './auth.service'
+
+// Guard imports
+import { AccessTokenGuard, RefreshTokenGuard } from './guards'
 
 // DTOs imports
 import { CreateUserDto } from '@features/users/dto/create-user.dto'
@@ -22,5 +34,20 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async signIn(@Body() authData: AuthDto) {
     return await this.authService.signIn(authData)
+  }
+
+  // Performs the logout (deletes the refresh token)
+  @UseGuards(AccessTokenGuard)
+  @Get('logout')
+  async logout(@Req() req: any) {
+    await this.authService.logOut(req.user['sub'])
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @Get('refresh')
+  refreshTokens(@Req() req: any) {
+    //const userId = req.user['sub']
+    //const refreshToken = req.user['refreshToken']
+    return { message: 'TO-DO' }
   }
 }

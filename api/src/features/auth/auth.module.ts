@@ -5,6 +5,7 @@ import { AuthController } from './auth.controller'
 
 // JWT imports
 import { JwtModule } from '@nestjs/jwt'
+import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies'
 
 // Import other modules
 import { UsersModule } from '@features/users/users.module'
@@ -12,6 +13,6 @@ import { UsersModule } from '@features/users/users.module'
 @Module({
   imports: [UsersModule, JwtModule.register({})],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
 })
 export class AuthModule {}

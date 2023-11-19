@@ -1,5 +1,9 @@
 // Common imports
-import { BadRequestException, Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common'
 
 // JWT / Hashing imports
 import { JwtService } from '@nestjs/jwt'
@@ -59,12 +63,17 @@ export class AuthService {
     const user = await this.usersService.findByEmail(authDto.email)
     if (!user) throw new BadRequestException('User does not exist')
     if (!(await argon2.verify(user.password, authDto.password)))
-      throw new BadRequestException('Password is incorrect')
+      throw new UnauthorizedException('Password is incorrect')
     // Getting new tokens and updating the refresh token in the DB
     const tokens = await this.getTokens(user.id, user.email, user.accountType)
     await this.updateRefreshToken(user.id, tokens.refreshToken)
     // Returning the new tokens
     return tokens
+  }
+
+  // Performs the logout (deletes the refresh token)
+  async logOut(userId: string) {
+    return await this.usersService.update(userId, { refreshToken: null })
   }
 
   // Creates an returns the user's tokens
