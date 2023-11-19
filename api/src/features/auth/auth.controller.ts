@@ -8,11 +8,13 @@ import {
   HttpCode,
   HttpStatus,
   UseGuards,
+  UseFilters,
 } from '@nestjs/common'
 import { AuthService } from './auth.service'
 
-// Guard imports
+// Validation / Guards / filters imports
 import { AccessTokenGuard, RefreshTokenGuard } from './guards'
+import { MongoExceptionFilter } from '@app/libs/filters'
 
 // DTOs imports
 import { CreateUserDto } from '@features/users/dto/create-user.dto'
@@ -25,6 +27,7 @@ export class AuthController {
 
   // Creates a new user and returns the tokens
   @Post('signup')
+  @UseFilters(MongoExceptionFilter)
   async signUp(@Body() createUserDto: CreateUserDto) {
     return await this.authService.signUp(createUserDto)
   }

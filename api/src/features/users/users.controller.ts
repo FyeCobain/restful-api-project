@@ -1,3 +1,4 @@
+// Core / common imports
 import {
   Controller,
   Get,
@@ -12,10 +13,14 @@ import {
   NotFoundException,
   UseFilters,
 } from '@nestjs/common'
-import { isValidObjectId } from 'mongoose'
+
+// Users impórts
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
+
+// Validations / Guards / filters imports
+import { isValidObjectId } from 'mongoose'
 import { MongoExceptionFilter } from '@app/libs/filters'
 
 @Controller('users')
@@ -51,7 +56,7 @@ export class UsersController {
     if (!isValidObjectId(id))
       throw new BadRequestException('Incorrect id format')
     const updatedUser = await this.usersService.update(id, updateUserDto)
-    if (!updatedUser) throw new NotFoundException()
+    if (!updatedUser) throw new BadRequestException('User does not exist')
     return updatedUser
   }
 
@@ -62,6 +67,7 @@ export class UsersController {
     if (!isValidObjectId(id))
       throw new BadRequestException('Incorrect id format')
     const deleteResult: any = await this.usersService.remove(id)
-    if (deleteResult.deletedCount === 0) throw new NotFoundException()
+    if (deleteResult.deletedCount === 0)
+      throw new BadRequestException('User does not exist')
   }
 }

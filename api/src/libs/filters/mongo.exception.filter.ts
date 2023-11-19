@@ -42,7 +42,7 @@ export class MongoExceptionFilter implements ExceptionFilter {
         // If the exception comes from Mongoose...
         if (catchedException instanceof MongooseError) {
           return response.status(exceptionToReturn.getStatus()).json({
-            message: [this.getMongooseValidationErrorMessage(catchedException)],
+            message: this.getMongooseValidationErrorMessages(catchedException),
             error: exceptionToReturn.message,
             statusCode: exceptionToReturn.getStatus(),
           })
@@ -57,13 +57,15 @@ export class MongoExceptionFilter implements ExceptionFilter {
     }
   }
 
-  // Method for getting the appropiate MongooseError message
-  getMongooseValidationErrorMessage(exception: any): string {
-    switch (exception.errors.name.kind) {
-      case 'required':
-        return `${capitalize(exception.errors.name.path)} must not be empty`
-      default:
-        return `The ${exception.errors.name.path} is ${exception.errors.name.kind}`
-    }
+  // Method for getting the appropiate MongooseError messages for each invalid field
+  getMongooseValidationErrorMessages(exception: any): string[] {
+    return Object.keys(exception.errors).map((invalidField: string) => {
+      switch (exception.errors[invalidField].kind) {
+        case 'required':
+          return `${capitalize(invalidField)} must not be blank`
+        default:
+          return exception.errors[invalidField].message
+      }
+    }) as string[]
   }
 }

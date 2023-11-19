@@ -32,6 +32,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Blank fields handling improved**
+* Added filters and helpers for blank fields handling in DTOs.
+
 **Documentation improved**
 * Swagger documentation improved.
 

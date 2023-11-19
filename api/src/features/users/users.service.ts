@@ -1,9 +1,15 @@
-import { Injectable } from '@nestjs/common'
+// Core / common imports
+import { BadRequestException, Injectable } from '@nestjs/common'
+
+// Mongo imports
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { User, UserDocument } from './schemas/user.schema'
+
+// DTO imports
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
+import { getBlankFieldsErrorMessages } from '@app/helpers/dto'
 
 // Users service class
 @Injectable()
@@ -34,6 +40,13 @@ export class UsersService {
 
   // Updates and returns a user
   async update(id: string, updatedUserData: UpdateUserDto) {
+    // Checking if blank values where received
+    const blankFieldsErrorMessages: string[] =
+      getBlankFieldsErrorMessages(updatedUserData)
+    if (blankFieldsErrorMessages.length > 0)
+      throw new BadRequestException(blankFieldsErrorMessages)
+
+    // Updating and returning the user (already updated)
     return await this.userModel.findByIdAndUpdate(id, updatedUserData, {
       new: true,
     })
