@@ -25,6 +25,7 @@ export class User {
   @Prop({
     unique: true,
     trim: true,
+    lowercase: true,
   })
   email: string
 

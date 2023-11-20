@@ -45,9 +45,10 @@ async function bootstrap() {
     .setTitle('RESTful API project')
     .setDescription('This is an RESTful API project for the SDJS-102 course.')
     .setVersion('1.0')
+    .addBearerAuth()
     .build()
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig)
-  SwaggerModule.setup('api', app, swaggerDocument)
+  SwaggerModule.setup('docs', app, swaggerDocument)
 
   await app.listen(process.env.LISTENING_PORT || 3000)
 }

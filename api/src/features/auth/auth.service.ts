@@ -3,7 +3,7 @@ import {
   Injectable,
   BadRequestException,
   ForbiddenException,
-  UnauthorizedException,
+  ConflictException,
 } from '@nestjs/common'
 
 // JWT / Hashing imports
@@ -36,7 +36,7 @@ export class AuthService {
   async signUp(createUserDto: CreateUserDto): Promise<any> {
     // Checking if user already exists
     if (await this.usersService.findByEmail(createUserDto.email))
-      throw new BadRequestException('User already exists!')
+      throw new ConflictException('User already exists!')
 
     // Hashing new user's password and saving it into de DB
     const createdUser = await this.usersService.create({
@@ -64,7 +64,7 @@ export class AuthService {
     const user = await this.usersService.findByEmail(authDto.email)
     if (!user) throw new BadRequestException('User does not exist')
     if (!(await argon2.verify(user.password, authDto.password)))
-      throw new UnauthorizedException('Password is incorrect')
+      throw new BadRequestException('Password is incorrect')
     // Getting new tokens and updating the refresh token in the DB
     const tokens = await this.getTokens(user.id, user.email, user.accountType)
     await this.updateRefreshToken(user.id, tokens.refreshToken)

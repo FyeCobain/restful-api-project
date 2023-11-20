@@ -1,6 +1,6 @@
 import { capitalize } from '@helpers/strings'
 
-// Returns an array with 'blank fields' error messages for each dto values that is blank
+// Returns an array with 'blank fields' error messages for each dto value that is a blank string
 export function getBlankFieldsErrorMessages(dto: object): string[] {
   const errorMessages: string[] = new Array<string>()
   Object.entries(dto).forEach(([key, value]) => {
