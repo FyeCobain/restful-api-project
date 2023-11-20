@@ -25,7 +25,9 @@ export class UsersService {
 
   // Returns all users
   async findAll() {
-    return await this.userModel.find().exec()
+    return await this.userModel
+      .find({}, { password: 0, validatedAccount: 0, __v: 0 })
+      .exec()
   }
 
   // Gets and returns a user by its email
@@ -35,7 +37,9 @@ export class UsersService {
 
   // Gets and returns a user
   async findOne(id: string) {
-    return await this.userModel.findById(id).exec()
+    return await this.userModel
+      .findById(id, { password: 0, validatedAccount: 0, __v: 0 })
+      .exec()
   }
 
   // Updates and returns a user

@@ -32,6 +32,11 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Added whitelist and transform validation options**
+* Whitelist and transform validation options set to true.
+* Projection objects added in find methods.
+* Improved some returned exceptions.
+
 **Blank fields handling improved**
 * Added filters and helpers for blank fields handling in DTOs.
 

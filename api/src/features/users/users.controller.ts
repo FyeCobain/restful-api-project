@@ -46,7 +46,7 @@ export class UsersController {
     if (!isValidObjectId(id))
       throw new BadRequestException('Incorrect id format')
     const user = await this.usersService.findOne(id)
-    if (!user) throw new NotFoundException()
+    if (!user) throw new NotFoundException('User not found')
     return user
   }
 
@@ -56,7 +56,7 @@ export class UsersController {
     if (!isValidObjectId(id))
       throw new BadRequestException('Incorrect id format')
     const updatedUser = await this.usersService.update(id, updateUserDto)
-    if (!updatedUser) throw new BadRequestException('User does not exist')
+    if (!updatedUser) throw new BadRequestException('Wrong user id')
     return updatedUser
   }
 
@@ -68,6 +68,6 @@ export class UsersController {
       throw new BadRequestException('Incorrect id format')
     const deleteResult: any = await this.usersService.remove(id)
     if (deleteResult.deletedCount === 0)
-      throw new BadRequestException('User does not exist')
+      throw new BadRequestException('Wrong user id')
   }
 }

@@ -14,6 +14,9 @@ async function bootstrap() {
   const validationException = new UnprocessableEntityException()
   app.useGlobalPipes(
     new ValidationPipe({
+      whitelist: true, // Removes incoming properties without a decorator in the DTO
+      transform: true, // Transforms the plain incoming properties to them respective required types
+      // Callback to return a 422 status on invalid errors
       exceptionFactory: (errors: ValidationError[]) => {
         return new UnprocessableEntityException({
           message: errors
