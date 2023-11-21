@@ -6,6 +6,9 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { User, UserDocument } from './schemas/user.schema'
 
+// Hashing imports
+import * as argon2 from 'argon2'
+
 // DTO imports
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
@@ -19,7 +22,10 @@ export class UsersService {
 
   // Creates and returns a new user
   async create(newUserData: CreateUserDto): Promise<UserDocument> {
-    const createdUser = await new this.userModel(newUserData)
+    const createdUser = await new this.userModel({
+      ...newUserData,
+      password: await argon2.hash(newUserData.password),
+    })
     return createdUser.save()
   }
 
@@ -49,6 +55,10 @@ export class UsersService {
       getBlankFieldsErrorMessages(updatedUserData)
     if (blankFieldsErrorMessages.length > 0)
       throw new BadRequestException(blankFieldsErrorMessages)
+
+    // Hashing new password
+    if ('password' in updatedUserData && updatedUserData.password.trim() !== '')
+      updatedUserData.password = await argon2.hash(updatedUserData.password)
 
     // Updating and returning the user (already updated)
     return await this.userModel.findByIdAndUpdate(id, updatedUserData, {

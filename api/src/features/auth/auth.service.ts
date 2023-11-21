@@ -38,11 +38,8 @@ export class AuthService {
     if (await this.usersService.findByEmail(createUserDto.email))
       throw new ConflictException('User already exists!')
 
-    // Hashing new user's password and saving it into de DB
-    const createdUser = await this.usersService.create({
-      ...createUserDto,
-      password: await this.hashData(createUserDto.password),
-    })
+    // Saving new user into the DB
+    const createdUser = await this.usersService.create(createUserDto)
 
     // Getting new tokens
     const tokens = await this.getTokens(
@@ -74,6 +71,9 @@ export class AuthService {
 
   // Performs the logout (deletes the refresh token)
   async logOut(userId: string) {
+    // Checking if user exists
+    const user = await this.usersService.findOne(userId)
+    if (!user) throw new ForbiddenException()
     return await this.usersService.update(userId, { refreshToken: null })
   }
 

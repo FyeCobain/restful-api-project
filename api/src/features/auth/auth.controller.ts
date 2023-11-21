@@ -20,6 +20,7 @@ import {
   ApiCreatedResponse,
   ApiBadRequestResponse,
   ApiUnauthorizedResponse,
+  ApiForbiddenResponse,
   ApiConflictResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
@@ -58,11 +59,12 @@ export class AuthController {
   }
 
   // Performs the tokens refreshing
+  @Get('refresh')
   @ApiBearerAuth()
   @UseGuards(RefreshTokenGuard)
   @ApiOkResponse({ description: 'OK' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  @Get('refresh')
+  @ApiForbiddenResponse({ description: 'Forbidden' })
   async refreshTokens(@Req() req: any) {
     return await this.authService.refreshTokens(
       req.user['sub'],
@@ -71,11 +73,12 @@ export class AuthController {
   }
 
   // Performs the logout (deletes the refresh token)
+  @Get('logout')
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
   @ApiOkResponse({ description: 'OK' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  @Get('logout')
+  @ApiForbiddenResponse({ description: 'Forbidden' })
   async logout(@Req() req: any) {
     await this.authService.logOut(req.user['sub'])
   }

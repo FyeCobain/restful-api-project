@@ -32,6 +32,11 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Guards implemented and services updated**
+* Guards and validations implemented in user endpoints.
+* User service create and update methods now hashing password.
+* Auth service create method no longer hashing password.
+
 **Documentation improved**
 * Added 'ApiTag' to controllers.
 * Added 'ApiResponse' to endpoints.
