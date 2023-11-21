@@ -2,6 +2,7 @@
 import {
   Injectable,
   BadRequestException,
+  UnauthorizedException,
   ForbiddenException,
   ConflictException,
 } from '@nestjs/common'
@@ -149,8 +150,37 @@ export class AuthService {
       },
       {
         secret: this.configService.get<string>('secrets.jwtResetPass'),
-        expiresIn: '2h',
+        expiresIn: '1m',
       },
     )
+  }
+
+  // Resets the user's password
+  async resetPassword(jwt: string, newPassword: string) {
+    // Getting payload while validating JWT' signature
+    const payload = await this.getTokenPayload(jwt, true)
+    if (!payload) throw new UnauthorizedException()
+    // Getting user
+    const user = await this.usersService.findByEmail(payload.sub)
+    if (!user) throw new BadRequestException('User not found')
+    // Hashing and updating user's password
+    await this.usersService.update(user.id, { password: newPassword })
+  }
+
+  // Validates the token and returns the paylaod
+  async getTokenPayload(
+    jwt: string,
+    ignoreExpiration = false,
+  ): Promise<any | boolean> {
+    let payload: any | boolean
+    try {
+      payload = await this.jwtService.verifyAsync(jwt, {
+        secret: this.configService.get<string>('secrets.jwtResetPass'),
+        ignoreExpiration,
+      })
+    } catch (error) {
+      payload = false
+    }
+    return payload
   }
 }
