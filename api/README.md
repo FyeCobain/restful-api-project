@@ -32,6 +32,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**SubExistsGuard created**
+* Created guard for checking if the token's sub exists in the database.
+
 **Guards implemented and services updated**
 * Guards and validations implemented in user endpoints.
 * User service create and update methods now hashing password.

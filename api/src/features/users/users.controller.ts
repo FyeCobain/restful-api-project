@@ -10,7 +10,6 @@ import {
   HttpCode,
   HttpStatus,
   BadRequestException,
-  ForbiddenException,
   NotFoundException,
   UseFilters,
   UseGuards,
@@ -40,7 +39,7 @@ import { UpdateUserDto } from './dto/update-user.dto'
 // Validations / Guards / filters imports
 import { isValidObjectId } from 'mongoose'
 import { MongoExceptionFilter } from '@app/libs/filters'
-import { AccessTokenGuard } from '../auth/guards'
+import { AccessTokenGuard, SubExistsGuard } from '../auth/guards'
 
 @ApiTags('users')
 @Controller('users')
@@ -80,7 +79,7 @@ export class UsersController {
   // Updates a user and returns it
   @Patch(':id')
   @ApiBearerAuth()
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, SubExistsGuard)
   @UseFilters(MongoExceptionFilter)
   @ApiOkResponse({ description: 'OK' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
@@ -92,9 +91,6 @@ export class UsersController {
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    // Checking if the token's sub exists
-    if (!(await this.usersService.findOne(req.user['sub'])))
-      throw new ForbiddenException()
     // Checking if the user to update id is correct
     if (!isValidObjectId(id))
       throw new BadRequestException('Incorrect id format')
@@ -106,16 +102,13 @@ export class UsersController {
   // Deletes a user
   @Delete(':id')
   @ApiBearerAuth()
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, SubExistsGuard)
   @ApiNoContentResponse({ description: 'No Content' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Req() req, @Param('id') id: string) {
-    // Checking if the token's sub exists
-    if (!(await this.usersService.findOne(req.user['sub'])))
-      throw new ForbiddenException()
     // Checking if the user to update id is correct
     if (!isValidObjectId(id))
       throw new BadRequestException('Incorrect id format')
