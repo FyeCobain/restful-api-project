@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common'
 import { AppService } from './app.service'
-import { ApiExcludeController, ApiOkResponse } from '@nestjs/swagger'
+import { ApiExcludeController } from '@nestjs/swagger'
 
 @ApiExcludeController(true)
 @Controller()
@@ -9,7 +9,6 @@ export class AppController {
 
   // A simple Hello World
   @Get()
-  @ApiOkResponse({ description: 'OK' })
   getHello(): string {
     return this.appService.getHello()
   }

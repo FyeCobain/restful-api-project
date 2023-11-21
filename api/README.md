@@ -32,6 +32,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Tiny code fixes**
+* Tiny code fixes in many places.
+
 **Reset password endpoint added**
 * Reset password endpoint working.
 * Implemented service method for manully validate JWT's signature.

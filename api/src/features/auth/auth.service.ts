@@ -150,7 +150,7 @@ export class AuthService {
       },
       {
         secret: this.configService.get<string>('secrets.jwtResetPass'),
-        expiresIn: '1m',
+        expiresIn: '2h',
       },
     )
   }
@@ -158,7 +158,7 @@ export class AuthService {
   // Resets the user's password
   async resetPassword(jwt: string, newPassword: string) {
     // Getting payload while validating JWT' signature
-    const payload = await this.getTokenPayload(jwt, true)
+    const payload = await this.getTokenPayload(jwt)
     if (!payload) throw new UnauthorizedException()
     // Getting user
     const user = await this.usersService.findByEmail(payload.sub)
