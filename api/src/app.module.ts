@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose'
 
 // Import config files
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { throttlerConfig, databaseConfig } from '@config/index'
+import { throttlerConfig, databaseConfig, secretsConfig } from '@config/index'
 
 // Import own app files
 import { AppController } from './app.controller'
@@ -37,7 +37,7 @@ const SessionModuleBase = createModule(() => {
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      load: [throttlerConfig, databaseConfig],
+      load: [throttlerConfig, databaseConfig, secretsConfig],
       validationSchema: Joi.object({
         LISTENING_PORT: Joi.number().required().valid(4000),
         THROTTLE_TTL: Joi.number().required(),
@@ -45,6 +45,7 @@ const SessionModuleBase = createModule(() => {
         MONGODB_URI: Joi.string().required(),
         JWT_ACCESS_SECRET: Joi.string().required().min(16),
         JWT_REFRESH_SECRET: Joi.string().required().min(16),
+        JWT_RESET_PASS_SECRET: Joi.string().required().min(16),
       }),
     }),
     // csrf protection

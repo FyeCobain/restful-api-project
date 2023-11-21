@@ -32,6 +32,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Reset password request endpoint added**
+* Reset password request endpoint and service method working and returning JWT.
+
 **IdValidGuard created**
 * Created guard for checking if the give user id has a valid mongoose id format.
 

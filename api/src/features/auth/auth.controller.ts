@@ -32,6 +32,7 @@ import { MongoExceptionFilter } from '@app/libs/filters'
 // DTOs imports
 import { CreateUserDto } from '@features/users/dto/create-user.dto'
 import { AuthDto } from './dto/auth.dto'
+import { RequestEmailDto } from './dto/request.email.dto'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -56,6 +57,17 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async signIn(@Body() authData: AuthDto) {
     return await this.authService.signIn(authData)
+  }
+
+  // Endpoint for requesting a password reset
+  @Post('resetpassrequest')
+  @ApiOkResponse({ description: 'OK' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiUnprocessableEntityResponse({ description: 'Unprocessable Entity' })
+  @HttpCode(HttpStatus.OK)
+  async resetPasswordRequest(@Body() data: RequestEmailDto) {
+    const jwt = await this.authService.createResetPassToken(data.email)
+    return { jwt }
   }
 
   // Performs the tokens refreshing

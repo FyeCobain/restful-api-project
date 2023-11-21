@@ -135,4 +135,22 @@ export class AuthService {
     await this.updateRefreshToken(user.id, tokens.refreshToken)
     return tokens
   }
+
+  // Creates and returns a token for password reset
+  async createResetPassToken(email: string) {
+    // Checking if user exists
+    if (!(await this.usersService.findByEmail(email)))
+      throw new BadRequestException('User not found')
+
+    // Returning password reset JWT
+    return await this.jwtService.signAsync(
+      {
+        sub: email,
+      },
+      {
+        secret: this.configService.get<string>('secrets.jwtResetPass'),
+        expiresIn: '2h',
+      },
+    )
+  }
 }
