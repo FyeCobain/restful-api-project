@@ -32,6 +32,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**IdValidGuard created**
+* Created guard for checking if the give user id has a valid mongoose id format.
+
 **SubExistsGuard created**
 * Created guard for checking if the token's sub exists in the database.
 

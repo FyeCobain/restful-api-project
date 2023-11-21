@@ -37,9 +37,9 @@ import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 
 // Validations / Guards / filters imports
-import { isValidObjectId } from 'mongoose'
 import { MongoExceptionFilter } from '@app/libs/filters'
-import { AccessTokenGuard, SubExistsGuard } from '../auth/guards'
+import { AccessTokenGuard, SubExistsGuard } from '@features/auth/guards'
+import { IdValidGuard } from './guards'
 
 @ApiTags('users')
 @Controller('users')
@@ -65,12 +65,11 @@ export class UsersController {
 
   // Returns one user
   @Get(':id')
+  @UseGuards(IdValidGuard)
   @ApiOkResponse({ description: 'OK' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiNotFoundResponse({ description: 'Not Found' })
   async findOne(@Param('id') id: string) {
-    if (!isValidObjectId(id))
-      throw new BadRequestException('Incorrect id format')
     const user = await this.usersService.findOne(id)
     if (!user) throw new NotFoundException('User not found')
     return user
@@ -79,21 +78,14 @@ export class UsersController {
   // Updates a user and returns it
   @Patch(':id')
   @ApiBearerAuth()
-  @UseGuards(AccessTokenGuard, SubExistsGuard)
+  @UseGuards(IdValidGuard, AccessTokenGuard, SubExistsGuard)
   @UseFilters(MongoExceptionFilter)
   @ApiOkResponse({ description: 'OK' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
   @ApiConflictResponse({ description: 'Conflict' })
-  async update(
-    @Req() req,
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
-    // Checking if the user to update id is correct
-    if (!isValidObjectId(id))
-      throw new BadRequestException('Incorrect id format')
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const updatedUser = await this.usersService.update(id, updateUserDto)
     if (!updatedUser) throw new BadRequestException('Wrong user id')
     return updatedUser
@@ -102,16 +94,13 @@ export class UsersController {
   // Deletes a user
   @Delete(':id')
   @ApiBearerAuth()
-  @UseGuards(AccessTokenGuard, SubExistsGuard)
+  @UseGuards(IdValidGuard, AccessTokenGuard, SubExistsGuard)
   @ApiNoContentResponse({ description: 'No Content' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Req() req, @Param('id') id: string) {
-    // Checking if the user to update id is correct
-    if (!isValidObjectId(id))
-      throw new BadRequestException('Incorrect id format')
     const deleteResult: any = await this.usersService.remove(id)
     if (deleteResult.deletedCount === 0)
       throw new BadRequestException('Wrong user id')
