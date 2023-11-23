@@ -23,6 +23,11 @@ import { AuthModule } from '@features/auth/auth.module'
 // Validation with joi
 import * as Joi from 'joi'
 
+// Mailer
+import { MailerModule } from '@nestjs-modules/mailer'
+import { join } from 'path'
+import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter'
+
 // Sessiion module for the csrf protection
 const SessionModuleBase = createModule(() => {
   return session({
@@ -46,6 +51,9 @@ const SessionModuleBase = createModule(() => {
         JWT_ACCESS_SECRET: Joi.string().required().min(16),
         JWT_REFRESH_SECRET: Joi.string().required().min(16),
         JWT_RESET_PASS_SECRET: Joi.string().required().min(16),
+        SMTP_HOST: Joi.string().required(),
+        SMTP_USER: Joi.string().required(),
+        SMTP_PASS: Joi.string().required(),
       }),
     }),
     // csrf protection
@@ -69,6 +77,20 @@ const SessionModuleBase = createModule(() => {
       useFactory: (configService: ConfigService) => ({
         uri: configService.get<string>('database.mongoDBConnectionString'),
       }),
+    }),
+    // Mailer Module
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.SMTP_HOST,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      },
+      template: {
+        dir: join(__dirname, 'mails'),
+        adapter: new EjsAdapter(),
+      },
     }),
     // Features modules
     UsersModule,

@@ -32,6 +32,13 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Email sending working**
+* Email sending working for password reset request token.
+* Libraries added:
+[nodemailer](https://www.npmjs.com/package/nodemailer)
+[@nestjs-modules/mailer](https://www.npmjs.com/package/@nestjs-modules/mailer)
+[ejs](https://www.npmjs.com/package/ejs)
+
 **Tiny code fixes**
 * Tiny code fixes in many places.
 

@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+      body {
+        color: gray;
+        font-family: "Mongolian Baiti";
+      }
+      header{
+        text-align: center;
+      }
+      small, .footer{
+        display: block;
+        text-align: center;
+      }
+      footer span{
+      	font-size: 20px;
+      }
+      .strong {
+      	font-weight: bold;
+        text-decoration: underline;
+      }
+      .payload{
+      	background-color: aliceblue;
+        padding-left: 10px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+  	<header>
+    	<img src="https://nestjs.com/logo-small.ede75a6b.svg" with="50" height="50">
+      <h1><%= appName %></h1>
+    </header>
+    <main>
+      <h2>Hello <%= emailPayload.userName %></h2>
+    	<p>You asked for a password reset for your account in <%= appName %>. In order to do so, please make a <span class="strong">POST</span> request to this URL:</p>
+      <a id="url" class="url" href="http://localhost:4000/auth/resetpass?token=<%= emailPayload.jwt %>">http://localhost:4000/auth/resetpass?token=<%= emailPayload.jwt %></a>
+      <p>Your request's JSON body should look like this:</p>
+      <div class="payload">{"password": "your_new_strong_password"}</div>
+    </main>
+    <p>This link will expire in 2 hours. Don't share it with anyone.</p>
+      <div class="footer"><span>&#9731;</span> <%= year %> - <%= appName %></div>
+  </body>
+</html>

@@ -68,8 +68,10 @@ export class AuthController {
   @ApiUnprocessableEntityResponse({ description: 'Unprocessable Entity' })
   @HttpCode(HttpStatus.OK)
   async resetPasswordRequest(@Body() data: EmailDto) {
-    const jwt = await this.authService.createResetPassToken(data.email)
-    return { resetPassJwt: jwt }
+    const jwt = await this.authService.createResetPassToken(
+      data.email.toLowerCase().trim(),
+    )
+    return { done: `Soon you must receive an email with the jwt`, jwt }
   }
 
   // Endpoint for reseting password

@@ -19,6 +19,9 @@ import { UsersService } from '@features/users/users.service'
 import { CreateUserDto } from '@features/users/dto/create-user.dto'
 import { AuthDto } from './dto/auth.dto'
 
+// Mailer
+import { MailerService } from '@nestjs-modules/mailer'
+
 @Injectable()
 export class AuthService {
   // Constructor
@@ -26,6 +29,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private mailerService: MailerService,
   ) {}
 
   // Hashes the given string
@@ -137,22 +141,42 @@ export class AuthService {
     return tokens
   }
 
-  // Creates and returns a token for password reset
-  async createResetPassToken(email: string) {
-    // Checking if user exists
-    if (!(await this.usersService.findByEmail(email)))
-      throw new BadRequestException('User not found')
+  // Creates a token for password reset and sends it to the email address
+  async createResetPassToken(emailAddress: string) {
+    // Getting user and checking if exists
+    const user = await this.usersService.findByEmail(emailAddress)
+    if (!user) throw new BadRequestException('User not found')
 
-    // Returning password reset JWT
-    return await this.jwtService.signAsync(
+    // Creating password reset JWT
+    const jwt = await this.jwtService.signAsync(
       {
-        sub: email,
+        sub: emailAddress,
       },
       {
         secret: this.configService.get<string>('secrets.jwtResetPass'),
         expiresIn: '2h',
       },
     )
+
+    // Sendin an e-mail to the email address
+    await this.mailerService.sendMail({
+      to: emailAddress,
+      from: 'michel.bracam@example.com',
+      subject: "Reset your Nest.js project's password",
+      //text: `Please POST your new password to: http://localhost:4000/auth/resetpass?token=${jwt}`,
+      template: 'reset-pass-token',
+      context: {
+        appName: 'Nest.js project',
+        emailPayload: {
+          userName: user.name,
+          jwt,
+        },
+        year: new Date().getFullYear(),
+      },
+    })
+
+    // Returning the jwt
+    return jwt
   }
 
   // Resets the user's password
