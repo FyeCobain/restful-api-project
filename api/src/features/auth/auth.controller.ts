@@ -71,7 +71,10 @@ export class AuthController {
     const jwt = await this.authService.createResetPassToken(
       data.email.toLowerCase().trim(),
     )
-    return { done: `Soon you must receive an email with the jwt`, jwt }
+    return {
+      done: 'Soon you must receive an email with the password reset link',
+      reset_pass_jwt: jwt,
+    }
   }
 
   // Endpoint for reseting password

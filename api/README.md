@@ -32,6 +32,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Email sending improved**
+* Email errors catched.
+* Email template improved.
+
 **Email sending working**
 * Email sending working for password reset request token.
 * Libraries added:

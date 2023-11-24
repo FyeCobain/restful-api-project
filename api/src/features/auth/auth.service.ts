@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
   ForbiddenException,
   ConflictException,
+  InternalServerErrorException,
 } from '@nestjs/common'
 
 // JWT / Hashing imports
@@ -158,22 +159,29 @@ export class AuthService {
       },
     )
 
-    // Sendin an e-mail to the email address
-    await this.mailerService.sendMail({
-      to: emailAddress,
-      from: 'michel.bracam@example.com',
-      subject: "Reset your Nest.js project's password",
-      //text: `Please POST your new password to: http://localhost:4000/auth/resetpass?token=${jwt}`,
-      template: 'reset-pass-token',
-      context: {
-        appName: 'Nest.js project',
-        emailPayload: {
-          userName: user.name,
-          jwt,
+    // Sendin an e-mail to the user's email address
+    try {
+      await this.mailerService.sendMail({
+        to: emailAddress,
+        from: 'michel.bracam@example.com',
+        subject: "Reset your Nest.js project's password",
+        //text: `Please POST your new password to: http://localhost:4000/auth/resetpass?token=${jwt}`,
+        template: 'reset-pass-token',
+        context: {
+          appName: 'Nest.js project',
+          emailPayload: {
+            userName: user.name,
+            jwt,
+          },
+          year: new Date().getFullYear(),
         },
-        year: new Date().getFullYear(),
-      },
-    })
+      })
+    } catch (error) {
+      throw new InternalServerErrorException({
+        error: 'We were unable to send the email with the password reset link',
+        reset_pass_jwt: jwt,
+      })
+    }
 
     // Returning the jwt
     return jwt

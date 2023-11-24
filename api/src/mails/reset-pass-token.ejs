@@ -9,22 +9,22 @@
       header{
         text-align: center;
       }
-      small, .footer{
-        display: block;
-        text-align: center;
-      }
-      footer span{
-      	font-size: 20px;
-      }
       .strong {
       	font-weight: bold;
         text-decoration: underline;
       }
+      .payload, .footer{
+        margin: 0 auto;
+        text-align: center
+      }
       .payload{
       	background-color: aliceblue;
-        padding-left: 10px;
-        padding-top: 20px;
-        padding-bottom: 20px;
+      	margin-top: 5px;
+      	padding: 20px 5px;
+      	width: fit-content;
+      }
+      .footer span{
+      	font-size: 20px;
       }
     </style>
   </head>
@@ -37,7 +37,6 @@
       <h2>Hello <%= emailPayload.userName %></h2>
     	<p>You asked for a password reset for your account in <%= appName %>. In order to do so, please make a <span class="strong">POST</span> request to this URL:</p>
       <a id="url" class="url" href="http://localhost:4000/auth/resetpass?token=<%= emailPayload.jwt %>">http://localhost:4000/auth/resetpass?token=<%= emailPayload.jwt %></a>
-      <p>Your request's JSON body should look like this:</p>
       <div class="payload">{"password": "your_new_strong_password"}</div>
     </main>
     <p>This link will expire in 2 hours. Don't share it with anyone.</p>
