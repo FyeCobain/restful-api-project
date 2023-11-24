@@ -32,6 +32,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Email template improved**
+* Email template improved.
+
 **Email sending improved**
 * Email errors catched.
 * Email template improved.

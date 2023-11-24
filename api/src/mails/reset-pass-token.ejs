@@ -13,7 +13,7 @@
       	font-weight: bold;
         text-decoration: underline;
       }
-      .payload, .footer{
+      .payload, .footer-text{
         margin: 0 auto;
         text-align: center
       }
@@ -23,23 +23,25 @@
       	padding: 20px 5px;
       	width: fit-content;
       }
-      .footer span{
+      .footer-text span{
       	font-size: 20px;
       }
     </style>
   </head>
   <body>
-  	<header>
-    	<img src="https://nestjs.com/logo-small.ede75a6b.svg" with="50" height="50">
+    <header>
+      <img src="https://nestjs.com/logo-small.ede75a6b.svg" with="50" height="50">
       <h1><%= appName %></h1>
     </header>
     <main>
       <h2>Hello <%= emailPayload.userName %></h2>
-    	<p>You asked for a password reset for your account in <%= appName %>. In order to do so, please make a <span class="strong">POST</span> request to this URL:</p>
+      <p>You asked for a password reset for your account in <%= appName %>. In order to do so, please make a <span class="strong">POST</span> request to this URL:</p>
       <a id="url" class="url" href="http://localhost:4000/auth/resetpass?token=<%= emailPayload.jwt %>">http://localhost:4000/auth/resetpass?token=<%= emailPayload.jwt %></a>
       <div class="payload">{"password": "your_new_strong_password"}</div>
+      <p>This link will expire in 2 hours. Don't share it with anyone.</p>
     </main>
-    <p>This link will expire in 2 hours. Don't share it with anyone.</p>
-      <div class="footer"><span>&#9731;</span> <%= year %> - <%= appName %></div>
+    <footer>
+      <div class="footer-text"><span>&#9731;</span> <%= year %> - <%= appName %></div>
+    </footer>
   </body>
 </html>
