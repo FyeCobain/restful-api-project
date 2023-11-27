@@ -1,6 +1,9 @@
 // Core / common imports
 import { BadRequestException, Injectable } from '@nestjs/common'
 
+// Interface importing
+import { UsersServiceInterface } from './interfaces/users.service.interface'
+
 // Mongo imports
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
@@ -16,7 +19,7 @@ import { getBlankFieldsErrorMessages } from '@app/helpers/dto'
 
 // Users service class
 @Injectable()
-export class UsersService {
+export class UsersService implements UsersServiceInterface {
   // Constructor
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
@@ -30,22 +33,25 @@ export class UsersService {
   }
 
   // Returns all users
-  async findAll() {
+  async findAll(): Promise<UserDocument[]> {
     return await this.userModel.find({}, { __v: 0 }).exec()
   }
 
   // Gets and returns a user by its email
   async findByEmail(email: string): Promise<UserDocument> {
-    return await this.userModel.findOne({ email: email }).exec()
+    return await this.userModel.findOne({ email }).exec()
   }
 
   // Gets and returns a user
-  async findOne(id: string) {
+  async findOne(id: string): Promise<UserDocument> {
     return await this.userModel.findById(id, { __v: 0 }).exec()
   }
 
   // Updates and returns a user
-  async update(id: string, updatedUserData: UpdateUserDto) {
+  async update(
+    id: string,
+    updatedUserData: UpdateUserDto,
+  ): Promise<UserDocument> {
     // Checking if blank values where received
     const blankFieldsErrorMessages: string[] =
       getBlankFieldsErrorMessages(updatedUserData)

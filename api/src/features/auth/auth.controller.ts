@@ -5,6 +5,7 @@ import {
   Body,
   Get,
   Post,
+  Patch,
   Req,
   HttpCode,
   HttpStatus,
@@ -78,7 +79,7 @@ export class AuthController {
   }
 
   // Endpoint for reseting password
-  @Post('resetpass')
+  @Patch('resetpass')
   @ApiOkResponse({ description: 'OK' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })

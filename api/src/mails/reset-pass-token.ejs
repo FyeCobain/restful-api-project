@@ -35,7 +35,7 @@
     </header>
     <main>
       <h2>Hello <%= emailPayload.userName %></h2>
-      <p>You asked for a password reset for your account in <%= appName %>. In order to do so, please make a <span class="strong">POST</span> request to this URL:</p>
+      <p>You asked for a password reset for your account in <%= appName %>. In order to do so, please make a <span class="strong">PATCH</span> request to this URL:</p>
       <a id="url" class="url" href="http://localhost:4000/auth/resetpass?token=<%= emailPayload.jwt %>">http://localhost:4000/auth/resetpass?token=<%= emailPayload.jwt %></a>
       <div class="payload">{"password": "your_new_strong_password"}</div>
       <p>This link will expire in 2 hours. Don't share it with anyone.</p>

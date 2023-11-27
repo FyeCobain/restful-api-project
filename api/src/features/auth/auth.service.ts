@@ -8,6 +8,9 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common'
 
+// Interface imports
+import { AuthServiceInterface } from './interfaces/auth.service.interface'
+
 // JWT / Hashing imports
 import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
@@ -22,9 +25,10 @@ import { AuthDto } from './dto/auth.dto'
 
 // Mailer
 import { MailerService } from '@nestjs-modules/mailer'
+import { JwtsObject } from './types/jwts.object.type'
 
 @Injectable()
-export class AuthService {
+export class AuthService implements AuthServiceInterface {
   // Constructor
   constructor(
     private usersService: UsersService,
@@ -38,8 +42,8 @@ export class AuthService {
     return await argon2.hash(data)
   }
 
-  // Signing up a new user
-  async signUp(createUserDto: CreateUserDto): Promise<any> {
+  // Signs up a new user
+  async signUp(createUserDto: CreateUserDto): Promise<JwtsObject> {
     // Checking if user already exists
     if (await this.usersService.findByEmail(createUserDto.email))
       throw new ConflictException('User already exists!')
@@ -62,7 +66,7 @@ export class AuthService {
   }
 
   // Authenticates a user
-  async signIn(authDto: AuthDto) {
+  async signIn(authDto: AuthDto): Promise<JwtsObject> {
     // Checking if user exists and if the password is correct
     const user = await this.usersService.findByEmail(authDto.email)
     if (!user) throw new BadRequestException('User does not exist')
@@ -84,7 +88,11 @@ export class AuthService {
   }
 
   // Creates an returns the user's tokens
-  async getTokens(userId: string, email: string, accountType: string) {
+  async getTokens(
+    userId: string,
+    email: string,
+    accountType: string,
+  ): Promise<JwtsObject> {
     // Generating tokens
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
@@ -143,7 +151,7 @@ export class AuthService {
   }
 
   // Creates a token for password reset and sends it to the email address
-  async createResetPassToken(emailAddress: string) {
+  async createResetPassToken(emailAddress: string): Promise<string> {
     // Getting user and checking if exists
     const user = await this.usersService.findByEmail(emailAddress)
     if (!user) throw new BadRequestException('User not found')
@@ -203,8 +211,8 @@ export class AuthService {
   async getTokenPayload(
     jwt: string,
     ignoreExpiration = false,
-  ): Promise<any | boolean> {
-    let payload: any | boolean
+  ): Promise<boolean | any> {
+    let payload: boolean | any
     try {
       payload = await this.jwtService.verifyAsync(jwt, {
         secret: this.configService.get<string>('secrets.jwtResetPass'),

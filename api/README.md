@@ -32,6 +32,11 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Services interfaces added**
+* Added interfaces for each service.
+* Interfaces code refactorized.
+* Added types for JWTs object.
+
 **Email template improved**
 * Email template improved.
 
