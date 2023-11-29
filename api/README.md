@@ -30,6 +30,9 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+**Entity abstract repository added**
+* No new libraries added.
+
 ## Commits (newest to oldest)
 
 **Services interfaces added**
