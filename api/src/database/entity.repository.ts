@@ -34,7 +34,9 @@ export abstract class EntityRepository<T extends Document> {
   // create method
   async create(createEntityDto: unknown): Promise<T> {
     const newEntity: T = new this.entityModel(createEntityDto)
-    return newEntity.save()
+    const createdEntity: T = await newEntity.save()
+    if (createdEntity) createdEntity.__v = undefined
+    return createdEntity
   }
 
   // findOneAndUpdate method
@@ -42,11 +44,13 @@ export abstract class EntityRepository<T extends Document> {
     entityFilterQuery: FilterQuery<T>,
     updateEntityDto: UpdateQuery<T>,
   ): Promise<T | null> {
-    return this.entityModel.findOneAndUpdate(
+    const foundEntity: T | null = await this.entityModel.findOneAndUpdate(
       entityFilterQuery,
       updateEntityDto,
       { new: true },
     )
+    if (foundEntity) foundEntity.__v = undefined
+    return foundEntity
   }
 
   // deleteOne method

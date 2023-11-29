@@ -30,6 +30,9 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+**Users service updated added**
+* Users service now works with the abstract entity repository.
+
 **Entity abstract repository added**
 * No new libraries added.
 
