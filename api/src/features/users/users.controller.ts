@@ -13,7 +13,6 @@ import {
   NotFoundException,
   UseFilters,
   UseGuards,
-  Req,
 } from '@nestjs/common'
 
 // Swagger imports
@@ -31,7 +30,7 @@ import {
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
 
-// Users impórts
+// Users imports
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
@@ -40,6 +39,9 @@ import { UpdateUserDto } from './dto/update-user.dto'
 import { MongoExceptionFilter } from '@app/libs/filters'
 import { AccessTokenGuard, SubExistsGuard } from '@features/auth/guards'
 import { IdValidGuard } from './guards'
+
+// Types imports
+import { DeleteResult } from '@app/database/types'
 
 @ApiTags('users')
 @Controller('users')
@@ -100,8 +102,8 @@ export class UsersController {
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Req() req, @Param('id') id: string) {
-    const deleteResult: any = await this.usersService.remove(id)
+  async remove(@Param('id') id: string) {
+    const deleteResult: DeleteResult = await this.usersService.remove(id)
     if (deleteResult.deletedCount === 0)
       throw new BadRequestException('Wrong user id')
   }

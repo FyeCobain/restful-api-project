@@ -11,10 +11,11 @@ import { UsersRepository } from './users.repository'
 // Hashing imports
 import * as argon2 from 'argon2'
 
-// DTO imports
+// DTO / types imports
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { getBlankFieldsErrorMessages } from '@app/helpers/dto'
+import { DeleteResult } from '@app/database/types'
 
 // Users service class
 @Injectable()
@@ -69,7 +70,7 @@ export class UsersService implements UsersServiceInterface {
   }
 
   // Deletes an user
-  async remove(id: string): Promise<boolean> {
+  async remove(id: string): Promise<DeleteResult> {
     return await this.userRepository.deleteOne({ _id: id })
   }
 }

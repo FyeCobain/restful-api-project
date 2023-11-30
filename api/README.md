@@ -30,13 +30,18 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+## Commits (newest to oldest)
+
+**Users controller tests implemented**
+* DeleteResult type added.
+* User data and service mocked up.
+* Users.controller.spec.ts implemented.
+
 **Users service updated added**
 * Users service now works with the abstract entity repository.
 
 **Entity abstract repository added**
 * No new libraries added.
-
-## Commits (newest to oldest)
 
 **Services interfaces added**
 * Added interfaces for each service.

@@ -1,9 +1,10 @@
 // importing schema
 import { UserDocument } from '../schemas/user.schema'
 
-// Importing DTOs
+// Importing DTOs / types
 import { CreateUserDto } from '../dto/create-user.dto'
 import { UpdateUserDto } from '../dto/update-user.dto'
+import { DeleteResult } from '@app/database/types'
 
 // Interface for the users service methods
 export interface UsersServiceInterface {
@@ -26,5 +27,5 @@ export interface UsersServiceInterface {
   ): Promise<UserDocument | null>
 
   // Deletes a user
-  remove(id: string): Promise<boolean>
+  remove(id: string): Promise<DeleteResult>
 }

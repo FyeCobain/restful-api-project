@@ -1,4 +1,5 @@
 import { Document, FilterQuery, Model, UpdateQuery } from 'mongoose'
+import { DeleteResult } from './types'
 
 // Anstract repository class
 export abstract class EntityRepository<T extends Document> {
@@ -54,8 +55,7 @@ export abstract class EntityRepository<T extends Document> {
   }
 
   // deleteOne method
-  async deleteOne(entityFilterQuery: FilterQuery<T>): Promise<boolean> {
-    const deleteResult = await this.entityModel.deleteOne(entityFilterQuery)
-    return deleteResult.deletedCount >= 1
+  async deleteOne(entityFilterQuery: FilterQuery<T>): Promise<DeleteResult> {
+    return await this.entityModel.deleteOne(entityFilterQuery)
   }
 }
