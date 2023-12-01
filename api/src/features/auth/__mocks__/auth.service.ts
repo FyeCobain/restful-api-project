@@ -4,7 +4,7 @@ import { UserDocument } from '@app/features/users/schemas/user.schema'
 import { UsersService } from '@app/features/users/__mocks__/users.service'
 import { CreateUserDto } from '@app/features/users/dto/create-user.dto'
 import { AuthDto } from '../dto/auth.dto'
-import { JwtsObject } from '../types/jwts.object.type'
+import { JwtsObjectPromise } from '../types'
 
 export class AuthService implements AuthServiceInterface {
   private usersService: UsersService = new UsersService()
@@ -13,7 +13,7 @@ export class AuthService implements AuthServiceInterface {
     throw new Error('Method not implemented.')
   }
 
-  async signUp(createUserDto: CreateUserDto): Promise<JwtsObject> {
+  async signUp(createUserDto: CreateUserDto): JwtsObjectPromise {
     const newUser: UserDocument = await this.usersService.create(createUserDto)
     return this.getTokens(
       newUser._id.toString(),
@@ -22,7 +22,7 @@ export class AuthService implements AuthServiceInterface {
     )
   }
 
-  async signIn(authDto: AuthDto): Promise<JwtsObject> {
+  async signIn(authDto: AuthDto): JwtsObjectPromise {
     const user = await this.usersService.findByEmail(authDto.email)
     return this.getTokens(user._id.toString(), user.email, user.accountType)
   }
@@ -35,7 +35,7 @@ export class AuthService implements AuthServiceInterface {
     userId: string,
     email: string,
     accountType: string,
-  ): Promise<JwtsObject> {
+  ): JwtsObjectPromise {
     return {
       accessToken:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTY4Y2M1ZGFkYTg2NzY4NGVlNmE1YjYiLCJlbWFpbCI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzAxNDU1OTY1LCJleHAiOjE3MDE0NTY4NjV9.hUsjYoPstuj2GNgJz0bk5gVpUB1sswDaleY1XebeFz0',
@@ -51,10 +51,7 @@ export class AuthService implements AuthServiceInterface {
     })
   }
 
-  async refreshTokens(
-    userId: string,
-    refreshToken: string,
-  ): Promise<JwtsObject> {
+  async refreshTokens(userId: string, refreshToken: string): JwtsObjectPromise {
     return {
       accessToken:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTY4Y2M1ZGFkYTg2NzY4NGVlNmE1YjYiLCJlbWFpbCI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzAxNDY2MDE0LCJleHAiOjE3MDE0NjY5MTR9.kpcZeK0DfAKcVt_PuZGbkbpmWskL8x-msSU5hYNuVfU',

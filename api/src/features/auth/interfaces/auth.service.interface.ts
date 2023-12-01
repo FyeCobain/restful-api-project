@@ -1,14 +1,14 @@
-import { JwtsObject } from '../types/jwts.object.type'
 import { AuthDto } from '../dto/auth.dto'
 import { CreateUserDto } from '@app/features/users/dto/create-user.dto'
+import { JwtsObjectPromise } from '../types'
 
 // Interface for the AuthService
 export interface AuthServiceInterface {
   hashData(data: string): Promise<string>
 
-  signUp(createUserDto: CreateUserDto): Promise<JwtsObject>
+  signUp(createUserDto: CreateUserDto): JwtsObjectPromise
 
-  signIn(authDto: AuthDto): Promise<JwtsObject>
+  signIn(authDto: AuthDto): JwtsObjectPromise
 
   logOut(userId: string)
 
@@ -16,7 +16,7 @@ export interface AuthServiceInterface {
     userId: string,
     email: string,
     accountType: string,
-  ): Promise<JwtsObject>
+  ): JwtsObjectPromise
 
   updateRefreshToken(userId: string, refreshToken: string)
 

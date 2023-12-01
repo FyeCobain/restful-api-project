@@ -19,13 +19,13 @@ import * as argon2 from 'argon2'
 // Services imports
 import { UsersService } from '@features/users/users.service'
 
-// DTOs imports
+// Types / DTOs imports
+import { JwtsObjectPromise } from './types'
 import { CreateUserDto } from '@features/users/dto/create-user.dto'
 import { AuthDto } from './dto/auth.dto'
 
 // Mailer
 import { MailerService } from '@nestjs-modules/mailer'
-import { JwtsObject } from './types/jwts.object.type'
 
 @Injectable()
 export class AuthService implements AuthServiceInterface {
@@ -40,7 +40,7 @@ export class AuthService implements AuthServiceInterface {
     return await argon2.hash(data)
   }
 
-  async signUp(createUserDto: CreateUserDto): Promise<JwtsObject> {
+  async signUp(createUserDto: CreateUserDto): JwtsObjectPromise {
     if (await this.usersService.findByEmail(createUserDto.email))
       throw new ConflictException('User already exists!')
 
@@ -57,7 +57,7 @@ export class AuthService implements AuthServiceInterface {
     return tokens
   }
 
-  async signIn(authDto: AuthDto): Promise<JwtsObject> {
+  async signIn(authDto: AuthDto): JwtsObjectPromise {
     // Checking if user exists and if the password is correct
     const user = await this.usersService.findByEmail(authDto.email)
     if (!user) throw new BadRequestException('User does not exist')
@@ -80,7 +80,7 @@ export class AuthService implements AuthServiceInterface {
     userId: string,
     email: string,
     accountType: string,
-  ): Promise<JwtsObject> {
+  ): JwtsObjectPromise {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {

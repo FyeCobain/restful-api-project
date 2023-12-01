@@ -5,26 +5,27 @@ import { UsersServiceInterface } from '../interfaces/users.service.interface'
 import { UserDocument } from '../schemas/user.schema'
 import { usersStub } from './users.stub'
 import { Types } from 'mongoose'
+import { UserDocumentPromise, UserDocumentsArrayPromise } from '../types'
 
 // UsersService mock up
 export class UsersService implements UsersServiceInterface {
   private users: UserDocument[] = usersStub()
 
-  async findOne(id: string): Promise<UserDocument> {
+  async findOne(id: string): UserDocumentPromise {
     return await this.users.find((user) => user._id.toString() == id)
   }
 
-  async findAll(): Promise<UserDocument[]> {
+  async findAll(): UserDocumentsArrayPromise {
     return await this.users
   }
 
-  async findByEmail(emailAddress: string): Promise<UserDocument> {
+  async findByEmail(emailAddress: string): UserDocumentPromise {
     return await this.users.find(
       (user) => user.email.toLowerCase() === emailAddress.toLowerCase().trim(),
     )
   }
 
-  async create(newUserData: CreateUserDto): Promise<UserDocument> {
+  async create(newUserData: CreateUserDto): UserDocumentPromise {
     const newUser: UserDocument = {
       _id: new Types.ObjectId(),
       name: newUserData.name,
@@ -43,7 +44,7 @@ export class UsersService implements UsersServiceInterface {
   async update(
     id: string,
     updatedUserData: UpdateUserDto,
-  ): Promise<UserDocument> {
+  ): UserDocumentPromise {
     const userIndex: number = this.users.findIndex(
       (user) => user._id.toString() === id,
     )

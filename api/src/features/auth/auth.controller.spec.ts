@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
 import { CreateUserDto } from '../users/dto/create-user.dto'
-import { JwtsObject } from './types/jwts.object.type'
 import { AuthDto } from './dto/auth.dto'
 import { EmailDto } from './dto/email.dto'
+import { JwtsObject } from './types'
 
 jest.mock('./auth.service')
 

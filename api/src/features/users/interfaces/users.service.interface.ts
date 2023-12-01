@@ -1,22 +1,20 @@
-// importing schema
-import { UserDocument } from '../schemas/user.schema'
-
 // Importing DTOs / types
 import { CreateUserDto } from '../dto/create-user.dto'
 import { UpdateUserDto } from '../dto/update-user.dto'
-import { DeleteResult } from '@app/database/types'
+import { DeleteResultPromise } from '@app/database/types'
+import { UserDocumentsArrayPromise, UserDocumentPromise } from '../types'
 
 // Interface for the UsersService
 export interface UsersServiceInterface {
-  findOne(id: string): Promise<UserDocument>
+  findOne(id: string): UserDocumentPromise
 
-  findAll(): Promise<UserDocument[]>
+  findAll(): UserDocumentsArrayPromise
 
-  findByEmail(emailAddress: string): Promise<UserDocument>
+  findByEmail(emailAddress: string): UserDocumentPromise
 
-  create(newUserData: CreateUserDto): Promise<UserDocument>
+  create(newUserData: CreateUserDto): UserDocumentPromise
 
-  update(id: string, updatedUserData: UpdateUserDto): Promise<UserDocument>
+  update(id: string, updatedUserData: UpdateUserDto): UserDocumentPromise
 
-  remove(id: string): Promise<DeleteResult>
+  remove(id: string): DeleteResultPromise
 }

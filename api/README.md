@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Common return types encapsulated**
+* Common return types (mostly promises) encapsulated.
+
 **Comments refactorized**
 * Redundant comments were deleted, now the code is cleaner.
 
