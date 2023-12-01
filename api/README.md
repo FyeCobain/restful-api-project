@@ -32,6 +32,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Users service tests implemented**
+* Users.service.spec.ts implemented.
+
 **Users controller tests implemented**
 * DeleteResult type added.
 * User data and service mocked up.

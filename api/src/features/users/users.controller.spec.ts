@@ -105,7 +105,7 @@ describe('UsersController', () => {
   // remove / delete endpoint
   describe('remove()', () => {
     const userId: string = userStub()._id.toString()
-    let result: any
+    let result: void
 
     beforeEach(async () => {
       result = await controller.remove(userId)
