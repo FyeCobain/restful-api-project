@@ -9,7 +9,6 @@ export class RefreshTokenStrategy extends PassportStrategy(
   Strategy,
   'jwt-refresh',
 ) {
-  // Constructor
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -19,7 +18,6 @@ export class RefreshTokenStrategy extends PassportStrategy(
     })
   }
 
-  // Validate method
   async validate(req: Request, payload: any) {
     const refreshToken = req.get('Authorization').replace('Bearer', '').trim()
     return { ...payload, refreshToken }

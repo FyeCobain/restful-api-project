@@ -8,22 +8,16 @@ import {
   ExceptionFilter,
   UnprocessableEntityException,
 } from '@nestjs/common'
-// Local imports
 import { capitalize } from '@helpers/strings'
 
 // Exception filter for mongo & mongoose exceptions
 @Catch(MongoError, MongooseError)
 export class MongoExceptionFilter implements ExceptionFilter {
-  // Overriding the 'catch' method
   catch(catchedException: any, host: ArgumentsHost) {
-    // The request variable that will be instantiated to an exception
-    let exceptionToReturn: UnprocessableEntityException | ConflictException
-    // The response for returning the new staus
+    let exceptionToReturn: UnprocessableEntityException | ConflictException // Request variable that will be instantiated to an exception
     const response = host.switchToHttp().getResponse()
-    //Verifying type of exception
     switch (catchedException.code) {
-      case 11000: // Unique property already in use = Conflict [409]...
-        // Returning the 409 status...
+      case 11000: // Unique property already in use = Conflict [409]
         exceptionToReturn = new ConflictException()
         return response.status(exceptionToReturn.getStatus()).json({
           statusCode: exceptionToReturn.getStatus(),
@@ -35,20 +29,16 @@ export class MongoExceptionFilter implements ExceptionFilter {
           ],
         })
 
-      default: // Validation error = Unprocessable Entity [422]...
+      default: // Validation error = Unprocessable Entity [422]
         exceptionToReturn = new UnprocessableEntityException()
-        // Copying the exception cached in a variable of type any, to avoid TS complaints...
-        const exception: any = catchedException
-        // If the exception comes from Mongoose...
+        const exception: any = catchedException // To avoid TS complaints...
         if (catchedException instanceof MongooseError) {
           return response.status(exceptionToReturn.getStatus()).json({
             message: this.getMongooseValidationErrorMessages(catchedException),
             error: exceptionToReturn.message,
             statusCode: exceptionToReturn.getStatus(),
           })
-        }
-        // Returning a generic Unprocessable Entity exception...
-        else {
+        } else {
           return response.status(exceptionToReturn.getStatus()).json({
             message: exception.errors.name,
             statusCode: exceptionToReturn.getStatus(),

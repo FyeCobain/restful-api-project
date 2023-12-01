@@ -7,7 +7,6 @@ import { ApiExcludeController } from '@nestjs/swagger'
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  // A simple Hello World
   @Get()
   getHello(): string {
     return this.appService.getHello()

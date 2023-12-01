@@ -3,10 +3,8 @@ import { DeleteResult } from './types'
 
 // Anstract repository class
 export abstract class EntityRepository<T extends Document> {
-  // Constructor
   constructor(protected readonly entityModel: Model<T>) {}
 
-  // findOne method
   async findOne(
     entityFilterQuery: FilterQuery<T>,
     projection?: Record<string, unknown>,
@@ -19,7 +17,6 @@ export abstract class EntityRepository<T extends Document> {
       .exec()
   }
 
-  // find method
   async find(
     entityFilterQuery: FilterQuery<T>,
     projection?: Record<string, unknown>,
@@ -32,7 +29,6 @@ export abstract class EntityRepository<T extends Document> {
       .exec()
   }
 
-  // create method
   async create(createEntityDto: unknown): Promise<T> {
     const newEntity: T = new this.entityModel(createEntityDto)
     const createdEntity: T = await newEntity.save()
@@ -40,7 +36,6 @@ export abstract class EntityRepository<T extends Document> {
     return createdEntity
   }
 
-  // findOneAndUpdate method
   async findOneAndUpdate(
     entityFilterQuery: FilterQuery<T>,
     updateEntityDto: UpdateQuery<T>,
@@ -54,7 +49,6 @@ export abstract class EntityRepository<T extends Document> {
     return foundEntity
   }
 
-  // deleteOne method
   async deleteOne(entityFilterQuery: FilterQuery<T>): Promise<DeleteResult> {
     return await this.entityModel.deleteOne(entityFilterQuery)
   }

@@ -17,29 +17,22 @@ import { UpdateUserDto } from './dto/update-user.dto'
 import { getBlankFieldsErrorMessages } from '@app/helpers/dto'
 import { DeleteResult } from '@app/database/types'
 
-// Users service class
 @Injectable()
 export class UsersService implements UsersServiceInterface {
-  // Constructor
-  //constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
   constructor(private readonly userRepository: UsersRepository) {}
 
-  // Gets and returns a user
   async findOne(id: string): Promise<UserDocument | null> {
     return await this.userRepository.findOne({ _id: id })
   }
 
-  // Returns all users
   async findAll(): Promise<UserDocument[] | null> {
     return await this.userRepository.find({})
   }
 
-  // Gets and returns a user by its email
   async findByEmail(email: string): Promise<UserDocument | null> {
     return await this.userRepository.findOne({ email })
   }
 
-  // Creates and returns a new user
   async create(newUserData: CreateUserDto): Promise<UserDocument> {
     return await this.userRepository.create({
       ...newUserData,
@@ -47,7 +40,6 @@ export class UsersService implements UsersServiceInterface {
     })
   }
 
-  // Updates and returns a user
   async update(
     id: string,
     updatedUserData: UpdateUserDto,
@@ -58,18 +50,15 @@ export class UsersService implements UsersServiceInterface {
     if (blankFieldsErrorMessages.length > 0)
       throw new BadRequestException(blankFieldsErrorMessages)
 
-    // Hashing new password
     if ('password' in updatedUserData && updatedUserData.password.trim() !== '')
       updatedUserData.password = await argon2.hash(updatedUserData.password)
 
-    // Updating and returning the user (already updated)
     return await this.userRepository.findOneAndUpdate(
       { _id: id },
       updatedUserData,
     )
   }
 
-  // Deletes an user
   async remove(id: string): Promise<DeleteResult> {
     return await this.userRepository.deleteOne({ _id: id })
   }

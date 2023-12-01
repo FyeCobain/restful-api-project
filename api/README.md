@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Comments refactorized**
+* Redundant comments were deleted, now the code is cleaner.
+
 **Auth tests implemented**
 * Auth.controller.spec.ts implemented.
 * Auth data and service mocked up.

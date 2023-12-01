@@ -10,7 +10,6 @@ import { Observable } from 'rxjs'
 // Guard to check if the given user id has a valid mongoose id format
 @Injectable()
 export class IdValidGuard implements CanActivate {
-  //canActivate implementation
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {

@@ -26,10 +26,9 @@ export const usersStub = (): UserDocument[] => {
       refreshToken: null,
     },
     {
-      _id: null, // <-- Dummy object to implicity convert all the id's to type mongoose.Types.ObjectId
+      _id: null, // <-- To implicity convert all the id's to type mongoose.Types.ObjectId, will be removed
     },
   ] as UserDocument[]
-  // Removing dummy object before returning users
   users.pop()
   return users
 }

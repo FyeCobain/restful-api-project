@@ -7,7 +7,7 @@ jest.mock('./users.service')
 
 describe('UsersService', () => {
   let service: UsersService
-  const janeDoeId = '656963130aafdd90a149b079' // Jane Doe (index 1)
+  const janeDoeId = '656963130aafdd90a149b079' // <- Jane Doe (index 1)
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,7 +23,7 @@ describe('UsersService', () => {
     let result: DeleteResult
 
     beforeEach(async () => {
-      result = await service.remove(janeDoeId) // Removing Jane Doe
+      result = await service.remove(janeDoeId) // <- Removing Jane Doe
     })
 
     it('should return the delete result with deletedCount = 1', () => {
@@ -36,7 +36,7 @@ describe('UsersService', () => {
     let user: UserDocument
 
     beforeEach(async () => {
-      user = await service.findOne(janeDoeId) // Jane Doe already removed
+      user = await service.findOne(janeDoeId) // <- Jane Doe already removed!
     })
 
     it('should NOT return the previously deleted user', () => {

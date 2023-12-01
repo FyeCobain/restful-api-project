@@ -39,6 +39,7 @@ const SessionModuleBase = createModule(() => {
 
 @Module({
   imports: [
+    // environment variables
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
@@ -56,9 +57,11 @@ const SessionModuleBase = createModule(() => {
         SMTP_PASS: Joi.string().required(),
       }),
     }),
+
     // csrf protection
     SessionModuleBase.forRoot({}),
     CsrfModule,
+
     // Rate limit protection
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
@@ -70,6 +73,7 @@ const SessionModuleBase = createModule(() => {
         },
       ],
     }),
+
     // Mongo DB connenction
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -78,6 +82,7 @@ const SessionModuleBase = createModule(() => {
         uri: configService.get<string>('database.mongoDBConnectionString'),
       }),
     }),
+
     // Mailer Module
     MailerModule.forRoot({
       transport: {
@@ -92,6 +97,7 @@ const SessionModuleBase = createModule(() => {
         adapter: new EjsAdapter(),
       },
     }),
+
     // Features modules
     UsersModule,
     AuthModule,

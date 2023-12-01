@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { AuthServiceInterface } from '../interfaces/auth.service.interface'
+import { UserDocument } from '@app/features/users/schemas/user.schema'
+import { UsersService } from '@app/features/users/__mocks__/users.service'
 import { CreateUserDto } from '@app/features/users/dto/create-user.dto'
 import { AuthDto } from '../dto/auth.dto'
-import { AuthServiceInterface } from '../interfaces/auth.service.interface'
 import { JwtsObject } from '../types/jwts.object.type'
-import { UsersService } from '@app/features/users/__mocks__/users.service'
-import { UserDocument } from '@app/features/users/schemas/user.schema'
 
 export class AuthService implements AuthServiceInterface {
   private usersService: UsersService = new UsersService()

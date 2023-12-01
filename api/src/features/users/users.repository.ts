@@ -9,7 +9,6 @@ import { Model } from 'mongoose'
 
 @Injectable()
 export class UsersRepository extends EntityRepository<UserDocument> {
-  // Constructor
   constructor(@InjectModel(User.name) userModel: Model<UserDocument>) {
     super(userModel)
   }

@@ -40,7 +40,6 @@ import { PasswordDto } from './dto/pass.dto'
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  // Constructor
   constructor(private readonly authService: AuthService) {}
 
   // Creates a new user and returns the tokens
