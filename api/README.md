@@ -23,6 +23,9 @@ $ yarn run start:prod
 # unit tests
 $ yarn run test
 
+# test verbose
+$ yarn run test:ver
+
 # e2e tests
 $ yarn run test:e2e
 
@@ -31,6 +34,10 @@ $ yarn run test:cov
 ```
 
 ## Commits (newest to oldest)
+
+**Auth tests implemented**
+* Auth.controller.spec.ts implemented.
+* Auth data and service mocked up.
 
 **Users feature tests improved**
 * UsersService mock up properly implemented.

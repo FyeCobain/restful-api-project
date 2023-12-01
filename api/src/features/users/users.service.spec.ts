@@ -19,7 +19,7 @@ describe('UsersService', () => {
   })
 
   // remove / delete method
-  describe('remove()', () => {
+  describe('remove', () => {
     let result: DeleteResult
 
     beforeEach(async () => {
@@ -32,7 +32,7 @@ describe('UsersService', () => {
   })
 
   // findOne method
-  describe('findOne()', () => {
+  describe('findOne', () => {
     let user: UserDocument
 
     beforeEach(async () => {
@@ -45,7 +45,7 @@ describe('UsersService', () => {
   })
 
   // findByEmail method
-  describe('findByEmail()', () => {
+  describe('findByEmail', () => {
     let user: UserDocument
     const email = 'john.doe@example.com'
 

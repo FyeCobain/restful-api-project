@@ -85,7 +85,7 @@ export class AuthController {
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiUnprocessableEntityResponse({ description: 'Unprocessable Entity' })
   @HttpCode(HttpStatus.OK)
-  async resetpassword(
+  async resetPassword(
     @Query('token') token: string,
     @Body() data: PasswordDto,
   ) {

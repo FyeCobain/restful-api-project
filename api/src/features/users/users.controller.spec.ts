@@ -27,7 +27,7 @@ describe('UsersController', () => {
   })
 
   // create endpoint
-  describe('create()', () => {
+  describe('create', () => {
     let user: UserDocument
     const createUserDto: CreateUserDto = {
       name: 'Mike',
@@ -52,7 +52,7 @@ describe('UsersController', () => {
   })
 
   // findAll endpoint
-  describe('findAll()', () => {
+  describe('findAll', () => {
     let users: UserDocument[]
 
     beforeEach(async () => {
@@ -70,7 +70,7 @@ describe('UsersController', () => {
   })
 
   // findOne endpoint
-  describe('findOne()', () => {
+  describe('findOne', () => {
     let user: UserDocument
 
     beforeEach(async () => {
@@ -88,7 +88,7 @@ describe('UsersController', () => {
   })
 
   // update endpoint
-  describe('update()', () => {
+  describe('update', () => {
     let user: UserDocument
     const updateUserDto: UpdateUserDto = {
       name: 'Johnny',
@@ -111,7 +111,7 @@ describe('UsersController', () => {
   })
 
   // remove / delete endpoint
-  describe('remove()', () => {
+  describe('remove', () => {
     let result: void
 
     beforeEach(async () => {
