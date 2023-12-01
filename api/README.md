@@ -32,6 +32,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Users feature tests improved**
+* UsersService mock up properly implemented.
+* Single user stub changed to a list of users.
+
 **Users service tests implemented**
 * Users.service.spec.ts implemented.
 

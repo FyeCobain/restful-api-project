@@ -1,16 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { UsersController } from './users.controller'
+import { Types } from 'mongoose'
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UserDocument } from './schemas/user.schema'
-import { userStub } from './__mocks__/user.stub'
+import { usersStub } from './__mocks__/users.stub'
 
 jest.mock('./users.service')
 
 describe('UsersController', () => {
   let controller: UsersController
   let service: UsersService
+  const johnDoeId = '6568cc5dada867684ee6a5b6' // John Doe, index 0
+  const janeDoeId = '656963130aafdd90a149b079' // Jane Doe, index 1
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -27,13 +30,14 @@ describe('UsersController', () => {
   describe('create()', () => {
     let user: UserDocument
     const createUserDto: CreateUserDto = {
-      name: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
+      name: 'Mike',
+      lastName: 'Smith',
+      email: 'mike.smith@example.com',
       password: 'Sp1derm@n',
     }
 
     beforeEach(async () => {
+      jest.spyOn(service, 'create')
       user = await controller.create(createUserDto)
     })
 
@@ -42,7 +46,8 @@ describe('UsersController', () => {
     })
 
     it('should return the created user', () => {
-      expect(user).toEqual(userStub())
+      expect(user._id).toBeInstanceOf(Types.ObjectId)
+      expect(user.email).toBe(createUserDto.email)
     })
   })
 
@@ -51,6 +56,7 @@ describe('UsersController', () => {
     let users: UserDocument[]
 
     beforeEach(async () => {
+      jest.spyOn(service, 'findAll')
       users = await controller.findAll()
     })
 
@@ -59,64 +65,66 @@ describe('UsersController', () => {
     })
 
     it('should return an array of users', () => {
-      expect(users).toEqual([userStub()])
+      expect(users).toEqual(usersStub())
     })
   })
 
   // findOne endpoint
   describe('findOne()', () => {
-    const userId: string = userStub()._id.toString()
     let user: UserDocument
 
     beforeEach(async () => {
-      user = await controller.findOne(userId)
+      jest.spyOn(service, 'findOne')
+      user = await controller.findOne(janeDoeId) // Searching Jane Doe
     })
 
     it("should call usersService.findOne() passing it the user's id", () => {
-      expect(service.findOne).toHaveBeenCalledWith(userId)
+      expect(service.findOne).toHaveBeenCalledWith(janeDoeId)
     })
 
     it('should return the found user', () => {
-      expect(user).toEqual(userStub())
+      expect(user).toEqual(usersStub()[1])
     })
   })
 
   // update endpoint
   describe('update()', () => {
-    const userId: string = userStub()._id.toString()
     let user: UserDocument
     const updateUserDto: UpdateUserDto = {
       name: 'Johnny',
+      lastName: 'Doek',
     }
 
     beforeEach(async () => {
-      user = await controller.update(userId, updateUserDto)
+      jest.spyOn(service, 'update')
+      user = await controller.update(johnDoeId, updateUserDto) // Updating John Doe
     })
 
     it("should call usersService.update() passing it the users'id and update DTO", () => {
-      expect(service.update).toHaveBeenCalledWith(userId, updateUserDto)
+      expect(service.update).toHaveBeenCalledWith(johnDoeId, updateUserDto)
     })
 
     it('should return the alaready updated user', () => {
-      expect(user).toEqual(userStub())
+      expect(user.name).toBe(updateUserDto.name)
+      expect(user.lastName).toBe(updateUserDto.lastName)
     })
   })
 
   // remove / delete endpoint
   describe('remove()', () => {
-    const userId: string = userStub()._id.toString()
     let result: void
 
     beforeEach(async () => {
-      result = await controller.remove(userId)
+      jest.spyOn(service, 'remove')
+      result = await controller.remove(johnDoeId) // Removing John Doe
     })
 
     it("should call usersService.remove() passing it the user's id", () => {
-      expect(service.remove).toHaveBeenCalledWith(userId)
+      expect(service.remove).toHaveBeenCalledWith(johnDoeId)
     })
 
     it('should return nothing', () => {
-      expect(result).toEqual(undefined)
+      expect(result).toBeUndefined()
     })
   })
 })
