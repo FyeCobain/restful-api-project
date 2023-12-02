@@ -25,6 +25,4 @@ export interface AuthServiceInterface {
   createResetPassToken(emailAddress: string): Promise<string>
 
   resetPassword(jwt: string, newPassword: string)
-
-  getTokenPayload(jwt: string, ignoreExpiration): Promise<boolean | any>
 }

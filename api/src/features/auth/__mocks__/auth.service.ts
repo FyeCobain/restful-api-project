@@ -67,8 +67,4 @@ export class AuthService implements AuthServiceInterface {
   resetPassword(jwt: string, newPassword: string) {
     throw new Error('Method not implemented.')
   }
-
-  getTokenPayload(jwt: string, ignoreExpiration: any): Promise<any> {
-    throw new Error('Method not implemented.')
-  }
 }

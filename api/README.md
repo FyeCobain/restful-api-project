@@ -35,6 +35,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**JwtManager class added**
+* Added class for manual jwt validation and payload recovery.
+* Jwt manual validation is no longer in AuthService.
+
 **Status codes improved**
 * Status codes are now more consistent.
 

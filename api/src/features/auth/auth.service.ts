@@ -13,6 +13,7 @@ import { AuthServiceInterface } from './interfaces/auth.service.interface'
 // JWT / Hashing imports
 import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
+import { JwtManager } from './classes/jwt'
 import * as argon2 from 'argon2'
 
 // Services imports
@@ -31,6 +32,7 @@ export class AuthService implements AuthServiceInterface {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private jwtManager: JwtManager,
     private configService: ConfigService,
     private mailerService: MailerService,
   ) {}
@@ -176,30 +178,17 @@ export class AuthService implements AuthServiceInterface {
   }
 
   async resetPassword(jwt: string, newPassword: string) {
-    // Getting payload while validating JWT' signature
-    const payload = await this.getTokenPayload(jwt)
-    if (!payload) throw new UnauthorizedException()
+    const payload = await this.jwtManager.getPayload(
+      jwt,
+      this.configService.get<string>('secrets.jwtResetPass'),
+    )
+    if (!payload) {
+      throw new UnauthorizedException()
+    }
 
     const user = await this.usersService.findByEmail(payload.sub)
     if (!user) throw new BadRequestException('User not found')
 
     await this.usersService.update(user.id, { password: newPassword })
-  }
-
-  // Validates the token and returns it's paylaod
-  async getTokenPayload(
-    jwt: string,
-    ignoreExpiration = false,
-  ): Promise<boolean | any> {
-    let payload: boolean | any
-    try {
-      payload = await this.jwtService.verifyAsync(jwt, {
-        secret: this.configService.get<string>('secrets.jwtResetPass'),
-        ignoreExpiration,
-      })
-    } catch (error) {
-      payload = false
-    }
-    return payload
   }
 }
