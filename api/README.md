@@ -35,6 +35,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Tickets DTOs improved**
+* Ticket create and update DTOs improved with @Transform.
+* Ticket schema no longer needs lowercase option.
+
 **Tickets Dto's improved**
 * Ticket create and update Dto improved.
 

@@ -6,7 +6,7 @@ import {
   IsEmail,
   IsDate,
 } from 'class-validator'
-import { Type } from 'class-transformer'
+import { Transform, Type } from 'class-transformer'
 
 // DTO for the new ticket cration
 export class CreateTicketDto {
@@ -15,14 +15,17 @@ export class CreateTicketDto {
     example: 'Complete the Nest.js project',
   })
   @IsNotEmpty()
+  @Transform(({ value }) => value.trim())
   @MinLength(5, { message: 'Title is too short' })
   title: string
 
   @ApiProperty({
     description: 'Must have at least 5 characters other than spaces',
-    example: 'Complete and push the Nest.js project with all the requirements',
+    example:
+      'Complete and push the Nest.js 🐱 project with all the requirements',
   })
   @IsNotEmpty()
+  @Transform(({ value }) => value.trim())
   @MinLength(5, { message: 'Description is too short' })
   description: string
 
@@ -31,6 +34,7 @@ export class CreateTicketDto {
     example: 'john.doe@example.com',
   })
   @IsNotEmpty()
+  @Transform(({ value }) => value.trim().toLowerCase())
   @IsEmail()
   assignee: string
 

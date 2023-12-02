@@ -8,20 +8,16 @@ export type TicketDocument = HydratedDocument<Ticket>
 export class Ticket {
   @Prop({
     required: true,
-    trim: true,
   })
   title: string
 
   @Prop({
     required: true,
-    trim: true,
   })
   description: string
 
   @Prop({
     required: true,
-    trim: true,
-    lowercase: true,
   })
   assignee: string
 
