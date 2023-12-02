@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Status codes improved**
+* Status codes are now more consistent.
+
 **Common return types encapsulated**
 * Common return types (mostly promises) encapsulated.
 

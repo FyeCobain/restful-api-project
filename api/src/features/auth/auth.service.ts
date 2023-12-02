@@ -4,7 +4,6 @@ import {
   BadRequestException,
   UnauthorizedException,
   ForbiddenException,
-  ConflictException,
   InternalServerErrorException,
 } from '@nestjs/common'
 
@@ -42,7 +41,7 @@ export class AuthService implements AuthServiceInterface {
 
   async signUp(createUserDto: CreateUserDto): JwtsObjectPromise {
     if (await this.usersService.findByEmail(createUserDto.email))
-      throw new ConflictException('User already exists!')
+      throw new BadRequestException('User already exists!')
 
     const createdUser = await this.usersService.create(createUserDto)
 
@@ -127,7 +126,7 @@ export class AuthService implements AuthServiceInterface {
       user.refreshToken,
       refreshToken,
     )
-    if (!refreshTokensMatches) throw new ForbiddenException()
+    if (!refreshTokensMatches) throw new ForbiddenException('Access Denied')
 
     const tokens = await this.getTokens(user.id, user.email, user.accountType)
     await this.updateRefreshToken(user.id, tokens.refreshToken)

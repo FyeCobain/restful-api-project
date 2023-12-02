@@ -4,8 +4,8 @@ import { MongooseError } from 'mongoose'
 import {
   ArgumentsHost,
   Catch,
-  ConflictException,
   ExceptionFilter,
+  BadRequestException,
   UnprocessableEntityException,
 } from '@nestjs/common'
 import { capitalize } from '@helpers/strings'
@@ -14,11 +14,11 @@ import { capitalize } from '@helpers/strings'
 @Catch(MongoError, MongooseError)
 export class MongoExceptionFilter implements ExceptionFilter {
   catch(catchedException: any, host: ArgumentsHost) {
-    let exceptionToReturn: UnprocessableEntityException | ConflictException // Request variable that will be instantiated to an exception
+    let exceptionToReturn: UnprocessableEntityException | BadRequestException // Request variable that will be instantiated to an exception
     const response = host.switchToHttp().getResponse()
     switch (catchedException.code) {
-      case 11000: // Unique property already in use = Conflict [409]
-        exceptionToReturn = new ConflictException()
+      case 11000: // Unique property already in use = Bad Request [400]
+        exceptionToReturn = new BadRequestException()
         return response.status(exceptionToReturn.getStatus()).json({
           statusCode: exceptionToReturn.getStatus(),
           error: exceptionToReturn.message,

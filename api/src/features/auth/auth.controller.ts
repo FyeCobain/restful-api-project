@@ -23,7 +23,6 @@ import {
   ApiBadRequestResponse,
   ApiUnauthorizedResponse,
   ApiForbiddenResponse,
-  ApiConflictResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
 
@@ -46,7 +45,7 @@ export class AuthController {
   @Post('signup')
   @UseFilters(MongoExceptionFilter)
   @ApiCreatedResponse({ description: 'Created' })
-  @ApiConflictResponse({ description: 'Conflict' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiUnprocessableEntityResponse({ description: 'Unprocessable Entity' })
   async signUp(@Body() createUserDto: CreateUserDto) {
     return await this.authService.signUp(createUserDto)

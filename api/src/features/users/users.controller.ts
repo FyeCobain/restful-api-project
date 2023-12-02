@@ -7,8 +7,6 @@ import {
   Delete,
   Param,
   Body,
-  HttpCode,
-  HttpStatus,
   BadRequestException,
   NotFoundException,
   UseFilters,
@@ -21,12 +19,10 @@ import {
   ApiBearerAuth,
   ApiOkResponse,
   ApiCreatedResponse,
-  ApiNoContentResponse,
   ApiBadRequestResponse,
   ApiUnauthorizedResponse,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
-  ApiConflictResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
 
@@ -52,7 +48,7 @@ export class UsersController {
   @Post()
   @UseFilters(MongoExceptionFilter)
   @ApiCreatedResponse({ description: 'Created' })
-  @ApiConflictResponse({ description: 'Conflict' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiUnprocessableEntityResponse({ description: 'Unprocessable Entity' })
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.usersService.create(createUserDto)
@@ -86,7 +82,6 @@ export class UsersController {
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
-  @ApiConflictResponse({ description: 'Conflict' })
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const updatedUser = await this.usersService.update(id, updateUserDto)
     if (!updatedUser) throw new BadRequestException('Wrong user id')
@@ -97,11 +92,10 @@ export class UsersController {
   @Delete(':id')
   @ApiBearerAuth()
   @UseGuards(IdValidGuard, AccessTokenGuard, SubExistsGuard)
-  @ApiNoContentResponse({ description: 'No Content' })
+  @ApiOkResponse({ description: 'OK' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
-  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string) {
     const deleteResult: DeleteResult = await this.usersService.remove(id)
     if (deleteResult.deletedCount === 0)
