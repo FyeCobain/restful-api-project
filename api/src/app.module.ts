@@ -16,10 +16,6 @@ import { createModule } from 'create-nestjs-middleware-module'
 import { CsrfModule } from '@tekuconcept/nestjs-csrf'
 import * as session from 'express-session'
 
-// Import feature modules
-import { UsersModule } from '@features/users/users.module'
-import { AuthModule } from '@features/auth/auth.module'
-
 // Validation with joi
 import * as Joi from 'joi'
 
@@ -27,6 +23,11 @@ import * as Joi from 'joi'
 import { MailerModule } from '@nestjs-modules/mailer'
 import { join } from 'path'
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter'
+
+// Import feature modules
+import { UsersModule } from '@features/users/users.module'
+import { AuthModule } from '@features/auth/auth.module'
+import { TicketsModule } from './features/tickets/tickets.module'
 
 // Sessiion module for the csrf protection
 const SessionModuleBase = createModule(() => {
@@ -98,9 +99,10 @@ const SessionModuleBase = createModule(() => {
       },
     }),
 
-    // Features modules
+    // Feature modules
     UsersModule,
     AuthModule,
+    TicketsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -182,9 +182,7 @@ export class AuthService implements AuthServiceInterface {
       jwt,
       this.configService.get<string>('secrets.jwtResetPass'),
     )
-    if (!payload) {
-      throw new UnauthorizedException()
-    }
+    if (!payload) throw new UnauthorizedException()
 
     const user = await this.usersService.findByEmail(payload.sub)
     if (!user) throw new BadRequestException('User not found')

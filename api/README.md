@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Tickets module added**
+* No new libraries added.
+
 **JwtManager class added**
 * Added class for manual jwt validation and payload recovery.
 * Jwt manual validation is no longer in AuthService.
