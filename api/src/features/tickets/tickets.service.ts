@@ -1,26 +1,30 @@
 import { Injectable } from '@nestjs/common'
 import { CreateTicketDto } from './dto/create-ticket.dto'
 import { UpdateTicketDto } from './dto/update-ticket.dto'
+import { TicketsRepository } from './tickets.repository'
 
 @Injectable()
 export class TicketsService {
-  create(createTicketDto: CreateTicketDto) {
-    return 'This action adds a new ticket'
+  constructor(private readonly ticketsRepository: TicketsRepository) {}
+
+  async create(createTicketDto: CreateTicketDto) {
+    return await this.ticketsRepository.create(createTicketDto)
   }
 
-  findAll() {
-    return `This action returns all tickets`
+  async findAll() {
+    return await this.ticketsRepository.find({})
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ticket`
+  async findOne(id: string) {
+    return await this.ticketsRepository.findOne({ _id: id })
   }
 
-  update(id: number, updateTicketDto: UpdateTicketDto) {
-    return `This action updates a #${id} ticket`
+  async update(id: string, updateTicketDto: UpdateTicketDto) {
+    return await (this,
+    this.ticketsRepository.findOneAndUpdate({ _id: id }, updateTicketDto))
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} ticket`
+  async remove(id: string) {
+    return await this.ticketsRepository.deleteOne({ _id: id })
   }
 }

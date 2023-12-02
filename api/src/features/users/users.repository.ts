@@ -1,7 +1,4 @@
-// Core / common imports
 import { Injectable } from '@nestjs/common'
-
-// Repository / schema imports
 import { EntityRepository } from '@app/database/entity.repository'
 import { User, UserDocument } from './schemas/user.schema'
 import { InjectModel } from '@nestjs/mongoose'

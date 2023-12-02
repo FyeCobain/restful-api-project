@@ -4,7 +4,7 @@ import { IsEmail, IsNotEmpty, Matches, MinLength } from 'class-validator'
 // DTO for new user creation
 export class CreateUserDto {
   @ApiProperty({
-    description: 'Must have at least 3 characters other than spaces.',
+    description: 'Must have at least 3 characters other than spaces',
     example: 'John',
   })
   @IsNotEmpty()
@@ -12,15 +12,15 @@ export class CreateUserDto {
   name: string
 
   @ApiProperty({
+    description: 'Must have at least 3 characters other than spaces',
     example: 'Doe',
-    description: 'Must have at least 3 characters other than spaces.',
   })
   @IsNotEmpty()
   @MinLength(3, { message: 'Lastname is too short' })
   lastName: string
 
   @ApiProperty({
-    description: 'Must be a valid email address.',
+    description: 'Must be a valid email address',
     example: 'john.doe@example.com',
   })
   @IsNotEmpty()
@@ -29,7 +29,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description:
-      "Must have at least 1 uppercase, 1 number, 1 special char (\\'-\\' \\'_\\' \\'.\\' \\'@\\' \\'$\\') and a min length of 8 characters.",
+      "Must have at least 1 uppercase, 1 number, 1 special char (\\'-\\' \\'_\\' \\'.\\' \\'@\\' \\'$\\') and a min length of 8 characters",
     example: 'Sp1derm@n',
   })
   @IsNotEmpty({ message: 'Password must not be empty' })

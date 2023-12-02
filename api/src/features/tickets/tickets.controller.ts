@@ -10,33 +10,38 @@ import {
 import { TicketsService } from './tickets.service'
 import { CreateTicketDto } from './dto/create-ticket.dto'
 import { UpdateTicketDto } from './dto/update-ticket.dto'
+import { ApiTags } from '@nestjs/swagger'
 
+@ApiTags('tickets')
 @Controller('tickets')
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
   @Post()
-  create(@Body() createTicketDto: CreateTicketDto) {
-    return this.ticketsService.create(createTicketDto)
+  async create(@Body() createTicketDto: CreateTicketDto) {
+    return await this.ticketsService.create(createTicketDto)
   }
 
   @Get()
-  findAll() {
-    return this.ticketsService.findAll()
+  async findAll() {
+    return await this.ticketsService.findAll()
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ticketsService.findOne(+id)
+  async findOne(@Param('id') id: string) {
+    return await this.ticketsService.findOne(id)
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
-    return this.ticketsService.update(+id, updateTicketDto)
+  async update(
+    @Param('id') id: string,
+    @Body() updateTicketDto: UpdateTicketDto,
+  ) {
+    return await this.ticketsService.update(id, updateTicketDto)
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ticketsService.remove(+id)
+  async remove(@Param('id') id: string) {
+    return await this.ticketsService.remove(id)
   }
 }

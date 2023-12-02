@@ -4,7 +4,6 @@ import { HydratedDocument } from 'mongoose'
 // Exporting the UserDocument type
 export type UserDocument = HydratedDocument<User>
 
-// Creation of the User schema
 @Schema()
 export class User {
   @Prop({
@@ -20,6 +19,7 @@ export class User {
   lastName: string
 
   @Prop({
+    required: true,
     unique: true,
     trim: true,
     lowercase: true,

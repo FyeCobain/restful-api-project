@@ -35,6 +35,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Tickets basic CRUD implemented**
+* Basic crud implemented in controller and service.
+* No new libraries added.
+
 **Tickets module added**
 * No new libraries added.
 

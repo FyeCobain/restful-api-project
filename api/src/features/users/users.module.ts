@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { UsersController } from './users.controller'
-
-// Importing DB files
 import { MongooseModule } from '@nestjs/mongoose'
 import { User, UserSchema } from './schemas/user.schema'
 import { UsersRepository } from './users.repository'
@@ -17,7 +15,7 @@ import { UsersRepository } from './users.repository'
     ]),
   ],
   controllers: [UsersController],
-  providers: [UsersService, UsersRepository],
+  providers: [UsersRepository, UsersService],
   exports: [UsersService],
 })
 export class UsersModule {}
