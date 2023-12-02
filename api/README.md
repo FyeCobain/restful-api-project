@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Tickets Dto's improved**
+* Ticket create and update Dto improved.
+
 **Tickets basic CRUD implemented**
 * Basic crud implemented in controller and service.
 * No new libraries added.

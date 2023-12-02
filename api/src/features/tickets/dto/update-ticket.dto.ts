@@ -12,7 +12,7 @@ export class UpdateTicketDto extends PartialType(CreateTicketDto) {
 
   @ApiProperty({
     description: "Optional: the ticket's active state (false = removed)",
-    example: false,
+    example: true,
   })
   @IsOptional()
   active?: boolean

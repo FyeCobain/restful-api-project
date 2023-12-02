@@ -12,7 +12,7 @@ import { Type } from 'class-transformer'
 export class CreateTicketDto {
   @ApiProperty({
     description: 'Must have at least 5 characters other than spaces',
-    example: 'Learn Vue.js',
+    example: 'Complete the Nest.js project',
   })
   @IsNotEmpty()
   @MinLength(5, { message: 'Title is too short' })
@@ -20,7 +20,7 @@ export class CreateTicketDto {
 
   @ApiProperty({
     description: 'Must have at least 5 characters other than spaces',
-    example: "Buy and start the Udemy's Vue.js course",
+    example: 'Complete and push the Nest.js project with all the requirements',
   })
   @IsNotEmpty()
   @MinLength(5, { message: 'Description is too short' })
@@ -36,10 +36,10 @@ export class CreateTicketDto {
 
   @ApiProperty({
     description: "OptionaL - The ticket's due date",
-    example: '2023-12-08 23:59:59',
+    example: '2023-12-08 23:59:59+0',
   })
   @IsOptional()
   @Type(() => Date)
   @IsDate()
-  dueDate?: string
+  dueDate?: Date
 }
