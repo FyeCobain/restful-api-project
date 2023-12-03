@@ -35,6 +35,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Tiny code improvement**
+* Default database restored.
+* Eslint alert temporarily disabled.
+
 **Tickets sorting and filtering implemented**
 * Tickets can be sorted ascending or descenging by due date.
 * Tickets without due date go to the end.

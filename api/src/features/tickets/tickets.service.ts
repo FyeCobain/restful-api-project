@@ -22,6 +22,7 @@ export class TicketsService {
     return createdTicket
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async findAll(order: string = null, category: string = null, limit, page) {
     // Sorting function depending on order value
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
