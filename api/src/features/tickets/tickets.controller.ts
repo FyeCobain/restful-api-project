@@ -1,17 +1,20 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 import {
   Controller,
+  Query,
+  Body,
+  Param,
   Get,
   Post,
-  Body,
   Patch,
-  Param,
   Delete,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common'
 import { TicketsService } from './tickets.service'
 import { CreateTicketDto } from './dto/create-ticket.dto'
 import { UpdateTicketDto } from './dto/update-ticket.dto'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiQuery, ApiTags } from '@nestjs/swagger'
 
 @ApiTags('tickets')
 @Controller('tickets')
@@ -23,9 +26,43 @@ export class TicketsController {
     return await this.ticketsService.create(createTicketDto)
   }
 
+  @ApiQuery({
+    name: 'order',
+    description: 'Order by due date ascending or descending',
+    required: false,
+    enum: ['asc', 'desc'],
+  })
+  @ApiQuery({
+    name: 'category',
+    description: 'Filter by some category id',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'limit',
+    description: 'Limit per page (0 = no limit)',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'page',
+    description: 'Current page (0 = no pagination)',
+    required: false,
+  })
   @Get()
-  async findAll() {
-    return await this.ticketsService.findAll()
+  async findAll(
+    @Query('order') order: string = null,
+    @Query('category') category: string = null,
+    @Query('limit') limit?: number,
+    @Query('page') page?: number,
+  ) {
+    // Verifying pagination values
+    if (isNaN(limit)) limit = 0 // No limit
+    else limit = Math.floor(limit)
+    if (isNaN(page)) page = 0 // No pagination
+    else page = Math.floor(page)
+    if (limit < 0 || page < 0)
+      throw new BadRequestException('Pagination values cannnot be negative')
+
+    return await this.ticketsService.findAll(order, category, limit, page)
   }
 
   @Get(':id')
@@ -44,7 +81,7 @@ export class TicketsController {
   }
 
   @Delete(':id')
-  async softRemove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return await this.ticketsService.softRemove(id)
   }
 }

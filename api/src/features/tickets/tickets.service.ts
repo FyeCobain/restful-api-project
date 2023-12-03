@@ -22,8 +22,37 @@ export class TicketsService {
     return createdTicket
   }
 
-  async findAll() {
-    return await this.ticketsRepository.find({ active: true }, { active: 0 })
+  async findAll(order: string = null, category: string = null, limit, page) {
+    // Sorting function depending on order value
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    let sortFn = (ticketA, ticketB) => 1 // No sorting at all
+    if (order !== null) {
+      order = order.trim().toLowerCase()
+      if (order === 'asc' || order === 'desc') {
+        // Sorting by dueDate ascending or descending, tickets without due date go the end
+        sortFn = (ticketA, tickeB) => {
+          if (
+            typeof ticketA.dueDate !== 'undefined' &&
+            typeof tickeB.dueDate !== 'undefined'
+          ) {
+            if (ticketA.dueDate > tickeB.dueDate)
+              return order === 'asc' ? 1 : -1
+            else return order === 'asc' ? -1 : 1
+          } else if (typeof ticketA.dueDate !== 'undefined') return -1
+          return 1
+        }
+      }
+    }
+
+    // Filter query depending on category value
+    let filterQuery: Record<string, unknown> = { active: true }
+    if (category !== null) filterQuery = { active: true, category }
+
+    const tickets = (await this.ticketsRepository.find(filterQuery)).sort(
+      sortFn,
+    )
+
+    return tickets
   }
 
   async findOne(id: string) {

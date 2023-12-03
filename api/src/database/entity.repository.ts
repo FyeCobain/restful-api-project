@@ -20,7 +20,7 @@ export abstract class EntityRepository<T extends Document> {
   async find(
     entityFilterQuery: FilterQuery<T>,
     projection?: Record<string, unknown>,
-  ): Promise<T[] | null> {
+  ): Promise<T[]> {
     return this.entityModel
       .find(entityFilterQuery, {
         __v: 0,

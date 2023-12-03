@@ -35,6 +35,11 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Tickets sorting and filtering implemented**
+* Tickets can be sorted ascending or descenging by due date.
+* Tickets without due date go to the end.
+* Tickets can be filtered by category.
+
 **Tickets service improved**
 * Tickets service now checks if assignee exists on create.
 * Soft delete implemented.

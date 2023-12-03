@@ -22,7 +22,7 @@ export class CreateTicketDto {
   @ApiProperty({
     description: 'Must have at least 5 characters other than spaces',
     example:
-      'Complete and push the Nest.js 🐱 project with all the requirements fullfilled',
+      'Complete the Nest.js 🐱 project with all the requirements fullfilled',
   })
   @IsNotEmpty()
   @Transform(({ value }) => value.trim())
