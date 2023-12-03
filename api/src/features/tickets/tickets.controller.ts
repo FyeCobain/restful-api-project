@@ -27,15 +27,15 @@ export class TicketsController {
   }
 
   @ApiQuery({
+    name: 'category',
+    description: 'Filter by some category id',
+    required: false,
+  })
+  @ApiQuery({
     name: 'order',
     description: 'Order by due date ascending or descending',
     required: false,
     enum: ['asc', 'desc'],
-  })
-  @ApiQuery({
-    name: 'category',
-    description: 'Filter by some category id',
-    required: false,
   })
   @ApiQuery({
     name: 'limit',
@@ -49,8 +49,8 @@ export class TicketsController {
   })
   @Get()
   async findAll(
-    @Query('order') order: string = null,
     @Query('category') category: string = null,
+    @Query('order') order: string = null,
     @Query('limit') limit?: number,
     @Query('page') page?: number,
   ) {
@@ -62,7 +62,7 @@ export class TicketsController {
     if (limit < 0 || page < 0)
       throw new BadRequestException('Pagination values cannnot be negative')
 
-    return await this.ticketsService.findAll(order, category, limit, page)
+    return await this.ticketsService.findAll(category, order, limit, page)
   }
 
   @Get(':id')

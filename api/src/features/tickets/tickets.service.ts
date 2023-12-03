@@ -23,37 +23,41 @@ export class TicketsService {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async findAll(order: string = null, category: string = null, limit, page) {
-    // Sorting function depending on order value
+  async findAll(category: string = null, order: string = null, limit, page) {
+    let filterQuery: Record<string, unknown> = { active: true }
+    if (category !== null) filterQuery = { ...filterQuery, category }
+
+    const projection: Record<string, unknown> = { active: 0 }
+
+    const skipAmount = 0 // TODO
+
+    const limitAmout = 0 // TODO
+
+    let sortObject = {}
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    let sortFn = (ticketA, ticketB) => 1 // No sorting at all
+    let extraSortFn = (taskA, taskB) => 1 // <- No extra sorting by default
+
     if (order !== null) {
       order = order.trim().toLowerCase()
       if (order === 'asc' || order === 'desc') {
-        // Sorting by dueDate ascending or descending, tickets without due date go the end
-        sortFn = (ticketA, tickeB) => {
-          if (
-            typeof ticketA.dueDate !== 'undefined' &&
-            typeof tickeB.dueDate !== 'undefined'
-          ) {
-            if (ticketA.dueDate > tickeB.dueDate)
-              return order === 'asc' ? 1 : -1
-            else return order === 'asc' ? -1 : 1
-          } else if (typeof ticketA.dueDate !== 'undefined') return -1
+        sortObject = { dueDate: order }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        extraSortFn = (taskA, taskB) => {
+          if (typeof taskB.dueDate === 'undefined') return -1 // <- if no due date, go last
           return 1
         }
       }
     }
 
-    // Filter query depending on category value
-    let filterQuery: Record<string, unknown> = { active: true }
-    if (category !== null) filterQuery = { active: true, category }
-
-    const tickets = (await this.ticketsRepository.find(filterQuery)).sort(
-      sortFn,
-    )
-
-    return tickets
+    return (
+      await this.ticketsRepository.find(
+        filterQuery,
+        projection,
+        skipAmount,
+        limitAmout,
+        sortObject,
+      )
+    ).sort(extraSortFn)
   }
 
   async findOne(id: string) {

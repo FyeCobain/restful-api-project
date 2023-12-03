@@ -35,6 +35,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Base repository and tickets service improved**
+* Base repository's find method now accepts skip, limit and sort parameters.
+* TicketsService code refactorized.
+
 **Tiny code improvement**
 * Default database restored.
 * Eslint alert temporarily disabled.

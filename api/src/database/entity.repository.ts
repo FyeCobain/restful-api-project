@@ -20,12 +20,18 @@ export abstract class EntityRepository<T extends Document> {
   async find(
     entityFilterQuery: FilterQuery<T>,
     projection?: Record<string, unknown>,
+    skipAmount = 0,
+    limitAmount = 0,
+    sortObject = {},
   ): Promise<T[]> {
     return this.entityModel
       .find(entityFilterQuery, {
         __v: 0,
         ...projection,
       })
+      .skip(skipAmount)
+      .limit(limitAmount)
+      .sort(sortObject)
       .exec()
   }
 
