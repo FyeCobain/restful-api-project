@@ -11,11 +11,4 @@ export class UpdateTicketDto extends PartialType(CreateTicketDto) {
   @IsOptional()
   @Transform(({ value }) => value.trim())
   category?: string
-
-  @ApiProperty({
-    description: "Optional: the ticket's active state (false = removed)",
-    example: true,
-  })
-  @IsOptional()
-  active?: boolean
 }

@@ -22,7 +22,7 @@ export class CreateTicketDto {
   @ApiProperty({
     description: 'Must have at least 5 characters other than spaces',
     example:
-      'Complete and push the Nest.js 🐱 project with all the requirements',
+      'Complete and push the Nest.js 🐱 project with all the requirements fullfilled',
   })
   @IsNotEmpty()
   @Transform(({ value }) => value.trim())
@@ -39,7 +39,7 @@ export class CreateTicketDto {
   assignee: string
 
   @ApiProperty({
-    description: "OptionaL - The ticket's due date",
+    description: "Optional - The ticket's due date",
     example: '2023-12-08 23:59:59+0',
   })
   @IsOptional()

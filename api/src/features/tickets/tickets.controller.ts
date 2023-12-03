@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common'
 import { TicketsService } from './tickets.service'
 import { CreateTicketDto } from './dto/create-ticket.dto'
@@ -29,7 +30,9 @@ export class TicketsController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.ticketsService.findOne(id)
+    const ticket = await this.ticketsService.findOne(id)
+    if (!ticket) throw new NotFoundException()
+    return ticket
   }
 
   @Patch(':id')
@@ -41,7 +44,7 @@ export class TicketsController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.ticketsService.remove(id)
+  async softRemove(@Param('id') id: string) {
+    return await this.ticketsService.softRemove(id)
   }
 }

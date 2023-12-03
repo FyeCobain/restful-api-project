@@ -35,6 +35,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Tickets service improved**
+* Tickets service now checks if assignee exists on create.
+* Soft delete implemented.
+
 **Tickets DTOs improved**
 * Ticket create and update DTOs improved with @Transform.
 * Ticket schema no longer needs lowercase option.
