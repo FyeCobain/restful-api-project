@@ -35,6 +35,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Tickets pagination and sorting improved**
+* findAllAndParse method added to TicketsRepository.
+* Now tickets are sorted by due date using aggregation.
+
 **Tickets pagination implemented**
 * Tickets pagination working.
 

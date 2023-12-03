@@ -22,43 +22,16 @@ export class TicketsService {
     return createdTicket
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async findAll(category: string = null, order: string = null, limit, page) {
-    let filterQuery: Record<string, unknown> = { active: true }
-    if (category !== null) filterQuery = { ...filterQuery, category }
-
-    const projection: Record<string, unknown> = { active: 0 }
-
-    // sortObject and extraSortFn depends on order value
-    let sortObject = {}
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    let extraSortFn = (taskA, taskB) => 1 // <- No extra sorting by default
-
-    if (order !== null) {
-      order = order.trim().toLowerCase()
-      if (order === 'asc' || order === 'desc') {
-        sortObject = { dueDate: order }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        extraSortFn = (taskA, taskB) => {
-          if (typeof taskB.dueDate === 'undefined') return -1 // <- if no due date, go last
-          return 1
-        }
-      }
-    }
-
     // Pagination
     let skip = 0
     if (limit > 0 && page > 0) skip = (page - 1) * limit
-
-    return (
-      await this.ticketsRepository.find(
-        filterQuery,
-        projection,
-        skip,
-        limit,
-        sortObject,
-      )
-    ).sort(extraSortFn)
+    return await this.ticketsRepository.findAllAndParse(
+      category,
+      order,
+      skip,
+      limit,
+    )
   }
 
   async findOne(id: string) {
