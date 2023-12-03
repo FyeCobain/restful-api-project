@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Tickets pagination implemented**
+* Tickets pagination working.
+
 **Base repository and tickets service improved**
 * Base repository's find method now accepts skip, limit and sort parameters.
 * TicketsService code refactorized.

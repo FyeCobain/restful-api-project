@@ -39,12 +39,12 @@ export class TicketsController {
   })
   @ApiQuery({
     name: 'limit',
-    description: 'Limit per page (0 = no limit)',
+    description: 'Limit of tickets per page (0 = no limit)',
     required: false,
   })
   @ApiQuery({
     name: 'page',
-    description: 'Current page (0 = no pagination)',
+    description: 'Current page number (0 = no pagination)',
     required: false,
   })
   @Get()

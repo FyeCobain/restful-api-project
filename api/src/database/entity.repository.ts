@@ -6,11 +6,11 @@ export abstract class EntityRepository<T extends Document> {
   constructor(protected readonly entityModel: Model<T>) {}
 
   async findOne(
-    entityFilterQuery: FilterQuery<T>,
+    filterQuery: FilterQuery<T>,
     projection?: Record<string, unknown>,
   ): Promise<T | null> {
-    return this.entityModel
-      .findOne(entityFilterQuery, {
+    return await this.entityModel
+      .findOne(filterQuery, {
         __v: 0,
         ...projection,
       })
@@ -18,19 +18,19 @@ export abstract class EntityRepository<T extends Document> {
   }
 
   async find(
-    entityFilterQuery: FilterQuery<T>,
+    filterQuery: FilterQuery<T>,
     projection?: Record<string, unknown>,
-    skipAmount = 0,
-    limitAmount = 0,
+    skip = 0,
+    limit = 0,
     sortObject = {},
   ): Promise<T[]> {
-    return this.entityModel
-      .find(entityFilterQuery, {
+    return await this.entityModel
+      .find(filterQuery, {
         __v: 0,
         ...projection,
       })
-      .skip(skipAmount)
-      .limit(limitAmount)
+      .skip(skip)
+      .limit(limit)
       .sort(sortObject)
       .exec()
   }
@@ -43,11 +43,11 @@ export abstract class EntityRepository<T extends Document> {
   }
 
   async findOneAndUpdate(
-    entityFilterQuery: FilterQuery<T>,
+    filterQuery: FilterQuery<T>,
     updateEntityDto: UpdateQuery<T>,
   ): Promise<T | null> {
     const foundEntity: T | null = await this.entityModel.findOneAndUpdate(
-      entityFilterQuery,
+      filterQuery,
       updateEntityDto,
       { new: true },
     )
@@ -55,7 +55,7 @@ export abstract class EntityRepository<T extends Document> {
     return foundEntity
   }
 
-  async deleteOne(entityFilterQuery: FilterQuery<T>): Promise<DeleteResult> {
-    return await this.entityModel.deleteOne(entityFilterQuery)
+  async deleteOne(filterQuery: FilterQuery<T>): Promise<DeleteResult> {
+    return await this.entityModel.deleteOne(filterQuery)
   }
 }

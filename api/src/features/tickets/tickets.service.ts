@@ -29,10 +29,7 @@ export class TicketsService {
 
     const projection: Record<string, unknown> = { active: 0 }
 
-    const skipAmount = 0 // TODO
-
-    const limitAmout = 0 // TODO
-
+    // sortObject and extraSortFn depends on order value
     let sortObject = {}
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let extraSortFn = (taskA, taskB) => 1 // <- No extra sorting by default
@@ -49,12 +46,16 @@ export class TicketsService {
       }
     }
 
+    // Pagination
+    let skip = 0
+    if (limit > 0 && page > 0) skip = (page - 1) * limit
+
     return (
       await this.ticketsRepository.find(
         filterQuery,
         projection,
-        skipAmount,
-        limitAmout,
+        skip,
+        limit,
         sortObject,
       )
     ).sort(extraSortFn)
