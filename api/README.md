@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Categories code refactorized**
+* Added interface and types for the categories service.
+
 **Categories sorting by name implemented**
 * Categories can be sortied ascending or descending.
 
