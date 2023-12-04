@@ -16,6 +16,10 @@ import { TicketsService } from './tickets.service'
 import { CreateTicketDto } from './dto/create-ticket.dto'
 import { UpdateTicketDto } from './dto/update-ticket.dto'
 
+// Filters / guards
+import { MongoExceptionFilter } from '@app/libs/filters'
+import { IdValidGuard } from '../users/guards'
+
 // Swagger
 import {
   ApiTags,
@@ -26,10 +30,6 @@ import {
   ApiNotFoundResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
-
-// Filters / guards
-import { MongoExceptionFilter } from '@app/libs/filters'
-import { IdValidGuard } from '../users/guards'
 
 @ApiTags('Tickets')
 @Controller('tickets')

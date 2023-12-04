@@ -1,4 +1,6 @@
+import { titleize } from '@app/helpers/strings'
 import { ApiProperty } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
 import { IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator'
 
 // DTO for the new category creation
@@ -9,7 +11,8 @@ export class CreateCategoryDto {
   })
   @IsNotEmpty()
   @IsString()
-  @MinLength(3)
+  @Transform(({ value }) => titleize(value.trim()))
+  @MinLength(3, { message: 'Name is too short' })
   name: string
 
   @ApiProperty({
@@ -20,6 +23,7 @@ export class CreateCategoryDto {
   })
   @IsOptional()
   @IsString()
-  @MinLength(6)
+  @Transform(({ value }) => value.trim())
+  @MinLength(6, { message: 'Description is too short' })
   description?: string
 }

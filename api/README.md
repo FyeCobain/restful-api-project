@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Categories validation added**
+* Controller, service, and Dto validation added.
+
 **Categories basic CRUD implemented**
 * Basic crud implemented in controller and service.
 

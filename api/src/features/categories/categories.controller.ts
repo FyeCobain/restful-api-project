@@ -6,10 +6,17 @@ import {
   Patch,
   Param,
   Delete,
+  UseFilters,
+  UseGuards,
+  NotFoundException,
 } from '@nestjs/common'
 import { CategoriesService } from './categories.service'
 import { CreateCategoryDto } from './dto/create-category.dto'
 import { UpdateCategoryDto } from './dto/update-category.dto'
+
+// Filters / guards
+import { MongoExceptionFilter } from '@app/libs/filters'
+import { IdValidGuard } from '../users/guards'
 
 // Swagger
 import { ApiTags } from '@nestjs/swagger'
@@ -20,6 +27,7 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
+  @UseFilters(MongoExceptionFilter)
   async create(@Body() createCategoryDto: CreateCategoryDto) {
     return await this.categoriesService.create(createCategoryDto)
   }
@@ -30,11 +38,15 @@ export class CategoriesController {
   }
 
   @Get(':id')
+  @UseGuards(IdValidGuard)
   async findOne(@Param('id') id: string) {
-    return await this.categoriesService.findOne(id)
+    const category = await this.categoriesService.findOne(id)
+    if (!category) throw new NotFoundException()
+    return category
   }
 
   @Patch(':id')
+  @UseGuards(IdValidGuard)
   async update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
@@ -43,6 +55,7 @@ export class CategoriesController {
   }
 
   @Delete(':id')
+  @UseGuards(IdValidGuard)
   async remove(@Param('id') id: string) {
     return await this.categoriesService.remove(id)
   }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { CreateCategoryDto } from './dto/create-category.dto'
 import { UpdateCategoryDto } from './dto/update-category.dto'
 import { CategoriesRepository } from './categories.repository'
@@ -21,6 +21,9 @@ export class CategoriesService {
   }
 
   async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+    if (!(await this.findOne(id)))
+      throw new BadRequestException('Category does not exist!')
+
     return await this.categoriesRepository.findOneAndUpdate(
       { _id: id },
       updateCategoryDto,
@@ -28,6 +31,9 @@ export class CategoriesService {
   }
 
   async remove(id: string): DeleteResultPromise {
+    if (!(await this.findOne(id)))
+      throw new BadRequestException('Category does not exist')
+
     return await this.categoriesRepository.deleteOne({ _id: id })
   }
 }

@@ -68,7 +68,7 @@ export class TicketsService implements TicketsServiceInterface {
 
   async softRemove(id: string): DeleteResultPromise {
     if (!(await this.findOne(id)))
-      throw new BadRequestException('Ticket does not exist!')
+      throw new BadRequestException('Ticket does not exist')
 
     // Applying soft deleting
     await this.ticketsRepository.findOneAndUpdate(
