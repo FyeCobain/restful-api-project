@@ -35,6 +35,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Categories controller code improved**
+* Added response codes documentation.
+* Added exception filters for create and update.
+
 **Abstract entity repository refactorized**
 * Added new type for the repositories and services.
 
@@ -64,7 +68,7 @@ $ yarn run test:cov
 **Tickets code refactorized**
 * Added interface and types for the ticket service.
 
-**Tickets DTOs documentation improved improved**
+**Tickets DTOs documentation improved**
 * Added 'required: false' in optional properties.
 
 **Tickets controller and service improved**

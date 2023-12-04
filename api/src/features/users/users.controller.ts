@@ -44,7 +44,7 @@ import { DeleteResult } from '@app/database/types'
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // Creates a new user
+  // Creates and returns a new user
   @Post()
   @UseFilters(MongoExceptionFilter)
   @ApiCreatedResponse({ description: 'Created' })
@@ -73,7 +73,7 @@ export class UsersController {
     return user
   }
 
-  // Updates a user and returns it
+  // Updates an returns a user with the new data
   @Patch(':id')
   @ApiBearerAuth()
   @UseGuards(IdValidGuard, AccessTokenGuard, SubExistsGuard)

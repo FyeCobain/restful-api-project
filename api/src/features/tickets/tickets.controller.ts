@@ -36,7 +36,7 @@ import {
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
-  // Creates and returns a ticket
+  // Creates and returns a new ticket
   @Post()
   @UseFilters(MongoExceptionFilter)
   @ApiCreatedResponse({ description: 'Created' })
@@ -99,7 +99,7 @@ export class TicketsController {
     return ticket
   }
 
-  // Updates and returns a ticket (already updated)
+  // Updates and returns a ticket with the new data
   @Patch(':id')
   @UseFilters(MongoExceptionFilter)
   @UseGuards(IdValidGuard)
