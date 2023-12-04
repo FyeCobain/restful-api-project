@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Categories module added**
+* No new libraries added.
+
 **Tickets code refactorized**
 * Added interface and types for the ticket service.
 

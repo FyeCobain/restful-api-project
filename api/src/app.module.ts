@@ -28,6 +28,7 @@ import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter'
 import { UsersModule } from '@features/users/users.module'
 import { AuthModule } from '@features/auth/auth.module'
 import { TicketsModule } from './features/tickets/tickets.module'
+import { CategoriesModule } from './features/categories/categories.module'
 
 // Sessiion module for the csrf protection
 const SessionModuleBase = createModule(() => {
@@ -103,6 +104,7 @@ const SessionModuleBase = createModule(() => {
     UsersModule,
     AuthModule,
     TicketsModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
