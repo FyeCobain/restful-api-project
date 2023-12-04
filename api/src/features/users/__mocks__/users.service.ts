@@ -5,27 +5,27 @@ import { UsersServiceInterface } from '../interfaces/users.service.interface'
 import { UserDocument } from '../schemas/user.schema'
 import { usersStub } from './users.stub'
 import { Types } from 'mongoose'
-import { UserDocumentPromise, UserDocumentsArrayPromise } from '../types'
+import { UserPromise, UserArrayPromise } from '../types'
 
 // UsersService mock up
 export class UsersService implements UsersServiceInterface {
   private users: UserDocument[] = usersStub()
 
-  async findOne(id: string): UserDocumentPromise {
+  async findOne(id: string): UserPromise {
     return await this.users.find((user) => user._id.toString() == id)
   }
 
-  async findAll(): UserDocumentsArrayPromise {
+  async findAll(): UserArrayPromise {
     return await this.users
   }
 
-  async findByEmail(emailAddress: string): UserDocumentPromise {
+  async findByEmail(emailAddress: string): UserPromise {
     return await this.users.find(
       (user) => user.email.toLowerCase() === emailAddress.toLowerCase().trim(),
     )
   }
 
-  async create(newUserData: CreateUserDto): UserDocumentPromise {
+  async create(newUserData: CreateUserDto): UserPromise {
     const newUser: UserDocument = {
       _id: new Types.ObjectId(),
       name: newUserData.name,
@@ -41,10 +41,7 @@ export class UsersService implements UsersServiceInterface {
     return newUser
   }
 
-  async update(
-    id: string,
-    updatedUserData: UpdateUserDto,
-  ): UserDocumentPromise {
+  async update(id: string, updatedUserData: UpdateUserDto): UserPromise {
     const userIndex: number = this.users.findIndex(
       (user) => user._id.toString() === id,
     )

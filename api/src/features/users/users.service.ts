@@ -15,35 +15,32 @@ import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { getBlankFieldsErrorMessages } from '@app/helpers/dto'
 import { DeleteResultPromise } from '@app/database/types'
-import { UserDocumentPromise, UserDocumentsArrayPromise } from './types'
+import { UserPromise, UserArrayPromise } from './types'
 
 @Injectable()
 export class UsersService implements UsersServiceInterface {
   constructor(private readonly userRepository: UsersRepository) {}
 
-  async findOne(id: string): UserDocumentPromise {
+  async findOne(id: string): UserPromise {
     return await this.userRepository.findOne({ _id: id })
   }
 
-  async findAll(): UserDocumentsArrayPromise {
+  async findAll(): UserArrayPromise {
     return await this.userRepository.find({})
   }
 
-  async findByEmail(email: string): UserDocumentPromise {
+  async findByEmail(email: string): UserPromise {
     return await this.userRepository.findOne({ email })
   }
 
-  async create(newUserData: CreateUserDto): UserDocumentPromise {
+  async create(newUserData: CreateUserDto): UserPromise {
     return await this.userRepository.create({
       ...newUserData,
       password: await argon2.hash(newUserData.password),
     })
   }
 
-  async update(
-    id: string,
-    updatedUserData: UpdateUserDto,
-  ): UserDocumentPromise {
+  async update(id: string, updatedUserData: UpdateUserDto): UserPromise {
     // Checking if blank values where received
     const blankFieldsErrorMessages: string[] =
       getBlankFieldsErrorMessages(updatedUserData)

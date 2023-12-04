@@ -4,15 +4,17 @@ import { UpdateTicketDto } from './dto/update-ticket.dto'
 import { TicketsRepository } from './tickets.repository'
 import { DeleteResultPromise } from '@app/database/types'
 import { UsersService } from '@features/users/users.service'
+import { TicketsServiceInterface } from './interfaces/TicketsServiceInterface'
+import { TicketArrayPromise, TicketPromise } from './types'
 
 @Injectable()
-export class TicketsService {
+export class TicketsService implements TicketsServiceInterface {
   constructor(
     private readonly ticketsRepository: TicketsRepository,
     private readonly usersService: UsersService,
   ) {}
 
-  async create(createTicketDto: CreateTicketDto) {
+  async create(createTicketDto: CreateTicketDto): TicketPromise {
     // Checking if the user is valid
     if (!(await this.usersService.findByEmail(createTicketDto.assignee)))
       throw new BadRequestException('Assignee does not exist!')
@@ -22,7 +24,12 @@ export class TicketsService {
     return createdTicket
   }
 
-  async findAll(order: string = null, category: string = null, limit, page) {
+  async findAll(
+    order: string = null,
+    category: string = null,
+    limit,
+    page,
+  ): TicketArrayPromise {
     // Verifying order's value
     if (order !== null) {
       order = order.trim().toLowerCase()
@@ -40,14 +47,14 @@ export class TicketsService {
     )
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): TicketPromise {
     return await this.ticketsRepository.findOne(
       { _id: id, active: true },
       { active: 0 },
     )
   }
 
-  async update(id: string, updateTicketDto: UpdateTicketDto) {
+  async update(id: string, updateTicketDto: UpdateTicketDto): TicketPromise {
     if (!(await this.findOne(id)))
       throw new BadRequestException('Ticket does not exist!')
 

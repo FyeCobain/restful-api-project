@@ -2,19 +2,19 @@
 import { CreateUserDto } from '../dto/create-user.dto'
 import { UpdateUserDto } from '../dto/update-user.dto'
 import { DeleteResultPromise } from '@app/database/types'
-import { UserDocumentsArrayPromise, UserDocumentPromise } from '../types'
+import { UserPromise, UserArrayPromise } from '../types'
 
 // Interface for the UsersService
 export interface UsersServiceInterface {
-  findOne(id: string): UserDocumentPromise
+  findOne(id: string): UserPromise
 
-  findAll(): UserDocumentsArrayPromise
+  findAll(): UserArrayPromise
 
-  findByEmail(emailAddress: string): UserDocumentPromise
+  findByEmail(emailAddress: string): UserPromise
 
-  create(newUserData: CreateUserDto): UserDocumentPromise
+  create(newUserData: CreateUserDto): UserPromise
 
-  update(id: string, updatedUserData: UpdateUserDto): UserDocumentPromise
+  update(id: string, updatedUserData: UpdateUserDto): UserPromise
 
   remove(id: string): DeleteResultPromise
 }

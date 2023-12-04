@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Tickets code refactorized**
+* Added interface and types for the ticket service.
+
 **Tickets DTOs documentation improved improved**
 * Added 'required: false' in optional properties.
 
