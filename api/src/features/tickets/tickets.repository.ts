@@ -12,19 +12,19 @@ export class TicketsRepository extends EntityRepository<TicketDocument> {
 
   // Returns the tickets using the filter and sorting parameters received
   async findAllAndParse(
-    category: string = null,
     order: string = null,
+    category: string = null,
     skip = 0,
     limit = 0,
   ) {
-    // If no order needed, returning tickets with the find method...
+    // If no order needed, returning tickets using the find method...
     if (order === null) {
       let filterQuery: Record<string, unknown> = { active: true }
       if (category !== null) filterQuery = { ...filterQuery, category }
       return await this.find(filterQuery, { active: 0 }, skip, limit)
     }
 
-    // Using aggregation to filter and sorting the tickets...
+    // Using aggregation to filter and sort the tickets...
     let subFilterObject: object = { _id: { $exists: true } }
     if (category !== null) subFilterObject = { category: { $eq: category } }
 

@@ -22,13 +22,19 @@ export class TicketsService {
     return createdTicket
   }
 
-  async findAll(category: string = null, order: string = null, limit, page) {
+  async findAll(order: string = null, category: string = null, limit, page) {
+    // Verifying order's value
+    if (order !== null) {
+      order = order.trim().toLowerCase()
+      if (order !== 'asc' && order !== 'desc') order = null
+    }
+
     // Pagination
     let skip = 0
     if (limit > 0 && page > 0) skip = (page - 1) * limit
     return await this.ticketsRepository.findAllAndParse(
-      category,
       order,
+      category,
       skip,
       limit,
     )

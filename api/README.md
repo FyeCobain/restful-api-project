@@ -35,6 +35,11 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Tickets controller and service improved**
+* Controller's documentation improved.
+* Guards and filters added.
+* Service validation added.
+
 **Tickets pagination and sorting improved**
 * findAllAndParse method added to TicketsRepository.
 * Now tickets are sorted by due date using aggregation.

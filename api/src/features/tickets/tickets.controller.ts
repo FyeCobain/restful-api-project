@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-inferrable-types */
 import {
   Controller,
   Query,
@@ -10,32 +9,54 @@ import {
   Delete,
   NotFoundException,
   BadRequestException,
+  UseFilters,
+  UseGuards,
 } from '@nestjs/common'
 import { TicketsService } from './tickets.service'
 import { CreateTicketDto } from './dto/create-ticket.dto'
 import { UpdateTicketDto } from './dto/update-ticket.dto'
-import { ApiQuery, ApiTags } from '@nestjs/swagger'
+
+// Swagger
+import {
+  ApiTags,
+  ApiQuery,
+  ApiOkResponse,
+  ApiCreatedResponse,
+  ApiBadRequestResponse,
+  ApiNotFoundResponse,
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger'
+
+// Filters / guards
+import { MongoExceptionFilter } from '@app/libs/filters'
+import { IdValidGuard } from '../users/guards'
 
 @ApiTags('tickets')
 @Controller('tickets')
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
+  // Creates and returns a ticket
   @Post()
+  @UseFilters(MongoExceptionFilter)
+  @ApiCreatedResponse({ description: 'Created' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiUnprocessableEntityResponse({ description: 'Unprocessable Entity' })
   async create(@Body() createTicketDto: CreateTicketDto) {
     return await this.ticketsService.create(createTicketDto)
   }
 
-  @ApiQuery({
-    name: 'category',
-    description: 'Filter by some category id',
-    required: false,
-  })
+  // Finds and returns all tickets with the optional sorting and filtering query parameters
   @ApiQuery({
     name: 'order',
     description: 'Order by due date ascending or descending',
     required: false,
     enum: ['asc', 'desc'],
+  })
+  @ApiQuery({
+    name: 'category',
+    description: 'Filter by some category id',
+    required: false,
   })
   @ApiQuery({
     name: 'limit',
@@ -47,10 +68,11 @@ export class TicketsController {
     description: 'Current page number (0 = no pagination)',
     required: false,
   })
+  @ApiOkResponse({ description: 'OK' })
   @Get()
   async findAll(
-    @Query('category') category: string = null,
     @Query('order') order: string = null,
+    @Query('category') category: string = null,
     @Query('limit') limit?: number,
     @Query('page') page?: number,
   ) {
@@ -62,9 +84,14 @@ export class TicketsController {
     if (limit < 0 || page < 0)
       throw new BadRequestException('Pagination values cannnot be negative')
 
-    return await this.ticketsService.findAll(category, order, limit, page)
+    return await this.ticketsService.findAll(order, category, limit, page)
   }
 
+  // Returns a single ticket
+  @UseGuards(IdValidGuard)
+  @ApiOkResponse({ description: 'OK' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiNotFoundResponse({ description: 'Not Found' })
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const ticket = await this.ticketsService.findOne(id)
@@ -72,7 +99,12 @@ export class TicketsController {
     return ticket
   }
 
+  // Updates and returns a ticket (already updated)
   @Patch(':id')
+  @UseFilters(MongoExceptionFilter)
+  @UseGuards(IdValidGuard)
+  @ApiOkResponse({ description: 'OK' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
   async update(
     @Param('id') id: string,
     @Body() updateTicketDto: UpdateTicketDto,
@@ -80,7 +112,11 @@ export class TicketsController {
     return await this.ticketsService.update(id, updateTicketDto)
   }
 
+  // Performs a soft delete on a ticket
   @Delete(':id')
+  @UseGuards(IdValidGuard)
+  @ApiOkResponse({ description: 'OK' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
   async remove(@Param('id') id: string) {
     return await this.ticketsService.softRemove(id)
   }
