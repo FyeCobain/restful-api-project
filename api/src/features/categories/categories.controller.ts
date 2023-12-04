@@ -16,7 +16,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto'
 
 // Filters / guards
 import { MongoExceptionFilter } from '@app/libs/filters'
-import { IdValidGuard } from '../users/guards'
+import { IdValidGuard } from '@app/guards'
 
 // Swagger
 import { ApiTags } from '@nestjs/swagger'

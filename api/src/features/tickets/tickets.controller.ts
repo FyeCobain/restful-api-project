@@ -18,7 +18,7 @@ import { UpdateTicketDto } from './dto/update-ticket.dto'
 
 // Filters / guards
 import { MongoExceptionFilter } from '@app/libs/filters'
-import { IdValidGuard } from '../users/guards'
+import { IdValidGuard } from '@app/guards'
 
 // Swagger
 import {

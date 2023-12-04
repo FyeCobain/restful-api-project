@@ -35,6 +35,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Tickets service updated**
+* Tickets service now checks if the category exists on setting it.
+* Custom guards moved to src.
+
 **Categories validation added**
 * Controller, service, and Dto validation added.
 

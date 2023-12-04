@@ -34,7 +34,7 @@ import { UpdateUserDto } from './dto/update-user.dto'
 // Validations / Guards / filters imports
 import { MongoExceptionFilter } from '@app/libs/filters'
 import { AccessTokenGuard, SubExistsGuard } from '@features/auth/guards'
-import { IdValidGuard } from './guards'
+import { IdValidGuard } from '@app/guards'
 
 // Types imports
 import { DeleteResult } from '@app/database/types'

@@ -6,12 +6,14 @@ import { DeleteResultPromise } from '@app/database/types'
 import { UsersService } from '@features/users/users.service'
 import { TicketsServiceInterface } from './interfaces/TicketsServiceInterface'
 import { TicketArrayPromise, TicketPromise } from './types'
+import { CategoriesService } from '../categories/categories.service'
 
 @Injectable()
 export class TicketsService implements TicketsServiceInterface {
   constructor(
     private readonly ticketsRepository: TicketsRepository,
     private readonly usersService: UsersService,
+    private readonly categoriesService: CategoriesService,
   ) {}
 
   async create(createTicketDto: CreateTicketDto): TicketPromise {
@@ -57,6 +59,11 @@ export class TicketsService implements TicketsServiceInterface {
   async update(id: string, updateTicketDto: UpdateTicketDto): TicketPromise {
     if (!(await this.findOne(id)))
       throw new BadRequestException('Ticket does not exist!')
+
+    // Checking if the category is valid
+    if (typeof updateTicketDto.category !== 'undefined')
+      if (!(await this.categoriesService.findByName(updateTicketDto.category)))
+        throw new BadRequestException('Category not found!')
 
     const ticketUpdated = await this.ticketsRepository.findOneAndUpdate(
       { _id: id },

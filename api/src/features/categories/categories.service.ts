@@ -20,6 +20,10 @@ export class CategoriesService {
     return await this.categoriesRepository.findOne({ _id: id })
   }
 
+  async findByName(name: string) {
+    return await this.categoriesRepository.findOne({ name })
+  }
+
   async update(id: string, updateCategoryDto: UpdateCategoryDto) {
     if (!(await this.findOne(id)))
       throw new BadRequestException('Category does not exist!')

@@ -4,7 +4,10 @@ import { TicketsService } from './tickets.service'
 import { TicketsController } from './tickets.controller'
 import { MongooseModule } from '@nestjs/mongoose'
 import { Ticket, TicketSchema } from './schemas/ticket.schema'
+
+// Import other modules
 import { UsersModule } from '../users/users.module'
+import { CategoriesModule } from '../categories/categories.module'
 
 @Module({
   imports: [
@@ -15,6 +18,7 @@ import { UsersModule } from '../users/users.module'
       },
     ]),
     UsersModule,
+    CategoriesModule,
   ],
   controllers: [TicketsController],
   providers: [TicketsRepository, TicketsService],
