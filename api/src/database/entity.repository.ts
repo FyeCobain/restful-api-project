@@ -1,5 +1,5 @@
 import { Document, FilterQuery, Model, UpdateQuery } from 'mongoose'
-import { DeleteResult } from './types'
+import { RecordObject, DeleteResult } from './types'
 
 // Anstract repository class
 export abstract class EntityRepository<T extends Document> {
@@ -7,7 +7,7 @@ export abstract class EntityRepository<T extends Document> {
 
   async findOne(
     filterQuery: FilterQuery<T>,
-    projection?: Record<string, unknown>,
+    projection?: RecordObject,
   ): Promise<T | null> {
     return await this.entityModel
       .findOne(filterQuery, {
@@ -19,7 +19,7 @@ export abstract class EntityRepository<T extends Document> {
 
   async find(
     filterQuery: FilterQuery<T>,
-    projection?: Record<string, unknown>,
+    projection?: RecordObject,
     skip = 0,
     limit = 0,
     sortObject = {},

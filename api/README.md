@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Abstract entity repository refactorized**
+* Added new type for the repositories and services.
+
 **Categories code refactorized**
 * Added interface and types for the categories service.
 

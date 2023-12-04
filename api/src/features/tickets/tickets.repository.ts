@@ -3,6 +3,7 @@ import { EntityRepository } from '@app/database/entity.repository'
 import { Ticket, TicketDocument } from './schemas/ticket.schema'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model, PipelineStage } from 'mongoose'
+import { RecordObject } from '@app/database/types'
 
 @Injectable()
 export class TicketsRepository extends EntityRepository<TicketDocument> {
@@ -19,7 +20,7 @@ export class TicketsRepository extends EntityRepository<TicketDocument> {
   ) {
     // If no order needed, returning tickets using the find method...
     if (order === null) {
-      let filterQuery: Record<string, unknown> = { active: true }
+      let filterQuery: RecordObject = { active: true }
       if (category !== null) filterQuery = { ...filterQuery, category }
       return await this.find(filterQuery, { active: 0 }, skip, limit)
     }

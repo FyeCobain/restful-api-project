@@ -7,7 +7,7 @@ import {
 import { CreateTicketDto } from './dto/create-ticket.dto'
 import { UpdateTicketDto } from './dto/update-ticket.dto'
 import { TicketsRepository } from './tickets.repository'
-import { DeleteResultPromise } from '@app/database/types'
+import { RecordObject, DeleteResultPromise } from '@app/database/types'
 import { UsersService } from '@features/users/users.service'
 import { TicketsServiceInterface } from './interfaces/tickets.service.interface'
 import { TicketArrayPromise, TicketPromise } from './types'
@@ -33,11 +33,7 @@ export class TicketsService implements TicketsServiceInterface {
     return createdTicket
   }
 
-  async count(
-    filterQuery: Record<string, unknown>,
-    skip = 0,
-    limit = 0,
-  ): Promise<number> {
+  async count(filterQuery: RecordObject, skip = 0, limit = 0): Promise<number> {
     return await this.ticketsRepository.count(
       { active: true, ...filterQuery },
       skip,
