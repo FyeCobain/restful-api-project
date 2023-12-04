@@ -16,21 +16,27 @@ import { CreateCategoryDto } from './dto/create-category.dto'
 import { UpdateCategoryDto } from './dto/update-category.dto'
 
 // Filters / guards
-import { MongoExceptionFilter } from '@app/libs/filters'
+import { AccessTokenGuard, SubExistsGuard } from '../auth/guards'
 import { IdValidGuard } from '@app/guards'
+import { MongoExceptionFilter } from '@app/libs/filters'
 
 // Swagger
 import {
   ApiTags,
   ApiQuery,
+  ApiBearerAuth,
   ApiOkResponse,
   ApiCreatedResponse,
   ApiBadRequestResponse,
+  ApiUnauthorizedResponse,
   ApiNotFoundResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
 
 @ApiTags('Categories')
+@ApiBearerAuth()
+@UseGuards(AccessTokenGuard, SubExistsGuard)
+@ApiUnauthorizedResponse({ description: 'Unauthorized' })
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
@@ -52,8 +58,8 @@ export class CategoriesController {
     required: false,
     enum: ['ASC', 'DESC'],
   })
-  @ApiOkResponse({ description: 'OK' })
   @Get()
+  @ApiOkResponse({ description: 'OK' })
   async findAll(@Query('order') order: string = null) {
     return await this.categoriesService.findAll(order)
   }

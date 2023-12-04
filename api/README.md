@@ -34,6 +34,8 @@ $ yarn run test:cov
 ```
 
 ## Commits (newest to oldest)
+**Auth required added for tickets and categories**
+* Added guards to check if the user is authenticated and exists.
 
 **Categories controller code improved**
 * Added response codes documentation.

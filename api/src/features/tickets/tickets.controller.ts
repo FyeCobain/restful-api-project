@@ -24,14 +24,20 @@ import { IdValidGuard } from '@app/guards'
 import {
   ApiTags,
   ApiQuery,
+  ApiBearerAuth,
   ApiOkResponse,
   ApiCreatedResponse,
   ApiBadRequestResponse,
+  ApiUnauthorizedResponse,
   ApiNotFoundResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
+import { AccessTokenGuard, SubExistsGuard } from '../auth/guards'
 
 @ApiTags('Tickets')
+@ApiBearerAuth()
+@UseGuards(AccessTokenGuard, SubExistsGuard)
+@ApiUnauthorizedResponse({ description: 'Unauthorized' })
 @Controller('tickets')
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
