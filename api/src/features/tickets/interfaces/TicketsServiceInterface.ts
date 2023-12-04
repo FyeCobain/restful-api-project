@@ -7,6 +7,12 @@ import { TicketArrayPromise, TicketPromise } from '../types'
 export interface TicketsServiceInterface {
   create(createTicketDto: CreateTicketDto): TicketPromise
 
+  count(
+    filterQuery: Record<string, unknown>,
+    skip: number,
+    limit: number,
+  ): Promise<number>
+
   findAll(
     order: string,
     category: string,

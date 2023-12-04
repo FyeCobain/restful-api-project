@@ -42,6 +42,20 @@ export abstract class EntityRepository<T extends Document> {
     return createdEntity
   }
 
+  // Returns the count of entitties found
+  async count(
+    filterQuery: FilterQuery<T>,
+    skipAmount = 0,
+    limitAmount = 0,
+  ): Promise<number> {
+    return await this.entityModel
+      .find(filterQuery)
+      .skip(skipAmount)
+      .limit(limitAmount)
+      .count()
+      .exec()
+  }
+
   async findOneAndUpdate(
     filterQuery: FilterQuery<T>,
     updateEntityDto: UpdateQuery<T>,

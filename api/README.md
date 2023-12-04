@@ -35,6 +35,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Base repository and services improved**
+* count() method added to EntityRepository.
+* Added association verification on categories deletion.
+
 **Tickets service updated**
 * Tickets service now checks if the category exists on setting it.
 * Custom guards moved to src.

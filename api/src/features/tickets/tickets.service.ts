@@ -1,4 +1,9 @@
-import { Injectable, BadRequestException } from '@nestjs/common'
+import {
+  Injectable,
+  BadRequestException,
+  forwardRef,
+  Inject,
+} from '@nestjs/common'
 import { CreateTicketDto } from './dto/create-ticket.dto'
 import { UpdateTicketDto } from './dto/update-ticket.dto'
 import { TicketsRepository } from './tickets.repository'
@@ -7,13 +12,15 @@ import { UsersService } from '@features/users/users.service'
 import { TicketsServiceInterface } from './interfaces/TicketsServiceInterface'
 import { TicketArrayPromise, TicketPromise } from './types'
 import { CategoriesService } from '../categories/categories.service'
+import { titleize } from '@app/helpers/strings'
 
 @Injectable()
 export class TicketsService implements TicketsServiceInterface {
   constructor(
     private readonly ticketsRepository: TicketsRepository,
     private readonly usersService: UsersService,
-    private readonly categoriesService: CategoriesService,
+    @Inject(forwardRef(() => CategoriesService))
+    private categoriesService: CategoriesService,
   ) {}
 
   async create(createTicketDto: CreateTicketDto): TicketPromise {
@@ -26,17 +33,32 @@ export class TicketsService implements TicketsServiceInterface {
     return createdTicket
   }
 
+  async count(
+    filterQuery: Record<string, unknown>,
+    skip = 0,
+    limit = 0,
+  ): Promise<number> {
+    return await this.ticketsRepository.count(
+      { active: true, ...filterQuery },
+      skip,
+      limit,
+    )
+  }
+
   async findAll(
     order: string = null,
     category: string = null,
     limit,
     page,
   ): TicketArrayPromise {
-    // Verifying order's value
+    // Verifying order
     if (order !== null) {
       order = order.trim().toLowerCase()
       if (order !== 'asc' && order !== 'desc') order = null
     }
+
+    // Verifying category
+    if (category !== null) category = titleize(category.trim())
 
     // Pagination
     let skip = 0
@@ -63,7 +85,9 @@ export class TicketsService implements TicketsServiceInterface {
     // Checking if the category is valid
     if (typeof updateTicketDto.category !== 'undefined')
       if (!(await this.categoriesService.findByName(updateTicketDto.category)))
-        throw new BadRequestException('Category not found!')
+        throw new BadRequestException(
+          `Category '${updateTicketDto.category}' does not exist, please create it first`,
+        )
 
     const ticketUpdated = await this.ticketsRepository.findOneAndUpdate(
       { _id: id },
@@ -77,10 +101,10 @@ export class TicketsService implements TicketsServiceInterface {
     if (!(await this.findOne(id)))
       throw new BadRequestException('Ticket does not exist')
 
-    // Applying soft deleting
+    // Applying a soft delete
     await this.ticketsRepository.findOneAndUpdate(
       { _id: id },
-      { active: false },
+      { active: false, $unset: { category: '' } },
     )
     return { acknowledged: true, deletedCount: 1 }
   }
