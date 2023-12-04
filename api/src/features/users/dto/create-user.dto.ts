@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsEmail, IsNotEmpty, Matches, MinLength } from 'class-validator'
+import {
+  IsString,
+  IsEmail,
+  IsNotEmpty,
+  Matches,
+  MinLength,
+} from 'class-validator'
 
 // DTO for new user creation
 export class CreateUserDto {
@@ -8,6 +14,7 @@ export class CreateUserDto {
     example: 'John',
   })
   @IsNotEmpty()
+  @IsString()
   @MinLength(3, { message: 'Name is too short' })
   name: string
 
@@ -16,6 +23,7 @@ export class CreateUserDto {
     example: 'Doe',
   })
   @IsNotEmpty()
+  @IsString()
   @MinLength(3, { message: 'Lastname is too short' })
   lastName: string
 

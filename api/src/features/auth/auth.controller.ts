@@ -36,7 +36,7 @@ import { AuthDto } from './dto/auth.dto'
 import { EmailDto } from './dto/email.dto'
 import { PasswordDto } from './dto/pass.dto'
 
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

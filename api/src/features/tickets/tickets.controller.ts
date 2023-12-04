@@ -31,7 +31,7 @@ import {
 import { MongoExceptionFilter } from '@app/libs/filters'
 import { IdValidGuard } from '../users/guards'
 
-@ApiTags('tickets')
+@ApiTags('Tickets')
 @Controller('tickets')
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}

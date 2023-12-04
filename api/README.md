@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Categories basic CRUD implemented**
+* Basic crud implemented in controller and service.
+
 **Categories module added**
 * No new libraries added.
 

@@ -39,7 +39,7 @@ import { IdValidGuard } from './guards'
 // Types imports
 import { DeleteResult } from '@app/database/types'
 
-@ApiTags('users')
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

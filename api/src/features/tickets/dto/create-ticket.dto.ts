@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import {
   IsNotEmpty,
   IsOptional,
+  IsString,
   MinLength,
   IsEmail,
   IsDate,
@@ -15,6 +16,7 @@ export class CreateTicketDto {
     example: 'Complete the Nest.js project',
   })
   @IsNotEmpty()
+  @IsString()
   @Transform(({ value }) => value.trim())
   @MinLength(5, { message: 'Title is too short' })
   title: string
@@ -25,6 +27,7 @@ export class CreateTicketDto {
       'Complete the Nest.js 🐱 project with all the requirements fullfilled',
   })
   @IsNotEmpty()
+  @IsString()
   @Transform(({ value }) => value.trim())
   @MinLength(5, { message: 'Description is too short' })
   description: string
@@ -34,6 +37,7 @@ export class CreateTicketDto {
     example: 'john.doe@example.com',
   })
   @IsNotEmpty()
+  @IsString()
   @Transform(({ value }) => value.trim().toLowerCase())
   @IsEmail()
   assignee: string

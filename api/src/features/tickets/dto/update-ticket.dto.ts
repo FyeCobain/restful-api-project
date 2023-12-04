@@ -1,6 +1,6 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger'
 import { CreateTicketDto } from './create-ticket.dto'
-import { IsOptional } from 'class-validator'
+import { IsOptional, IsString } from 'class-validator'
 import { Transform } from 'class-transformer'
 
 export class UpdateTicketDto extends PartialType(CreateTicketDto) {
@@ -10,6 +10,7 @@ export class UpdateTicketDto extends PartialType(CreateTicketDto) {
     required: false,
   })
   @IsOptional()
+  @IsString()
   @Transform(({ value }) => value.trim())
   category?: string
 }

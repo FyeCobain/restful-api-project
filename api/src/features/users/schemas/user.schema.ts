@@ -46,5 +46,5 @@ export class User {
   accountType: string
 }
 
-// Exporting the User Schema
+// Exporting the User schema
 export const UserSchema = SchemaFactory.createForClass(User)
