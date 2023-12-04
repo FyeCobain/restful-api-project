@@ -39,8 +39,9 @@ export class CreateTicketDto {
   assignee: string
 
   @ApiProperty({
-    description: "Optional - The ticket's due date",
+    description: "Optional: The ticket's due date",
     example: '2023-12-08 23:59:59+0',
+    required: false,
   })
   @IsOptional()
   @Type(() => Date)

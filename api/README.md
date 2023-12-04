@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Tickets DTOs documentation improved improved**
+* Added 'required: false' in optional properties.
+
 **Tickets controller and service improved**
 * Controller's documentation improved.
 * Guards and filters added.

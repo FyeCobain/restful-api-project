@@ -7,6 +7,7 @@ export class UpdateTicketDto extends PartialType(CreateTicketDto) {
   @ApiProperty({
     description: "Optional: The ticket's category id",
     example: '',
+    required: false,
   })
   @IsOptional()
   @Transform(({ value }) => value.trim())
