@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Categories sorting by name implemented**
+* Categories can be sortied ascending or descending.
+
 **Base repository and services improved**
 * count() method added to EntityRepository.
 * Added association verification on categories deletion.

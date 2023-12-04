@@ -51,11 +51,11 @@ export class TicketsController {
     name: 'order',
     description: 'Order by due date ascending or descending',
     required: false,
-    enum: ['asc', 'desc'],
+    enum: ['ASC', 'DESC'],
   })
   @ApiQuery({
     name: 'category',
-    description: 'Filter by some category id',
+    description: 'Filter by some category name',
     required: false,
   })
   @ApiQuery({

@@ -7,7 +7,7 @@ import { IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator'
 export class CreateCategoryDto {
   @ApiProperty({
     description: 'Must have at least 3 characters other than spaces',
-    example: 'Housework',
+    example: 'Backend',
   })
   @IsNotEmpty()
   @IsString()
@@ -18,7 +18,7 @@ export class CreateCategoryDto {
   @ApiProperty({
     description:
       "Optional: Category's descripton with at least 6 characters other than spaces",
-    example: 'Tickets related to housework go here',
+    example: 'Tickets related to backend development',
     required: false,
   })
   @IsOptional()

@@ -22,8 +22,15 @@ export class CategoriesService {
     return await this.categoriesRepository.create(createCategoryDto)
   }
 
-  async findAll() {
-    return await this.categoriesRepository.find({})
+  async findAll(order: string = null) {
+    // Verifying order
+    let sortObject = {}
+    if (order !== null) {
+      order = order.trim().toLowerCase()
+      if (order === 'asc' || order === 'desc') sortObject = { name: order }
+    }
+
+    return await this.categoriesRepository.find({}, {}, 0, 0, sortObject)
   }
 
   async findOne(id: string) {

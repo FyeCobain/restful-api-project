@@ -9,6 +9,7 @@ import {
   UseFilters,
   UseGuards,
   NotFoundException,
+  Query,
 } from '@nestjs/common'
 import { CategoriesService } from './categories.service'
 import { CreateCategoryDto } from './dto/create-category.dto'
@@ -19,7 +20,7 @@ import { MongoExceptionFilter } from '@app/libs/filters'
 import { IdValidGuard } from '@app/guards'
 
 // Swagger
-import { ApiTags } from '@nestjs/swagger'
+import { ApiTags, ApiQuery } from '@nestjs/swagger'
 
 @ApiTags('Categories')
 @Controller('categories')
@@ -32,9 +33,15 @@ export class CategoriesController {
     return await this.categoriesService.create(createCategoryDto)
   }
 
+  @ApiQuery({
+    name: 'order',
+    description: 'Order by name ascending or descending',
+    required: false,
+    enum: ['ASC', 'DESC'],
+  })
   @Get()
-  async findAll() {
-    return await this.categoriesService.findAll()
+  async findAll(@Query('order') order: string = null) {
+    return await this.categoriesService.findAll(order)
   }
 
   @Get(':id')

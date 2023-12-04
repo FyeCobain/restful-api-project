@@ -7,7 +7,7 @@ import { titleize } from '@app/helpers/strings'
 export class UpdateTicketDto extends PartialType(CreateTicketDto) {
   @ApiProperty({
     description: "Optional: The ticket's category name",
-    example: 'Housework',
+    example: 'Backend',
     required: false,
   })
   @IsOptional()
