@@ -1,15 +1,20 @@
+// Core / common imports
 import {
   Inject,
   Injectable,
   forwardRef,
   BadRequestException,
 } from '@nestjs/common'
-import { CategoriesServiceInterface } from './interfaces/categories.service.interface'
-import { CreateCategoryDto } from './dto/create-category.dto'
-import { UpdateCategoryDto } from './dto/update-category.dto'
+
+// Services / repository imports
 import { CategoriesRepository } from './categories.repository'
 import { DeleteResultPromise } from '@app/database/types'
 import { TicketsService } from '../tickets/tickets.service'
+
+// Interfaces / DTOs imports
+import { CategoriesServiceInterface } from './interfaces/categories.service.interface'
+import { CreateCategoryDto } from './dto/create-category.dto'
+import { UpdateCategoryDto } from './dto/update-category.dto'
 import { CategoryArrayPromise, CategoryPromise } from './types'
 
 @Injectable()

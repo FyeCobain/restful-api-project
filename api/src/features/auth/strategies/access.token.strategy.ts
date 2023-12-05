@@ -25,7 +25,7 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(req: Request, payload: JwtPayload) {
-    // Checking if the token has expired
+    // Manually checking if the token has expired
     const accessToken = req.get('Authorization').replace('Bearer', '').trim()
     const jwtExpired = await this.jwtManager.isExpired(
       accessToken,

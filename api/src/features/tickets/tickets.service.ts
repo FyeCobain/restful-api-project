@@ -1,3 +1,4 @@
+// Core / common imports
 import {
   Injectable,
   Inject,
@@ -6,15 +7,21 @@ import {
   BadRequestException,
   ForbiddenException,
 } from '@nestjs/common'
+
+// Services / repository imports
+import { TicketsRepository } from './tickets.repository'
+import { UsersService } from '@features/users/users.service'
+import { RecordObject, DeleteResultPromise } from '@app/database/types'
+import { CategoriesService } from '../categories/categories.service'
+
+// Interfaces / DTOs imports
+import { TicketsServiceInterface } from './interfaces/tickets.service.interface'
 import { CreateTicketDto } from './dto/create-ticket.dto'
 import { UpdateTicketDto } from './dto/update-ticket.dto'
-import { TicketsRepository } from './tickets.repository'
-import { RecordObject, DeleteResultPromise } from '@app/database/types'
-import { UsersService } from '@features/users/users.service'
-import { TicketsServiceInterface } from './interfaces/tickets.service.interface'
-import { TicketArrayPromise, TicketPromise } from './types'
-import { CategoriesService } from '../categories/categories.service'
 import { TicketDocument } from './schemas/ticket.schema'
+import { TicketArrayPromise, TicketPromise } from './types'
+
+// Helpers imports
 import { titleize } from '@app/helpers/strings'
 
 @Injectable()

@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Added new import comments**
+* Added comments to tickets and categories imports.
+
 **Added access token expiration verification**
 * Now if the access token is valid but expired, a 'Token expired' message is returned.
 
