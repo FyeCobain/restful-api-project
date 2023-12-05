@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**User update bug fixed**
+* Bug fixed when trying to update the user.
+
 **Added new import comments**
 * Added comments to tickets and categories imports.
 

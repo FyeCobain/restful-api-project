@@ -100,5 +100,6 @@ export class UsersController {
     const deleteResult: DeleteResult = await this.usersService.remove(id)
     if (deleteResult.deletedCount === 0)
       throw new BadRequestException('Wrong user id')
+    return deleteResult
   }
 }

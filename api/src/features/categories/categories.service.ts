@@ -53,7 +53,7 @@ export class CategoriesService implements CategoriesServiceInterface {
     updateCategoryDto: UpdateCategoryDto,
   ): CategoryPromise {
     if (!(await this.findOne(id)))
-      throw new BadRequestException('Category does not exist!')
+      throw new BadRequestException('Category does not exists!')
 
     return await this.categoriesRepository.findOneAndUpdate(
       { _id: id },
@@ -63,7 +63,7 @@ export class CategoriesService implements CategoriesServiceInterface {
 
   async remove(id: string): DeleteResultPromise {
     const category = await this.findOne(id)
-    if (!category) throw new BadRequestException('Category does not exist')
+    if (!category) throw new BadRequestException('Category does not exists')
 
     // Checking if there are tickets with this category
     const ticketsCount = await this.ticketsService.count(
