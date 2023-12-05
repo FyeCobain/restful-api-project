@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Added access token expiration verification**
+* Now if the access token is valid but expired, a 'Token expired' message is returned.
+
 **sendEmail method improved**
 * Now the sendEmail method returns true when email was sent, false otherwise.
 
