@@ -151,23 +151,20 @@ export class AuthService implements AuthServiceInterface {
     )
 
     // Sendin an e-mail to the user's email address
-    try {
-      await this.sendEmail(
-        emailAddress,
-        "Reset your Nest.js project's password",
-        'reset-pass-token',
-        {
-          userName: user.name,
-          jwt,
-        },
-      )
-    } catch (error) {
+    const emailSended = await this.sendEmail(
+      emailAddress,
+      "Reset your Nest.js project's password",
+      'reset-pass-token',
+      {
+        userName: user.name,
+        jwt,
+      },
+    )
+    if (!emailSended)
       throw new InternalServerErrorException({
-        error:
-          'Sorry, we were unable to send the email with the password reset link',
+        error: 'Sorry, we were unable to send the email with the reset link',
         reset_pass_jwt: jwt,
       })
-    }
 
     return jwt
   }
@@ -193,17 +190,22 @@ export class AuthService implements AuthServiceInterface {
     emailPayload: object,
     appName = 'Nest.js project',
     from = 'michel.bracam@example.com',
-  ) {
-    await this.mailerService.sendMail({
-      to,
-      from,
-      subject,
-      template,
-      context: {
-        appName,
-        emailPayload,
-        year: new Date().getFullYear(),
-      },
-    })
+  ): Promise<boolean> {
+    try {
+      await this.mailerService.sendMail({
+        to,
+        from,
+        subject,
+        template,
+        context: {
+          appName,
+          emailPayload,
+          year: new Date().getFullYear(),
+        },
+      })
+      return true
+    } catch (error) {
+      return false
+    }
   }
 }

@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**sendEmail method improved**
+* Now the sendEmail method returns true when email was sent, false otherwise.
+
 **Bug fixed and overall refactorization**
 * fixed a bug in the refreshToken endpoint.
 * Auth service and tickets service refactorize.
