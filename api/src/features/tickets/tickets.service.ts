@@ -3,6 +3,7 @@ import {
   BadRequestException,
   forwardRef,
   Inject,
+  ForbiddenException,
 } from '@nestjs/common'
 import { CreateTicketDto } from './dto/create-ticket.dto'
 import { UpdateTicketDto } from './dto/update-ticket.dto'
@@ -12,6 +13,7 @@ import { UsersService } from '@features/users/users.service'
 import { TicketsServiceInterface } from './interfaces/tickets.service.interface'
 import { TicketArrayPromise, TicketPromise } from './types'
 import { CategoriesService } from '../categories/categories.service'
+import { TicketDocument } from './schemas/ticket.schema'
 import { titleize } from '@app/helpers/strings'
 
 @Injectable()
@@ -33,15 +35,31 @@ export class TicketsService implements TicketsServiceInterface {
     return createdTicket
   }
 
-  async count(filterQuery: RecordObject, skip = 0, limit = 0): Promise<number> {
+  // Creates the appropiate filter query based on the assignee and the sub-filter received
+  createFilterQuery(
+    assignee: string,
+    subFilterQuery: RecordObject = {},
+  ): RecordObject {
+    let filterQuery: RecordObject = { active: true, ...subFilterQuery }
+    if (assignee !== null) filterQuery = { ...filterQuery, assignee }
+    return filterQuery
+  }
+
+  async count(
+    assignee: string,
+    filterQuery: RecordObject,
+    skip = 0,
+    limit = 0,
+  ): Promise<number> {
     return await this.ticketsRepository.count(
-      { active: true, ...filterQuery },
+      this.createFilterQuery(assignee, filterQuery),
       skip,
       limit,
     )
   }
 
   async findAll(
+    assignee: string,
     order: string = null,
     category: string = null,
     limit,
@@ -60,6 +78,7 @@ export class TicketsService implements TicketsServiceInterface {
     let skip = 0
     if (limit > 0 && page > 0) skip = (page - 1) * limit
     return await this.ticketsRepository.findAllAndParse(
+      assignee,
       order,
       category,
       skip,
@@ -67,16 +86,25 @@ export class TicketsService implements TicketsServiceInterface {
     )
   }
 
-  async findOne(id: string): TicketPromise {
-    return await this.ticketsRepository.findOne(
-      { _id: id, active: true },
+  async findOne(assignee: string, id: string): TicketPromise {
+    const ticket: TicketDocument = await this.ticketsRepository.findOne(
+      { _id: id },
       { active: 0 },
     )
+    if (ticket && assignee !== null && ticket.assignee !== assignee)
+      throw new ForbiddenException()
+    return ticket
   }
 
-  async update(id: string, updateTicketDto: UpdateTicketDto): TicketPromise {
-    if (!(await this.findOne(id)))
-      throw new BadRequestException('Ticket does not exist!')
+  async update(
+    assignee: string,
+    id: string,
+    updateTicketDto: UpdateTicketDto,
+  ): TicketPromise {
+    // Validating ticket and assignee
+    const ticket = await this.findOne(null, id)
+    if (!ticket) throw new BadRequestException('Ticket does not exist!')
+    if (ticket.assignee !== assignee) throw new ForbiddenException()
 
     // Checking if the category is valid
     if (typeof updateTicketDto.category !== 'undefined')
@@ -86,16 +114,18 @@ export class TicketsService implements TicketsServiceInterface {
         )
 
     const ticketUpdated = await this.ticketsRepository.findOneAndUpdate(
-      { _id: id },
+      this.createFilterQuery(assignee, { _id: id }),
       updateTicketDto,
     )
     ticketUpdated.active = undefined
     return ticketUpdated
   }
 
-  async softRemove(id: string): DeleteResultPromise {
-    if (!(await this.findOne(id)))
-      throw new BadRequestException('Ticket does not exist')
+  async softRemove(assignee: string, id: string): DeleteResultPromise {
+    // Validating ticket and assignee
+    const ticket = await this.findOne(null, id)
+    if (!ticket) throw new BadRequestException('Ticket does not exist!')
+    if (ticket.assignee !== assignee) throw new ForbiddenException()
 
     // Applying a soft delete
     await this.ticketsRepository.findOneAndUpdate(

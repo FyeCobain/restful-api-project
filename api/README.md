@@ -34,7 +34,12 @@ $ yarn run test:cov
 ```
 
 ## Commits (newest to oldest)
-**Auth required added for tickets and categories**
+
+**Added assignee validations**
+* Now only the assignee can perform CRUD Operations on the tickets.
+* Tickets and categories working properly.
+
+**Auth required for tickets and categories**
 * Added guards to check if the user is authenticated and exists.
 
 **Categories controller code improved**

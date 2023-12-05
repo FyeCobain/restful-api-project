@@ -11,6 +11,7 @@ import {
   BadRequestException,
   UseFilters,
   UseGuards,
+  Req,
 } from '@nestjs/common'
 import { TicketsService } from './tickets.service'
 import { CreateTicketDto } from './dto/create-ticket.dto'
@@ -29,10 +30,12 @@ import {
   ApiCreatedResponse,
   ApiBadRequestResponse,
   ApiUnauthorizedResponse,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
 import { AccessTokenGuard, SubExistsGuard } from '../auth/guards'
+import { getPayloadEmail } from '@app/helpers/auth'
 
 @ApiTags('Tickets')
 @ApiBearerAuth()
@@ -77,6 +80,7 @@ export class TicketsController {
   @ApiOkResponse({ description: 'OK' })
   @Get()
   async findAll(
+    @Req() req: any,
     @Query('order') order: string = null,
     @Query('category') category: string = null,
     @Query('limit') limit?: number,
@@ -90,17 +94,24 @@ export class TicketsController {
     if (limit < 0 || page < 0)
       throw new BadRequestException('Pagination values cannnot be negative')
 
-    return await this.ticketsService.findAll(order, category, limit, page)
+    return await this.ticketsService.findAll(
+      getPayloadEmail(req),
+      order,
+      category,
+      limit,
+      page,
+    )
   }
 
   // Returns a single ticket
   @UseGuards(IdValidGuard)
   @ApiOkResponse({ description: 'OK' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
   @ApiNotFoundResponse({ description: 'Not Found' })
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const ticket = await this.ticketsService.findOne(id)
+  async findOne(@Req() req: any, @Param('id') id: string) {
+    const ticket = await this.ticketsService.findOne(getPayloadEmail(req), id)
     if (!ticket) throw new NotFoundException()
     return ticket
   }
@@ -111,11 +122,17 @@ export class TicketsController {
   @UseGuards(IdValidGuard)
   @ApiOkResponse({ description: 'OK' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
   async update(
+    @Req() req: any,
     @Param('id') id: string,
     @Body() updateTicketDto: UpdateTicketDto,
   ) {
-    return await this.ticketsService.update(id, updateTicketDto)
+    return await this.ticketsService.update(
+      getPayloadEmail(req),
+      id,
+      updateTicketDto,
+    )
   }
 
   // Performs a soft delete on a ticket
@@ -123,7 +140,8 @@ export class TicketsController {
   @UseGuards(IdValidGuard)
   @ApiOkResponse({ description: 'OK' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
-  async remove(@Param('id') id: string) {
-    return await this.ticketsService.softRemove(id)
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  async remove(@Req() req: any, @Param('id') id: string) {
+    return await this.ticketsService.softRemove(getPayloadEmail(req), id)
   }
 }

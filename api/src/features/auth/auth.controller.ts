@@ -35,6 +35,7 @@ import { CreateUserDto } from '@features/users/dto/create-user.dto'
 import { AuthDto } from './dto/auth.dto'
 import { EmailDto } from './dto/email.dto'
 import { PasswordDto } from './dto/pass.dto'
+import { getPayloadValue, getPayloadSub } from '@app/helpers/auth'
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -99,8 +100,8 @@ export class AuthController {
   @ApiForbiddenResponse({ description: 'Forbidden' })
   async refreshTokens(@Req() req: any) {
     return await this.authService.refreshTokens(
-      req.user['sub'],
-      req.user['refreshToken'],
+      getPayloadSub(req),
+      getPayloadValue(req, 'refreshToken'),
     )
   }
 
@@ -112,6 +113,6 @@ export class AuthController {
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
   async logout(@Req() req: any) {
-    await this.authService.logOut(req.user['sub'])
+    await this.authService.logOut(getPayloadSub(req))
   }
 }

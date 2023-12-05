@@ -62,6 +62,7 @@ export class CategoriesService implements CategoriesServiceInterface {
 
     // Checking if there are tickets with this category
     const ticketsCount = await this.ticketsService.count(
+      null,
       { category: category.name },
       0,
       1,

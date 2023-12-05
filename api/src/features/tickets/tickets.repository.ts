@@ -13,6 +13,7 @@ export class TicketsRepository extends EntityRepository<TicketDocument> {
 
   // Returns the tickets using the filter and sorting parameters received
   async findAllAndParse(
+    assignee = null,
     order: string = null,
     category: string = null,
     skip = 0,
@@ -21,13 +22,25 @@ export class TicketsRepository extends EntityRepository<TicketDocument> {
     // If no order needed, returning tickets using the find method...
     if (order === null) {
       let filterQuery: RecordObject = { active: true }
+      if (assignee !== null) filterQuery = { ...filterQuery, assignee }
       if (category !== null) filterQuery = { ...filterQuery, category }
       return await this.find(filterQuery, { active: 0 }, skip, limit)
     }
 
     // Using aggregation to filter and sort the tickets...
-    let subFilterObject: object = { _id: { $exists: true } }
-    if (category !== null) subFilterObject = { category: { $eq: category } }
+    let subFilterObject: object
+    if (assignee !== null && category === null)
+      subFilterObject = { assignee: { $eq: assignee } }
+    else if (assignee === null && category !== null)
+      subFilterObject = { category: { $eq: category } }
+    else if (assignee !== null && category !== null)
+      subFilterObject = {
+        $and: [
+          { assignee: { $eq: assignee } },
+          { category: { $eq: category } },
+        ],
+      }
+    else subFilterObject = { _id: { $exists: true } }
 
     const pipelines: PipelineStage[] = [
       {

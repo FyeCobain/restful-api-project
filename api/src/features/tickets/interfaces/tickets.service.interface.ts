@@ -8,21 +8,27 @@ export interface TicketsServiceInterface {
   create(createTicketDto: CreateTicketDto): TicketPromise
 
   count(
+    assignee: string,
     filterQuery: Record<string, unknown>,
     skip: number,
     limit: number,
   ): Promise<number>
 
   findAll(
+    assignee: string,
     order: string,
     category: string,
     limit: number,
     page: number,
   ): TicketArrayPromise
 
-  findOne(id: string): TicketPromise
+  findOne(assignee: string, id: string): TicketPromise
 
-  update(id: string, updateTicketDto: UpdateTicketDto): TicketPromise
+  update(
+    assignee: string,
+    id: string,
+    updateTicketDto: UpdateTicketDto,
+  ): TicketPromise
 
-  softRemove(id: string): DeleteResultPromise
+  softRemove(assignee: string, id: string): DeleteResultPromise
 }
