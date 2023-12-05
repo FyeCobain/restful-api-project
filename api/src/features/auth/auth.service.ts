@@ -63,7 +63,7 @@ export class AuthService implements AuthServiceInterface {
     const user = await this.usersService.findByEmail(authDto.email)
     if (!user) throw new BadRequestException('User does not exist')
     if (!(await argon2.verify(user.password, authDto.password)))
-      throw new BadRequestException('Password is incorrect')
+      throw new UnauthorizedException('Password is incorrect')
     // Getting new tokens and updating the refresh token in the DB
     const tokens = await this.getTokens(user.id, user.email, user.accountType)
     await this.updateRefreshToken(user.id, tokens.refreshToken)
@@ -152,20 +152,15 @@ export class AuthService implements AuthServiceInterface {
 
     // Sendin an e-mail to the user's email address
     try {
-      await this.mailerService.sendMail({
-        to: emailAddress,
-        from: 'michel.bracam@example.com',
-        subject: "Reset your Nest.js project's password",
-        template: 'reset-pass-token',
-        context: {
-          appName: 'Nest.js project',
-          emailPayload: {
-            userName: user.name,
-            jwt,
-          },
-          year: new Date().getFullYear(),
+      await this.sendEmail(
+        emailAddress,
+        "Reset your Nest.js project's password",
+        'reset-pass-token',
+        {
+          userName: user.name,
+          jwt,
         },
-      })
+      )
     } catch (error) {
       throw new InternalServerErrorException({
         error:
@@ -188,5 +183,27 @@ export class AuthService implements AuthServiceInterface {
     if (!user) throw new BadRequestException('User not found')
 
     await this.usersService.update(user.id, { password: newPassword })
+  }
+
+  // Emailing
+  async sendEmail(
+    to: string,
+    subject: string,
+    template: string,
+    emailPayload: object,
+    appName = 'Nest.js project',
+    from = 'michel.bracam@example.com',
+  ) {
+    await this.mailerService.sendMail({
+      to,
+      from,
+      subject,
+      template,
+      context: {
+        appName,
+        emailPayload,
+        year: new Date().getFullYear(),
+      },
+    })
   }
 }

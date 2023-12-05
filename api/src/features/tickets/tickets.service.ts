@@ -1,8 +1,9 @@
 import {
   Injectable,
-  BadRequestException,
-  forwardRef,
   Inject,
+  forwardRef,
+  HttpException,
+  BadRequestException,
   ForbiddenException,
 } from '@nestjs/common'
 import { CreateTicketDto } from './dto/create-ticket.dto'
@@ -88,7 +89,7 @@ export class TicketsService implements TicketsServiceInterface {
 
   async findOne(assignee: string, id: string): TicketPromise {
     const ticket: TicketDocument = await this.ticketsRepository.findOne(
-      { _id: id },
+      this.createFilterQuery(null, { _id: id }),
       { active: 0 },
     )
     if (ticket && assignee !== null && ticket.assignee !== assignee)
@@ -101,10 +102,9 @@ export class TicketsService implements TicketsServiceInterface {
     id: string,
     updateTicketDto: UpdateTicketDto,
   ): TicketPromise {
-    // Validating ticket and assignee
-    const ticket = await this.findOne(null, id)
-    if (!ticket) throw new BadRequestException('Ticket does not exist!')
-    if (ticket.assignee !== assignee) throw new ForbiddenException()
+    // Validating if the ticket exists and the assignee is correct
+    const error = await this.getPossibleError(assignee, id)
+    if (error) throw error
 
     // Checking if the category is valid
     if (typeof updateTicketDto.category !== 'undefined')
@@ -122,10 +122,9 @@ export class TicketsService implements TicketsServiceInterface {
   }
 
   async softRemove(assignee: string, id: string): DeleteResultPromise {
-    // Validating ticket and assignee
-    const ticket = await this.findOne(null, id)
-    if (!ticket) throw new BadRequestException('Ticket does not exist!')
-    if (ticket.assignee !== assignee) throw new ForbiddenException()
+    // Validating if the ticket exists and the assignee is correct
+    const error = await this.getPossibleError(assignee, id)
+    if (error) throw error
 
     // Applying a soft delete
     await this.ticketsRepository.findOneAndUpdate(
@@ -133,5 +132,14 @@ export class TicketsService implements TicketsServiceInterface {
       { active: false, $unset: { category: '' } },
     )
     return { acknowledged: true, deletedCount: 1 }
+  }
+
+  // Returns an http error when the user cannot access the ticket
+  async getPossibleError(assignee: string, id: string): Promise<HttpException> {
+    const ticket = await this.findOne(null, id)
+    if (!ticket)
+      return new BadRequestException('Ticket does not exist or is deleted')
+    if (ticket.assignee !== assignee) return new ForbiddenException()
+    return null
   }
 }

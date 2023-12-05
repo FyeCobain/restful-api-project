@@ -56,6 +56,7 @@ export class AuthController {
   @Post('signin')
   @ApiOkResponse({ description: 'OK' })
   @ApiBadRequestResponse({ description: 'Bad Rquest' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @HttpCode(HttpStatus.OK)
   async signIn(@Body() authData: AuthDto) {
     return await this.authService.signIn(authData)
@@ -101,7 +102,7 @@ export class AuthController {
   async refreshTokens(@Req() req: any) {
     return await this.authService.refreshTokens(
       getPayloadSub(req),
-      getPayloadValue(req, 'refreshToken'),
+      getPayloadValue(req, 'refreshToken', false),
     )
   }
 

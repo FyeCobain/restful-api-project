@@ -35,6 +35,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Bug fixed and overall refactorization**
+* fixed a bug in the refreshToken endpoint.
+* Auth service and tickets service refactorize.
+
 **Added assignee validations**
 * Now only the assignee can perform CRUD Operations on the tickets.
 * Tickets and categories working properly.
