@@ -14,7 +14,7 @@ describe('UsersController', () => {
   let controller: UsersController
   let service: UsersService
   const johnDoeId = '6568cc5dada867684ee6a5b6' // John Doe, index 0
-  const michaelScottId = '656963130aafdd90a149b079' // Jane Doe, index 1
+  const michaelScottId = '656963130aafdd90a149b079' // Michael Scott, index 1
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -32,7 +32,7 @@ describe('UsersController', () => {
     let user: UserDocument
     const createUserDto: CreateUserDto = {
       name: 'Jim',
-      lastName: 'Halper',
+      lastName: 'Halpert',
       email: 'jim.halpert@example.com',
       password: 'Sp1derm@n',
     }

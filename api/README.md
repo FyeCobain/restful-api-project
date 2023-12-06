@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**User tests updated**
+* Users data corrections.
+
 **User and auth tests updated**
 * User and auth tsts updated to match updated controllers.
 * User mock up stub updated.
