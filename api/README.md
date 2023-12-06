@@ -35,6 +35,9 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**Token expired message updated**
+* 'Token expired' updated to 'Acces token expired'.
+
 **User update bug fixed**
 * Bug fixed when trying to update the user.
 
@@ -42,7 +45,7 @@ $ yarn run test:cov
 * Added comments to tickets and categories imports.
 
 **Added access token expiration verification**
-* Now if the access token is valid but expired, a 'Token expired' message is returned.
+* Now if access token is valid but expired, an 'Access token expired' message is returned.
 
 **sendEmail method improved**
 * Now the sendEmail method returns true when email was sent, false otherwise.

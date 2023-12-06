@@ -31,7 +31,7 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
       accessToken,
       process.env.JWT_ACCESS_SECRET,
     )
-    if (jwtExpired) throw new UnauthorizedException('Token expired')
+    if (jwtExpired) throw new UnauthorizedException('Access token expired')
 
     return payload
   }
