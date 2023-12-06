@@ -42,6 +42,9 @@ $ yarn run seed
 
 ## Commits (newest to oldest)
 
+**Categories seeder added**
+* All seeders can be run using 'yarn run build' and then 'yarn run seed'.
+
 **Added users seeding**
 * Users can be seeded now using 'yarn run build' and then 'yarn run seed'.
 * Libraries added:
