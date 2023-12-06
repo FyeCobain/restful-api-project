@@ -36,11 +36,13 @@ $ yarn run test:cov
 ## Seeding
 ```bash
 # seeding data into MongoDB
-$ yarn run build
 $ yarn run seed
 ```
 
 ## Commits (newest to oldest)
+
+**Seeding scripts updated**
+* Now the seeder script executes directly in the source .ts file instead of de builder .js file.
 
 **Tickets seeder added**
 * All seeders can be run using 'yarn run build' and then 'yarn run seed'.
