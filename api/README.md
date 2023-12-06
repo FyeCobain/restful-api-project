@@ -35,6 +35,10 @@ $ yarn run test:cov
 
 ## Commits (newest to oldest)
 
+**User and auth tests updated**
+* User and auth tsts updated to match updated controllers.
+* User mock up stub updated.
+
 **Token expired message updated**
 * 'Token expired' updated to 'Acces token expired'.
 

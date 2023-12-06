@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { UsersController } from './users.controller'
 import { Types } from 'mongoose'
+import { DeleteResult } from '@app/database/types'
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
@@ -13,7 +14,7 @@ describe('UsersController', () => {
   let controller: UsersController
   let service: UsersService
   const johnDoeId = '6568cc5dada867684ee6a5b6' // John Doe, index 0
-  const janeDoeId = '656963130aafdd90a149b079' // Jane Doe, index 1
+  const michaelScottId = '656963130aafdd90a149b079' // Jane Doe, index 1
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,9 +31,9 @@ describe('UsersController', () => {
   describe('create', () => {
     let user: UserDocument
     const createUserDto: CreateUserDto = {
-      name: 'Mike',
-      lastName: 'Smith',
-      email: 'mike.smith@example.com',
+      name: 'Jim',
+      lastName: 'Halper',
+      email: 'jim.halpert@example.com',
       password: 'Sp1derm@n',
     }
 
@@ -75,11 +76,11 @@ describe('UsersController', () => {
 
     beforeEach(async () => {
       jest.spyOn(service, 'findOne')
-      user = await controller.findOne(janeDoeId) // Searching Jane Doe
+      user = await controller.findOne(michaelScottId) // Searching Michael Scott
     })
 
     it("should call usersService.findOne() passing it the user's id", () => {
-      expect(service.findOne).toHaveBeenCalledWith(janeDoeId)
+      expect(service.findOne).toHaveBeenCalledWith(michaelScottId)
     })
 
     it('should return the found user', () => {
@@ -112,7 +113,7 @@ describe('UsersController', () => {
 
   // remove / delete endpoint
   describe('remove', () => {
-    let result: void
+    let result: DeleteResult
 
     beforeEach(async () => {
       jest.spyOn(service, 'remove')
@@ -123,8 +124,9 @@ describe('UsersController', () => {
       expect(service.remove).toHaveBeenCalledWith(johnDoeId)
     })
 
-    it('should return nothing', () => {
-      expect(result).toBeUndefined()
+    it('should return the result with acknowledged: true and deleteCount: 1', () => {
+      expect(result.acknowledged).toBe(true)
+      expect(result.deletedCount).toBe(1)
     })
   })
 })

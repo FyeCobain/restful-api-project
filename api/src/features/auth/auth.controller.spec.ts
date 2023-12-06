@@ -92,24 +92,4 @@ describe('AuthController', () => {
       expect(result).toHaveProperty('reset_pass_jwt')
     })
   })
-
-  // refreshTokens endpoint
-  describe('refreshTokens', () => {
-    let result: any
-    const userPayload = { user: {} }
-
-    beforeEach(async () => {
-      jest.spyOn(service, 'refreshTokens')
-      result = await controller.refreshTokens(userPayload)
-    })
-
-    it('should call authService.refreshTokens()', () => {
-      expect(service.refreshTokens).toHaveBeenCalled()
-    })
-
-    it('should return and object with the new acces and refresh tokens', () => {
-      expect(result).toHaveProperty('accessToken')
-      expect(result).toHaveProperty('refreshToken')
-    })
-  })
 })
