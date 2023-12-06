@@ -42,6 +42,9 @@ $ yarn run seed
 
 ## Commits (newest to oldest)
 
+**Tickets seeder added**
+* All seeders can be run using 'yarn run build' and then 'yarn run seed'.
+
 **Categories seeder added**
 * All seeders can be run using 'yarn run build' and then 'yarn run seed'.
 

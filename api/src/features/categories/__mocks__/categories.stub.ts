@@ -26,7 +26,7 @@ export const categoriesStub = (): CategoryDocument[] => {
       name: 'Healthcare',
     },
     {
-      _id: null, // <-- To implicity convert all the id's to type mongoose.Types.ObjectId
+      _id: null, // <-- To implicity convert all the id's to mongoose.Types.ObjectId
     },
   ] as CategoryDocument[]
   categories.pop()
