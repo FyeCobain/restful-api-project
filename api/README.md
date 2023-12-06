@@ -33,7 +33,20 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+## Seeding
+```bash
+# seeding data into MongoDB
+$ yarn run build
+$ yarn run seed
+```
+
 ## Commits (newest to oldest)
+
+**Added users seeding**
+* Users can be seeded now using 'yarn run build' and then 'yarn run seed'.
+* Libraries added:
+[nestjs-seeder](https://www.npmjs.com/package/nestjs-seeder)
+[@faker-js/faker](https://www.npmjs.com/package/@faker-js/faker)
 
 **User tests updated**
 * Users data corrections.
