@@ -41,6 +41,9 @@ $ yarn run seed
 
 ## Commits (newest to oldest)
 
+**Services mock-ups added**
+* Added jest mock-ups for the categories and tickets services.
+
 **Added protection for NoSQL injection**
 * Filter queries has been parameterized.
 

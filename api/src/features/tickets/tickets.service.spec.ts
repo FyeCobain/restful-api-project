@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { TicketsService } from './tickets.service'
 
+jest.mock('./tickets.service')
+
 describe('TicketsService', () => {
   let service: TicketsService
 
