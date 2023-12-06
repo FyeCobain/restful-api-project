@@ -96,7 +96,7 @@ export class TicketsService implements TicketsServiceInterface {
 
   async findOne(assignee: string, id: string): TicketPromise {
     const ticket: TicketDocument = await this.ticketsRepository.findOne(
-      this.createFilterQuery(null, { _id: id }),
+      this.createFilterQuery(null, { _id: { $eq: id } }),
       { active: 0 },
     )
     if (ticket && assignee !== null && ticket.assignee !== assignee)
@@ -121,7 +121,7 @@ export class TicketsService implements TicketsServiceInterface {
         )
 
     const ticketUpdated = await this.ticketsRepository.findOneAndUpdate(
-      this.createFilterQuery(assignee, { _id: id }),
+      this.createFilterQuery(assignee, { _id: { $eq: id } }),
       updateTicketDto,
     )
     ticketUpdated.active = undefined
@@ -135,7 +135,7 @@ export class TicketsService implements TicketsServiceInterface {
 
     // Applying a soft delete
     await this.ticketsRepository.findOneAndUpdate(
-      { _id: id },
+      { _id: { $eq: id } },
       { active: false, $unset: { category: '' } },
     )
     return { acknowledged: true, deletedCount: 1 }

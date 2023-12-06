@@ -41,11 +41,11 @@ export class CategoriesService implements CategoriesServiceInterface {
   }
 
   async findOne(id: string): CategoryPromise {
-    return await this.categoriesRepository.findOne({ _id: id })
+    return await this.categoriesRepository.findOne({ _id: { $eq: id } })
   }
 
   async findByName(name: string): CategoryPromise {
-    return await this.categoriesRepository.findOne({ name })
+    return await this.categoriesRepository.findOne({ name: { $eq: name } })
   }
 
   async update(
@@ -56,7 +56,7 @@ export class CategoriesService implements CategoriesServiceInterface {
       throw new BadRequestException('Category does not exists!')
 
     return await this.categoriesRepository.findOneAndUpdate(
-      { _id: id },
+      { _id: { $eq: id } },
       updateCategoryDto,
     )
   }
@@ -77,6 +77,6 @@ export class CategoriesService implements CategoriesServiceInterface {
         'There are tickets associated with this category',
       )
 
-    return await this.categoriesRepository.deleteOne({ _id: id })
+    return await this.categoriesRepository.deleteOne({ _id: { $eq: id } })
   }
 }

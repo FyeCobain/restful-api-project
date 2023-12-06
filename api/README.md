@@ -41,8 +41,11 @@ $ yarn run seed
 
 ## Commits (newest to oldest)
 
+**Added protection for NoSQL injection**
+* Filter queries has been parameterized.
+
 **Seeding scripts updated**
-* Now the seeder script executes directly in the source .ts file instead of de builder .js file.
+* Now the executed seeder script is the source .ts file instead of de builded .js file.
 
 **Tickets seeder added**
 * All seeders can be run using 'yarn run build' and then 'yarn run seed'.

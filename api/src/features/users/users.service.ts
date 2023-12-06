@@ -22,7 +22,7 @@ export class UsersService implements UsersServiceInterface {
   constructor(private readonly userRepository: UsersRepository) {}
 
   async findOne(id: string): UserPromise {
-    return await this.userRepository.findOne({ _id: id })
+    return await this.userRepository.findOne({ _id: { $eq: id } })
   }
 
   async findAll(): UserArrayPromise {
@@ -30,7 +30,7 @@ export class UsersService implements UsersServiceInterface {
   }
 
   async findByEmail(email: string): UserPromise {
-    return await this.userRepository.findOne({ email })
+    return await this.userRepository.findOne({ email: { $eq: email } })
   }
 
   async create(newUserData: CreateUserDto): UserPromise {
@@ -51,12 +51,12 @@ export class UsersService implements UsersServiceInterface {
       updatedUserData.password = await argon2.hash(updatedUserData.password)
 
     return await this.userRepository.findOneAndUpdate(
-      { _id: id },
+      { _id: { $eq: id } },
       updatedUserData,
     )
   }
 
   async remove(id: string): DeleteResultPromise {
-    return await this.userRepository.deleteOne({ _id: id })
+    return await this.userRepository.deleteOne({ _id: { $eq: id } })
   }
 }
