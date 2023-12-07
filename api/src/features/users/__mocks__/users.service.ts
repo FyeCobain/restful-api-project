@@ -1,11 +1,14 @@
+// General repository imports
 import { DeleteResult } from '@app/database/types'
+import { Types } from 'mongoose'
+
+// User schema imports
+import { UsersServiceInterface } from '../interfaces/users.service.interface'
+import { UserPromise, UserArrayPromise } from '../types'
 import { CreateUserDto } from '../dto/create-user.dto'
 import { UpdateUserDto } from '../dto/update-user.dto'
-import { UsersServiceInterface } from '../interfaces/users.service.interface'
 import { UserDocument } from '../schemas/user.schema'
 import { usersStub } from './users.stub'
-import { Types } from 'mongoose'
-import { UserPromise, UserArrayPromise } from '../types'
 
 // UsersService mock up
 export class UsersService implements UsersServiceInterface {
@@ -28,9 +31,9 @@ export class UsersService implements UsersServiceInterface {
   async create(newUserData: CreateUserDto): UserPromise {
     const newUser: UserDocument = {
       _id: new Types.ObjectId(),
-      name: newUserData.name,
-      lastName: newUserData.lastName,
-      email: newUserData.email,
+      name: newUserData.name.trim(),
+      lastName: newUserData.lastName.trim(),
+      email: newUserData.email.trim().toLowerCase(),
       password:
         '$argon2id$v=19$m=65536,t=3,p=4$QM4gzZdRm7ib6LVKu9oM7w$xL06ysBg+fh+PqOKpilR+zm7KL19f0aMZ9LvPIhbwhY',
       validatedAccount: false,

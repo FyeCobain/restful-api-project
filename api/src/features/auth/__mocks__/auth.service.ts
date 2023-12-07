@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+// Auth schema imports
+import { JwtsObjectPromise } from '../types'
 import { AuthServiceInterface } from '../interfaces/auth.service.interface'
+import { AuthDto } from '../dto/auth.dto'
+
+// User schema imports
 import { UserDocument } from '@app/features/users/schemas/user.schema'
 import { UsersService } from '@app/features/users/__mocks__/users.service'
 import { CreateUserDto } from '@app/features/users/dto/create-user.dto'
-import { AuthDto } from '../dto/auth.dto'
-import { JwtsObjectPromise } from '../types'
 
 export class AuthService implements AuthServiceInterface {
   private usersService: UsersService = new UsersService()
