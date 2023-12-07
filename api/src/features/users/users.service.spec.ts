@@ -96,7 +96,7 @@ describe('UsersService', () => {
     let result: DeleteResult
 
     beforeEach(async () => {
-      result = await service.remove(michaelScott) // <- Removing Michael Scot
+      result = await service.remove(michaelScott) // <- Removing Michael Scott
     })
 
     it('should return the delete result with deletedCount = 1', () => {
@@ -109,7 +109,7 @@ describe('UsersService', () => {
     let user: UserDocument
 
     beforeEach(async () => {
-      user = await service.findOne(michaelScott) // <- Michael Scot already removed!
+      user = await service.findOne(michaelScott) // <- Michael Scott already removed!
     })
 
     it('should NOT return the previously deleted user', () => {

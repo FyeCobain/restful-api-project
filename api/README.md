@@ -41,6 +41,12 @@ $ yarn run seed
 
 ## Commits (newest to oldest)
 
+**Categories service test implemented**
+* Added tests to the categories service spec file.
+
+**Users service test file update**
+* More tests added to users service spec file.
+
 **Categories mock up service implemented**
 * The mock up service for categories is working properly.
 

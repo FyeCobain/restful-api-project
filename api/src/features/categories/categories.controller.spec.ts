@@ -55,7 +55,7 @@ describe('CategoriesController', () => {
     })
   })
 
-  // findAll method
+  // findAll method (no sorting)
   describe('findAll', () => {
     let categories: CategoryDocument[]
 
@@ -161,7 +161,6 @@ describe('CategoriesController', () => {
     let tryToDelete
 
     beforeEach(async () => {
-      //jest.spyOn(service, 'remove')
       // Callback to try to delete 'Houseworking'
       tryToDelete = () => controller.remove(houseWorkingId)
     })
