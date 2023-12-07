@@ -41,7 +41,7 @@ $ yarn run seed
 
 ## Commits (newest to oldest)
 
-**Categories mock ups service implemented**
+**Categories mock up service implemented**
 * The mock up service for categories is working properly.
 
 **Services mock ups added**

@@ -36,6 +36,7 @@ describe('CategoriesController', () => {
     jest.clearAllMocks()
   })
 
+  // create method
   describe('create', () => {
     let createdCategory: CategoryDocument
 
@@ -54,6 +55,7 @@ describe('CategoriesController', () => {
     })
   })
 
+  // findAll method
   describe('findAll', () => {
     let categories: CategoryDocument[]
 
@@ -71,6 +73,7 @@ describe('CategoriesController', () => {
     })
   })
 
+  // findAll method with 'asc'
   describe('findAll (ascending)', () => {
     let categories: CategoryDocument[]
 
@@ -88,6 +91,7 @@ describe('CategoriesController', () => {
     })
   })
 
+  // findAll method with 'desc'
   describe('findAll (descending)', () => {
     let categories: CategoryDocument[]
 
@@ -105,6 +109,7 @@ describe('CategoriesController', () => {
     })
   })
 
+  // findOne method
   describe('findOne', () => {
     let findedCategory: CategoryDocument
 
@@ -122,6 +127,7 @@ describe('CategoriesController', () => {
     })
   })
 
+  // update method
   describe('update', () => {
     let updatedCategory: CategoryDocument
     const updateCategoryDto: UpdateCategoryDto = {
@@ -150,6 +156,7 @@ describe('CategoriesController', () => {
     })
   })
 
+  // Remove method with non deleteable category
   describe('remove - with a non deleteable category (with tickets associated)', () => {
     let tryToDelete
 
@@ -164,6 +171,7 @@ describe('CategoriesController', () => {
     })
   })
 
+  // Remove method with deleteable category
   describe('remove - with a deleteable category', () => {
     let deleteResult: DeleteResult
     let createdCategory: CategoryDocument
