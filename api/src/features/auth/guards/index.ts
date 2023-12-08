@@ -1,5 +1,5 @@
 import { AccessTokenGuard } from './access.token.guard'
 import { RefreshTokenGuard } from './refresh.token.guard'
-import { SubExistsGuard } from './sub.exists.guard'
+import { SubCanAccessGuard } from './sub.can.access.guard'
 
-export { AccessTokenGuard, RefreshTokenGuard, SubExistsGuard }
+export { AccessTokenGuard, RefreshTokenGuard, SubCanAccessGuard }

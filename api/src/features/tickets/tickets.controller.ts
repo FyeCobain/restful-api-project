@@ -34,13 +34,14 @@ import {
   ApiNotFoundResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
-import { AccessTokenGuard, SubExistsGuard } from '../auth/guards'
+import { AccessTokenGuard, SubCanAccessGuard } from '../auth/guards'
 import { getPayloadEmail } from '@app/helpers/auth'
 
 @ApiTags('Tickets')
 @ApiBearerAuth()
-@UseGuards(AccessTokenGuard, SubExistsGuard)
+@UseGuards(AccessTokenGuard, SubCanAccessGuard)
 @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+@ApiForbiddenResponse({ description: 'Forbidden' })
 @Controller('tickets')
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}

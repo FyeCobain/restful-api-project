@@ -114,6 +114,11 @@ export class TicketsService implements TicketsServiceInterface {
     const error = await this.getPossibleError(assignee, id)
     if (error) throw error
 
+    // Checking if the new assignee is valid
+    if (propIsDefined(updateTicketDto.assignee))
+      if (!(await this.usersService.findByEmail(updateTicketDto.assignee)))
+        throw new BadRequestException('Assignee does not exist!')
+
     // Checking if the new category is valid
     if (propIsDefined(updateTicketDto.category))
       if (!(await this.categoriesService.findByName(updateTicketDto.category)))

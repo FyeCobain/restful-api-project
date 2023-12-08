@@ -27,7 +27,11 @@ import {
 } from '@nestjs/swagger'
 
 // Validation / Guards / filters imports
-import { AccessTokenGuard, RefreshTokenGuard } from './guards'
+import {
+  RefreshTokenGuard,
+  AccessTokenGuard,
+  SubCanAccessGuard,
+} from './guards'
 import { MongoExceptionFilter } from '@app/libs/filters'
 
 // DTOs imports
@@ -95,7 +99,7 @@ export class AuthController {
   // Performs the tokens refreshing
   @Get('refresh')
   @ApiBearerAuth()
-  @UseGuards(RefreshTokenGuard)
+  @UseGuards(RefreshTokenGuard, SubCanAccessGuard)
   @ApiOkResponse({ description: 'OK' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
@@ -109,7 +113,7 @@ export class AuthController {
   // Performs the logout (deletes the refresh token)
   @Get('logout')
   @ApiBearerAuth()
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, SubCanAccessGuard)
   @ApiOkResponse({ description: 'OK' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiForbiddenResponse({ description: 'Forbidden' })

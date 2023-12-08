@@ -33,7 +33,7 @@ import { UpdateUserDto } from './dto/update-user.dto'
 
 // Validations / Guards / filters imports
 import { MongoExceptionFilter } from '@app/libs/filters'
-import { AccessTokenGuard, SubExistsGuard } from '@features/auth/guards'
+import { AccessTokenGuard, SubCanAccessGuard } from '@features/auth/guards'
 import { IdValidGuard } from '@app/guards'
 
 // Types imports
@@ -76,7 +76,7 @@ export class UsersController {
   // Updates an returns a user with the new data
   @Patch(':id')
   @ApiBearerAuth()
-  @UseGuards(IdValidGuard, AccessTokenGuard, SubExistsGuard)
+  @UseGuards(AccessTokenGuard, SubCanAccessGuard, IdValidGuard)
   @UseFilters(MongoExceptionFilter)
   @ApiOkResponse({ description: 'OK' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
@@ -91,7 +91,7 @@ export class UsersController {
   // Deletes a user
   @Delete(':id')
   @ApiBearerAuth()
-  @UseGuards(IdValidGuard, AccessTokenGuard, SubExistsGuard)
+  @UseGuards(AccessTokenGuard, SubCanAccessGuard, IdValidGuard)
   @ApiOkResponse({ description: 'OK' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })

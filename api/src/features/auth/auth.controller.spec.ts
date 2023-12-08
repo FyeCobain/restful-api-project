@@ -1,3 +1,4 @@
+// Core / common imports
 import { Test, TestingModule } from '@nestjs/testing'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
@@ -5,7 +6,9 @@ import { CreateUserDto } from '../users/dto/create-user.dto'
 import { AuthDto } from './dto/auth.dto'
 import { EmailDto } from './dto/email.dto'
 import { JwtsObject } from './types'
+import { UsersService } from '../users/users.service'
 
+jest.mock('@features/users/users.service')
 jest.mock('./auth.service')
 
 describe('AuthController', () => {
@@ -15,7 +18,7 @@ describe('AuthController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [AuthService],
+      providers: [AuthService, UsersService],
     }).compile()
 
     controller = module.get<AuthController>(AuthController)

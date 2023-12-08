@@ -41,8 +41,13 @@ $ yarn run seed
 
 ## Commits (newest to oldest)
 
+**Nest.js project finished**
+
+* The Nest.js project is finished and working properly.
+* Overall code improvement.
+
 **Added properties helpers**
-* Added helper functions to verify if property is defined / undefined.
+* Added helper functions to verify if properties are defined / undefined.
 
 **Tickets tests implemented**
 * Tickets tests where correctly implemented.

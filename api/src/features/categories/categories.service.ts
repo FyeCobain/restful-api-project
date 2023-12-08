@@ -74,7 +74,7 @@ export class CategoriesService implements CategoriesServiceInterface {
     )
     if (ticketsCount > 0)
       throw new BadRequestException(
-        'There are tickets associated with this category',
+        'There are tickets associated with this category, please delete them first',
       )
 
     return await this.categoriesRepository.deleteOne({ _id: { $eq: id } })

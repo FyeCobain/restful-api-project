@@ -16,7 +16,7 @@ import { CreateCategoryDto } from './dto/create-category.dto'
 import { UpdateCategoryDto } from './dto/update-category.dto'
 
 // Filters / guards
-import { AccessTokenGuard, SubExistsGuard } from '../auth/guards'
+import { AccessTokenGuard, SubCanAccessGuard } from '../auth/guards'
 import { IdValidGuard } from '@app/guards'
 import { MongoExceptionFilter } from '@app/libs/filters'
 
@@ -29,14 +29,16 @@ import {
   ApiCreatedResponse,
   ApiBadRequestResponse,
   ApiUnauthorizedResponse,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger'
 
 @ApiTags('Categories')
 @ApiBearerAuth()
-@UseGuards(AccessTokenGuard, SubExistsGuard)
+@UseGuards(AccessTokenGuard, SubCanAccessGuard)
 @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+@ApiForbiddenResponse({ description: 'Forbidden' })
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
