@@ -85,7 +85,7 @@ export class TicketsService implements TicketsServiceInterface {
     // Pagination
     let skip = 0
     if (limit > 0 && page > 0) skip = (page - 1) * limit
-    return await this.ticketsRepository.findAllAndParse(
+    return await this.ticketsRepository.findLimitedAndSorted(
       assignee,
       order,
       category,

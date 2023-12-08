@@ -41,6 +41,9 @@ $ yarn run seed
 
 ## Commits (newest to oldest)
 
+**Tickets tests implemented**
+* Tickets tests where correctly implemented.
+
 **Categories service test implemented**
 * Added tests to the categories service spec file.
 

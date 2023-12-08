@@ -43,7 +43,7 @@ export const ticketsStub = (): TicketDocument[] => {
       _id: '656f8bacc22336da2e829747',
       title: '05 - Clean the bedroom',
       description: 'The bedroom must be cleaned 🧹 soon',
-      assignee: 'john.doe@example.com"',
+      assignee: 'john.doe@example.com',
       dueDate: '2023-12-10T23:59:59.000Z',
       active: true,
       category: 'Houseworking',

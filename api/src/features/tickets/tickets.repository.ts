@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import { EntityRepository } from '@app/database/entity.repository'
-import { Ticket, TicketDocument } from './schemas/ticket.schema'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model, PipelineStage } from 'mongoose'
 import { RecordObject } from '@app/database/types'
+import { EntityRepository } from '@app/database/entity.repository'
+import { Ticket, TicketDocument } from './schemas/ticket.schema'
 
 @Injectable()
 export class TicketsRepository extends EntityRepository<TicketDocument> {
@@ -12,7 +12,7 @@ export class TicketsRepository extends EntityRepository<TicketDocument> {
   }
 
   // Returns the tickets using the filter and sorting parameters received
-  async findAllAndParse(
+  async findLimitedAndSorted(
     assignee = null,
     order: string = null,
     category: string = null,

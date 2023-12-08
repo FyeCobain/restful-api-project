@@ -1,4 +1,4 @@
-import { DeleteResultPromise } from '@app/database/types'
+import { DeleteResultPromise, RecordObject } from '@app/database/types'
 import { CreateTicketDto } from '../dto/create-ticket.dto'
 import { UpdateTicketDto } from '../dto/update-ticket.dto'
 import { TicketArrayPromise, TicketPromise } from '../types'
@@ -9,7 +9,7 @@ export interface TicketsServiceInterface {
 
   count(
     assignee: string,
-    filterQuery: Record<string, unknown>,
+    filterQuery: RecordObject,
     skip: number,
     limit: number,
   ): Promise<number>
