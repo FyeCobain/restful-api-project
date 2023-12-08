@@ -9,3 +9,11 @@ export function getBlankFieldsErrorMessages(dto: object): string[] {
   })
   return errorMessages
 }
+
+export function propIsDefined(property: any): boolean {
+  return typeof property !== 'undefined'
+}
+
+export function propIsUndefined(property: any): boolean {
+  return typeof property === 'undefined'
+}

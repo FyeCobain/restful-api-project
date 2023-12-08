@@ -23,6 +23,7 @@ import { TicketArrayPromise, TicketPromise } from './types'
 
 // Helpers imports
 import { titleize } from '@app/helpers/strings'
+import { propIsDefined } from '@app/helpers/dto'
 
 @Injectable()
 export class TicketsService implements TicketsServiceInterface {
@@ -113,8 +114,8 @@ export class TicketsService implements TicketsServiceInterface {
     const error = await this.getPossibleError(assignee, id)
     if (error) throw error
 
-    // Checking if the category is valid
-    if (typeof updateTicketDto.category !== 'undefined')
+    // Checking if the new category is valid
+    if (propIsDefined(updateTicketDto.category))
       if (!(await this.categoriesService.findByName(updateTicketDto.category)))
         throw new BadRequestException(
           `Category '${updateTicketDto.category}' does not exist, please create it first`,

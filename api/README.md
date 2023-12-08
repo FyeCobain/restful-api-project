@@ -41,6 +41,9 @@ $ yarn run seed
 
 ## Commits (newest to oldest)
 
+**Added properties helpers**
+* Added helper functions to verify if property is defined / undefined.
+
 **Tickets tests implemented**
 * Tickets tests where correctly implemented.
 

@@ -20,6 +20,7 @@ import { usersStub } from '@app/features/users/__mocks__/users.stub'
 
 // Helpers imports
 import { titleize } from '@app/helpers/strings'
+import { propIsDefined, propIsUndefined } from '@app/helpers/dto'
 
 export class TicketsService implements TicketsServiceInterface {
   private tickets: TicketDocument[] = ticketsStub()
@@ -68,14 +69,14 @@ export class TicketsService implements TicketsServiceInterface {
     // Sorting by due date ascending or descending
     if (order !== null) {
       const ticketsWithDueDateSorted = foundTickets
-        .filter((ticket) => typeof ticket.dueDate !== 'undefined')
+        .filter((ticket) => propIsDefined(ticket.dueDate))
         .sort((ticketA, ticketB) => {
           if (order === 'asc') return ticketA.dueDate > ticketB.dueDate ? 1 : -1
           else return ticketA.dueDate < ticketB.dueDate ? 1 : -1
         })
 
-      const ticketsWithoutDueDate = foundTickets.filter(
-        (ticket) => typeof ticket.dueDate === 'undefined',
+      const ticketsWithoutDueDate = foundTickets.filter((ticket) =>
+        propIsUndefined(ticket.dueDate),
       )
 
       foundTickets = ticketsWithDueDateSorted.concat(ticketsWithoutDueDate)
@@ -141,7 +142,7 @@ export class TicketsService implements TicketsServiceInterface {
     if (!ticket) return null
 
     // Validating new assignee
-    if (typeof updateTicketDto.assignee !== 'undefined') {
+    if (propIsDefined(updateTicketDto.assignee)) {
       const assigneeExists = this.users.some(
         (user) => user.email === updateTicketDto.assignee.trim().toLowerCase(),
       )
@@ -150,7 +151,7 @@ export class TicketsService implements TicketsServiceInterface {
     }
 
     // Validating new category
-    if (typeof updateTicketDto.category !== 'undefined') {
+    if (propIsDefined(updateTicketDto.category)) {
       const categoryExist = this.categories.some(
         (category) =>
           category.name === titleize(updateTicketDto.category.trim()),
@@ -159,13 +160,13 @@ export class TicketsService implements TicketsServiceInterface {
       ticket.category = titleize(updateTicketDto.category.trim())
     }
 
-    if (typeof updateTicketDto.title !== 'undefined')
+    if (propIsDefined(updateTicketDto.title))
       ticket.title = updateTicketDto.title.trim().toLowerCase()
 
-    if (typeof updateTicketDto.description !== 'undefined')
+    if (propIsDefined(updateTicketDto.description))
       ticket.description = updateTicketDto.description.trim().toLowerCase()
 
-    if (typeof updateTicketDto.dueDate !== 'undefined')
+    if (propIsDefined(updateTicketDto.dueDate))
       ticket.dueDate = updateTicketDto.dueDate
 
     // Saving changes

@@ -1,3 +1,7 @@
-import { getBlankFieldsErrorMessages } from './fields.helper'
+import {
+  getBlankFieldsErrorMessages,
+  propIsDefined,
+  propIsUndefined,
+} from './fields.helper'
 
-export { getBlankFieldsErrorMessages }
+export { getBlankFieldsErrorMessages, propIsDefined, propIsUndefined }
