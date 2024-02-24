@@ -19,21 +19,37 @@
         "react"
     ],
     "rules": {
-        "indent": [
-            "error",
-            2
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "never"
-        ]
+        "indent": [ "error", 2, { "SwitchCase": 1 } ],
+        "linebreak-style": [ "error", "unix" ],
+        "eol-last": [ "error", "always" ],
+        "no-trailing-spaces": "error",
+        "eqeqeq": [ "error", "always" ],
+        "yoda": [ "error", "never" ],
+        "require-yield": "error",
+        "quotes": [ "error", "single", { "avoidEscape": true } ],
+        "semi": [ "error", "never" ],
+        "no-unneeded-ternary": "error",
+        "prefer-const": "error",
+        "sort-imports": "error",
+        "comma-spacing": [ "error", { "before": false, "after": true } ],
+        "comma-dangle": [ "error", {
+            "arrays": "always-multiline",
+            "objects": "always-multiline",
+            "imports": "always-multiline",
+            "exports": "always-multiline",
+            "functions": "never"
+        } ],
+        "array-bracket-spacing": [ "error", "always" ],
+        "array-bracket-newline": [ "error", { "multiline": true } ],
+        "array-element-newline": [ "error", { "ArrayExpression": "consistent", "ArrayPattern": "consistent" } ],
+        "template-curly-spacing": [ "error", "always" ],
+        "object-curly-spacing": [ "error", "always" ],
+        "object-curly-newline": [ "error", { "multiline": true } ],
+        "object-property-newline": [ "error", { "allowAllPropertiesOnSameLine": true} ],
+        "space-before-function-paren": [ "error", "never" ],
+        "brace-style": [ "error", "stroustrup", { "allowSingleLine": true } ],
+        "space-before-blocks": [ "error", "always" ],
+        "spaced-comment": [ "error", "always" ],
+        "react/react-in-jsx-scope": "off"
     }
 }
